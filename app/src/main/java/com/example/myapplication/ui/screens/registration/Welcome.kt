@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
+import com.example.myapplication.ui.screens.Navigate
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.golbat_60
 
@@ -32,13 +33,13 @@ fun Welcome(navController: NavController) {
                 .fillMaxWidth(),
         )
         Text(
-            text = "МотоСтрана",
+            text = stringResource(R.string.app_name),
             modifier = Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp),
             textAlign = TextAlign.Start,
             style = MaterialTheme.typography.h1
         )
         Text(
-            text = "Добро пожаловать в приложение для совместных мотопутешествий!",
+            text = stringResource(R.string.welcome_title_text),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(24.dp, 8.dp, 24.dp, 0.dp),
@@ -53,7 +54,7 @@ fun Welcome(navController: NavController) {
         contentAlignment = Alignment.BottomCenter
         ){
         Button(
-            onClick = { navController.navigate("input_phone_number") },
+            onClick = { navController.navigate(Navigate.InputPhoneNumber.route) },
             modifier = Modifier
                 .padding(24.dp,0.dp,24.dp,24.dp)
                 .height(56.dp)
@@ -61,7 +62,7 @@ fun Welcome(navController: NavController) {
             shape = MaterialTheme.shapes.large
         ) {
             Text(
-                text = "Войти по номеру телефона",
+                text = stringResource(R.string.welcome_signin_button_text),
                 style = MaterialTheme.typography.h3
             )
         }

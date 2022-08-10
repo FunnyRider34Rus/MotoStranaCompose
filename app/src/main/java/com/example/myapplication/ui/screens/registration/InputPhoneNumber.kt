@@ -13,13 +13,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
+import com.example.myapplication.ui.screens.Navigate
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
@@ -27,7 +27,8 @@ import com.example.myapplication.ui.theme.golbat_5
 @Composable
 fun InputPhoneNumber(navController: NavController) {
 
-    var phone by remember { mutableStateOf(TextFieldValue("")) }
+    var phone by remember { mutableStateOf("") }
+    var userPhoneNumber: String
 
     Column(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -37,10 +38,10 @@ fun InputPhoneNumber(navController: NavController) {
                 .padding(24.dp, 32.dp, 0.dp, 0.dp)
                 .height(24.dp)
                 .width(24.dp)
-                .clickable { navController.navigate("welcome") },
+                .clickable { navController.navigate(Navigate.Welcome.route) },
         )
         Text(
-            text = "Введите номер телефона",
+            text = stringResource(R.string.input_phone_number_title_text),
             modifier = Modifier.padding(24.dp, 16.dp, 24.dp, 32.dp),
             textAlign = TextAlign.Start,
             style = MaterialTheme.typography.h1
@@ -59,7 +60,7 @@ fun InputPhoneNumber(navController: NavController) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "+7",
+                    text = stringResource(R.string.input_phone_number_country_code),
                     style = MaterialTheme.typography.h3
                 )
             }
@@ -74,11 +75,11 @@ fun InputPhoneNumber(navController: NavController) {
                 textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
                 placeholder = {
                     Text(
+                        text = stringResource(R.string.input_phone_number_hint_text),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         maxLines = 1,
-                        style = MaterialTheme.typography.h3,
-                        text = "номер телефона"
+                        style = MaterialTheme.typography.h3
                     )
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
@@ -93,7 +94,10 @@ fun InputPhoneNumber(navController: NavController) {
             )
         }
         Button(
-            onClick = { navController.navigate("input_sms_code") },
+            onClick = {
+                userPhoneNumber = "+7$phone"
+                navController.navigate(Navigate.InputSMSCode.withArgs(userPhoneNumber))
+                      },
             modifier = Modifier
                 .padding(24.dp, 72.dp, 24.dp, 0.dp)
                 .height(56.dp)
@@ -101,7 +105,7 @@ fun InputPhoneNumber(navController: NavController) {
             shape = MaterialTheme.shapes.large
         ) {
             Text(
-                text = "Далее",
+                text = stringResource(R.string.button_next_text),
                 style = MaterialTheme.typography.h3
             )
         }

@@ -18,13 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
+import com.example.myapplication.ui.screens.Navigate
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
 import com.example.myapplication.ui.theme.golbat_60
 
 @Composable
-fun InputSMSCode(navController: NavController) {
+fun InputSMSCode(navController: NavController, userPhoneNumber: String) {
 
     var code by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -36,15 +37,15 @@ fun InputSMSCode(navController: NavController) {
                 .padding(24.dp, 32.dp, 0.dp, 0.dp)
                 .height(24.dp)
                 .width(24.dp)
-                .clickable { navController.navigate("input_phone_number") }
+                .clickable { navController.navigate(Navigate.InputPhoneNumber.route) }
         )
         Text(
-            text = "Введите код",
+            text = stringResource(R.string.input_sms_code_title_text),
             modifier = Modifier.padding(24.dp, 16.dp, 24.dp, 8.dp),
             style = MaterialTheme.typography.h1
         )
         Text(
-            text = "Сообщение с кодом было направлено на номер",
+            text = stringResource(R.string.input_sms_code_body_text) + userPhoneNumber,
             modifier = Modifier
                 .padding(24.dp, 0.dp, 24.dp, 0.dp)
                 .fillMaxWidth(),
@@ -64,7 +65,7 @@ fun InputSMSCode(navController: NavController) {
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     style = MaterialTheme.typography.h3,
-                    text = "код"
+                    text = stringResource(R.string.input_sms_code_hint)
                 )
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -86,7 +87,7 @@ fun InputSMSCode(navController: NavController) {
             shape = MaterialTheme.shapes.large
         ) {
             Text(
-                text = "Далее",
+                text = stringResource(R.string.button_next_text),
                 style = MaterialTheme.typography.h3
             )
         }
@@ -99,7 +100,7 @@ fun InputSMSCode(navController: NavController) {
 fun InputSMSCodePreview() {
     MyApplicationTheme {
         InputSMSCode(
-            navController = rememberNavController()
+            navController = rememberNavController(), ""
         )
     }
 }

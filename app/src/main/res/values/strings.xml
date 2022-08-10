@@ -1,6 +1,14 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">МотоСтрана</string>
     <string name="welcome_image_description">Заставка</string>
     <string name="button_back_description">Вернуться назад</string>
-
+    <string name="welcome_title_text">Добро пожаловать в приложение для совместных мотопутешествий!</string>
+    <string name="welcome_signin_button_text">Войти по номеру телефона</string>
+    <string name="input_phone_number_title_text">Введите номер телефона</string>
+    <string name="input_phone_number_hint_text">номер телефона</string>
+    <string name="input_phone_number_country_code">+7</string>
+    <string name="button_next_text">Далее</string>
+    <string name="input_sms_code_title_text">Введите код</string>
+    <string name="input_sms_code_body_text">Сообщение с кодом было направлено на номер</string>
+    <string name="input_sms_code_hint">код</string>
 </resources>

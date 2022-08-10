@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.ui.SetupNavGraph
+import com.example.myapplication.ui.screens.SetupNavGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 
@@ -30,10 +30,8 @@ fun App() {
     MyApplicationTheme {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-            Scaffold {
                 navController = rememberNavController()
                 SetupNavGraph(navController = navController)
-            }
         }
     }
 }
