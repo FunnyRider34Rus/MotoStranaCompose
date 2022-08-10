@@ -23,6 +23,7 @@ import com.example.myapplication.ui.screens.Navigate
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
+import com.example.myapplication.utils.startPhoneNumberVerification
 
 @Composable
 fun InputPhoneNumber(navController: NavController) {
@@ -95,9 +96,13 @@ fun InputPhoneNumber(navController: NavController) {
         }
         Button(
             onClick = {
-                userPhoneNumber = "+7$phone"
-                navController.navigate(Navigate.InputSMSCode.withArgs(userPhoneNumber))
-                      },
+                phone = phone.filter { it.isDigit() }
+                if (phone.length == 10) {
+                    userPhoneNumber = "+7$phone"
+                    startPhoneNumberVerification(userPhoneNumber)
+                    navController.navigate(Navigate.InputSMSCode.withArgs(userPhoneNumber))
+                }
+            },
             modifier = Modifier
                 .padding(24.dp, 72.dp, 24.dp, 0.dp)
                 .height(56.dp)
@@ -121,3 +126,5 @@ fun InputPhoneNumberPreview() {
         )
     }
 }
+
+

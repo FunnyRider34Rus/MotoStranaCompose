@@ -9,14 +9,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.database.initFirebase
 import com.example.myapplication.ui.screens.SetupNavGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
+lateinit var ACTIVITY_CONTEXT: ComponentActivity
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            ACTIVITY_CONTEXT = this
+            initFirebase()
             App()
         }
     }

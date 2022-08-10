@@ -20,15 +20,17 @@ fun SetupNavGraph(navController: NavHostController) {
             InputPhoneNumber(navController)
         }
         composable(
-            route = Navigate.InputSMSCode.route + "/{phone}"
-            , arguments = listOf(
-            navArgument("phone") {
-                type = NavType.StringType
-                defaultValue = ""
-                nullable = false
-            }
-        )) { entry ->
-            InputSMSCode(navController, entry.arguments?.getString("phone").toString())
+            route = Navigate.InputSMSCode.route + "/{phone}",
+            arguments = listOf(
+                navArgument("phone") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                    nullable = false
+                }
+            )) { entry ->
+            InputSMSCode(
+                navController,
+                entry.arguments?.getString("phone").toString())
         }
     }
 }

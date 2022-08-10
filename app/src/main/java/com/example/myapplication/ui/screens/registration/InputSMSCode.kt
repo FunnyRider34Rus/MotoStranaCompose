@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,11 +22,15 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
 import com.example.myapplication.ui.theme.golbat_60
+import com.example.myapplication.utils.verifyPhoneNumberWithCode
 
 @Composable
-fun InputSMSCode(navController: NavController, userPhoneNumber: String) {
+fun InputSMSCode(
+    navController: NavController,
+    userPhoneNumber: String
+) {
 
-    var code by remember { mutableStateOf(TextFieldValue("")) }
+    var code by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -52,10 +55,12 @@ fun InputSMSCode(navController: NavController, userPhoneNumber: String) {
             color = golbat_60,
             style = MaterialTheme.typography.h3
         )
-        OutlinedTextField(value = code, onValueChange = { inputCode ->
-            code = inputCode
-        },
-            modifier = Modifier.padding(24.dp,24.dp,24.dp,0.dp)
+        OutlinedTextField(
+            value = code, onValueChange = { inputCode ->
+                code = inputCode
+            },
+            modifier = Modifier
+                .padding(24.dp, 24.dp, 24.dp, 0.dp)
                 .height(56.dp)
                 .fillMaxWidth(),
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
@@ -79,7 +84,12 @@ fun InputSMSCode(navController: NavController, userPhoneNumber: String) {
             )
         )
         Button(
-            onClick = { navController.navigate("input_sms_code") },
+            onClick = {
+                code = code.filter { it.isDigit() }
+                if (code.length == 6) {
+                    verifyPhoneNumberWithCode(code)
+                }
+            },
             modifier = Modifier
                 .padding(24.dp, 72.dp, 24.dp, 0.dp)
                 .height(56.dp)
@@ -100,7 +110,7 @@ fun InputSMSCode(navController: NavController, userPhoneNumber: String) {
 fun InputSMSCodePreview() {
     MyApplicationTheme {
         InputSMSCode(
-            navController = rememberNavController(), ""
+            navController = rememberNavController(), "+7(xxx)xxx-xx-xx"
         )
     }
 }
