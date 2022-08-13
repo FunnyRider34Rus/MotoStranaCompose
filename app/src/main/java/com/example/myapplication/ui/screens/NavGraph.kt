@@ -6,21 +6,23 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.myapplication.ui.screens.dashboard.Dashboard
 import com.example.myapplication.ui.screens.registration.InputPhoneNumber
 import com.example.myapplication.ui.screens.registration.InputSMSCode
+import com.example.myapplication.ui.screens.registration.InputUserInfo
 import com.example.myapplication.ui.screens.registration.Welcome
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Navigate.Welcome.route) {
-        composable(route = Navigate.Welcome.route) {
+    NavHost(navController = navController, startDestination = Screen.Welcome.route) {
+        composable(route = Screen.Welcome.route) {
             Welcome(navController)
         }
-        composable(route = Navigate.InputPhoneNumber.route) {
+        composable(route = Screen.InputPhoneNumber.route) {
             InputPhoneNumber(navController)
         }
         composable(
-            route = Navigate.InputSMSCode.route + "/{phone}",
+            route = Screen.InputSMSCode.route + "/{phone}",
             arguments = listOf(
                 navArgument("phone") {
                     type = NavType.StringType
@@ -30,7 +32,25 @@ fun SetupNavGraph(navController: NavHostController) {
             )) { entry ->
             InputSMSCode(
                 navController,
-                entry.arguments?.getString("phone").toString())
+                entry.arguments?.getString("phone").toString()
+            )
+        }
+        composable(
+            route = Screen.InputUserInfo.route + "/{phone}",
+            arguments = listOf(
+                navArgument("phone") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                    nullable = false
+                }
+            )) { entry ->
+            InputUserInfo(
+                navController,
+                entry.arguments?.getString("phone").toString()
+            )
+        }
+        composable(route = Screen.Dashboard.route) {
+            Dashboard(navController)
         }
     }
 }

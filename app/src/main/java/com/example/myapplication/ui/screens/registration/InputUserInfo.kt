@@ -17,21 +17,22 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
+import com.example.myapplication.database.AUTH
+import com.example.myapplication.database.NODE_USERS
 import com.example.myapplication.database.REMOTE_DATABASE
 import com.example.myapplication.ui.screens.Screen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
-import com.example.myapplication.ui.theme.golbat_60
-import com.example.myapplication.utils.verifyPhoneNumberWithCode
 
 @Composable
-fun InputSMSCode(
+fun InputUserInfo(
     navController: NavController,
     userPhoneNumber: String
 ) {
 
-    var code by remember { mutableStateOf("") }
+    var userFirstName by remember { mutableStateOf("") }
+    var userSecondName by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -41,24 +42,16 @@ fun InputSMSCode(
                 .padding(24.dp, 32.dp, 0.dp, 0.dp)
                 .height(24.dp)
                 .width(24.dp)
-                .clickable { navController.navigate(Screen.InputPhoneNumber.route) }
+                .clickable { navController.navigate(Screen.InputSMSCode.route) }
         )
         Text(
-            text = stringResource(R.string.input_sms_code_title_text),
+            text = stringResource(R.string.input_user_info_title_text),
             modifier = Modifier.padding(24.dp, 16.dp, 24.dp, 8.dp),
             style = MaterialTheme.typography.h1
         )
-        Text(
-            text = stringResource(R.string.input_sms_code_body_text) + userPhoneNumber,
-            modifier = Modifier
-                .padding(24.dp, 0.dp, 24.dp, 0.dp)
-                .fillMaxWidth(),
-            color = golbat_60,
-            style = MaterialTheme.typography.h3
-        )
         OutlinedTextField(
-            value = code, onValueChange = { inputCode ->
-                code = inputCode
+            value = userFirstName, onValueChange = { inputCode ->
+                userFirstName = inputCode
             },
             modifier = Modifier
                 .padding(24.dp, 24.dp, 24.dp, 0.dp)
@@ -71,10 +64,38 @@ fun InputSMSCode(
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     style = MaterialTheme.typography.h3,
-                    text = stringResource(R.string.input_sms_code_hint)
+                    text = stringResource(R.string.input_user_info_user_first_name_hint)
                 )
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            singleLine = true,
+            shape = MaterialTheme.shapes.large,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = black,
+                backgroundColor = golbat_5,
+                focusedBorderColor = golbat_5,
+                unfocusedBorderColor = golbat_5
+            )
+        )
+        OutlinedTextField(
+            value = userSecondName, onValueChange = { input ->
+                userSecondName = input
+            },
+            modifier = Modifier
+                .padding(24.dp, 24.dp, 24.dp, 0.dp)
+                .height(56.dp)
+                .fillMaxWidth(),
+            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+            placeholder = {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.h3,
+                    text = stringResource(R.string.input_user_info_user_second_name_hint)
+                )
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             singleLine = true,
             shape = MaterialTheme.shapes.large,
             colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -86,10 +107,9 @@ fun InputSMSCode(
         )
         Button(
             onClick = {
-                code = code.filter { it.isDigit() }
-                if (code.length == 6) {
-                    verifyPhoneNumberWithCode(code)
-                    navController.navigate(Screen.InputUserInfo.withArgs(userPhoneNumber))
+                if (userFirstName.isNotBlank() && userSecondName.isNotBlank()) {
+                    saveUserInfoToDB(userFirstName, userSecondName, userPhoneNumber)
+                    navController.navigate(Screen.Dashboard.route)
                 }
             },
             modifier = Modifier
@@ -106,12 +126,18 @@ fun InputSMSCode(
     }
 }
 
+fun saveUserInfoToDB(userFirstName: String, userSecondName: String, phoneNumber: String) {
+    val fullname = "$userFirstName $userSecondName"
+    val currentUser = AUTH.currentUser?.uid
+    REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child("fullname").setValue(fullname)
+    REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child("phoneNumber").setValue(phoneNumber)
+}
 
 @Preview(showBackground = true)
 @Composable
-fun InputSMSCodePreview() {
+fun InputUserInfoPreview() {
     MyApplicationTheme {
-        InputSMSCode(
+        InputUserInfo(
             navController = rememberNavController(), "+7(xxx)xxx-xx-xx"
         )
     }

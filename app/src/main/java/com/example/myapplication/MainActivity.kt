@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.database.AUTH
 import com.example.myapplication.database.initFirebase
+import com.example.myapplication.ui.screens.Screen
 import com.example.myapplication.ui.screens.SetupNavGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
@@ -28,14 +30,14 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App() {
-    
+
     lateinit var navController: NavHostController
-    
+
     MyApplicationTheme {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-                navController = rememberNavController()
-                SetupNavGraph(navController = navController)
+            navController = rememberNavController()
+            SetupNavGraph(navController = navController)
         }
     }
 }
