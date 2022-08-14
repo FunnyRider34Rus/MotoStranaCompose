@@ -14,9 +14,12 @@ import com.example.myapplication.database.initFirebase
 import com.example.myapplication.ui.screens.registration.navigation.Screen
 import com.example.myapplication.ui.screens.registration.navigation.SetupNavGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.google.accompanist.pager.ExperimentalPagerApi
 
 lateinit var ACTIVITY_CONTEXT: ComponentActivity
 
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
 @Composable
 fun App() {
 

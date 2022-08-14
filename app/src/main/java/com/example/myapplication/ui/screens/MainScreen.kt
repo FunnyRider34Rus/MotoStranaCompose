@@ -20,7 +20,10 @@ import com.example.myapplication.database.AUTH
 import com.example.myapplication.ui.screens.registration.navigation.Screen
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.white
+import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
 @Composable
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 fun MainScreen() {

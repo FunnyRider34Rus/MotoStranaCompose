@@ -7,6 +7,8 @@ import com.google.firebase.database.FirebaseDatabase
 lateinit var AUTH: FirebaseAuth
 lateinit var REMOTE_DATABASE: DatabaseReference
 const val NODE_USERS = "users"
+const val NODE_NEWS = "news"
+const val NODE_EVENT = "event"
 const val CHILD_ID = "id"
 const val CHILD_FULLNAME = "fullname"
 const val CHILD_USERNAME = "username"

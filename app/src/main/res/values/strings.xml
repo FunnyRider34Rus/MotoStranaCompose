@@ -16,6 +16,8 @@
     <string name="dashboard">События</string>
     <string name="messages">Сообщения</string>
     <string name="settings">Настройки</string>
+    <string name="news">Новости</string>
+    <string name="events">События</string>
     <string name="input_user_info_title_text">Введите Ваше имя и фамилию</string>
     <string name="input_user_info_user_first_name_hint">Имя</string>
     <string name="input_user_info_user_second_name_hint">Фамилия</string>

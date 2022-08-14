@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.screens
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 
 import androidx.navigation.NavHostController
@@ -8,7 +9,10 @@ import androidx.navigation.compose.composable
 import com.example.myapplication.ui.screens.dashboard.Dashboard
 import com.example.myapplication.ui.screens.messages.Messages
 import com.example.myapplication.ui.screens.settings.Settings
+import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
 @Composable
 fun BottomNavGraph(navController: NavHostController) {
         NavHost(

@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.screens.registration.navigation
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -8,7 +9,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.myapplication.ui.screens.MainScreen
 import com.example.myapplication.ui.screens.registration.*
+import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.MainScreen.route) {
