@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screens
+package com.example.myapplication.ui.screens.registration.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -6,15 +6,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.myapplication.ui.screens.dashboard.Dashboard
-import com.example.myapplication.ui.screens.registration.InputPhoneNumber
-import com.example.myapplication.ui.screens.registration.InputSMSCode
-import com.example.myapplication.ui.screens.registration.InputUserInfo
-import com.example.myapplication.ui.screens.registration.Welcome
+import com.example.myapplication.ui.screens.MainScreen
+import com.example.myapplication.ui.screens.registration.*
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Screen.Welcome.route) {
+    NavHost(navController = navController, startDestination = Screen.MainScreen.route) {
         composable(route = Screen.Welcome.route) {
             Welcome(navController)
         }
@@ -49,8 +46,8 @@ fun SetupNavGraph(navController: NavHostController) {
                 entry.arguments?.getString("phone").toString()
             )
         }
-        composable(route = Screen.Dashboard.route) {
-            Dashboard(navController)
+        composable(route = Screen.MainScreen.route) {
+            MainScreen()
         }
     }
 }

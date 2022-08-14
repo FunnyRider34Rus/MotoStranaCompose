@@ -17,10 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
-import com.example.myapplication.database.AUTH
-import com.example.myapplication.database.NODE_USERS
-import com.example.myapplication.database.REMOTE_DATABASE
-import com.example.myapplication.ui.screens.Screen
+import com.example.myapplication.database.*
+import com.example.myapplication.ui.screens.registration.navigation.Screen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
@@ -109,7 +107,7 @@ fun InputUserInfo(
             onClick = {
                 if (userFirstName.isNotBlank() && userSecondName.isNotBlank()) {
                     saveUserInfoToDB(userFirstName, userSecondName, userPhoneNumber)
-                    navController.navigate(Screen.Dashboard.route)
+                    navController.navigate(Screen.MainScreen.route)
                 }
             },
             modifier = Modifier
@@ -129,8 +127,8 @@ fun InputUserInfo(
 fun saveUserInfoToDB(userFirstName: String, userSecondName: String, phoneNumber: String) {
     val fullname = "$userFirstName $userSecondName"
     val currentUser = AUTH.currentUser?.uid
-    REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child("fullname").setValue(fullname)
-    REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child("phoneNumber").setValue(phoneNumber)
+    REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_FULLNAME).setValue(fullname)
+    REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_PHONE).setValue(phoneNumber)
 }
 
 @Preview(showBackground = true)

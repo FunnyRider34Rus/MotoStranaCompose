@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
-    id 'kotlin-kapt'
     id 'kotlin-parcelize'
 }
 
@@ -55,14 +54,19 @@ dependencies {
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'com.google.accompanist:accompanist-systemuicontroller:0.25.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     implementation 'androidx.activity:activity-compose:1.5.1'
+    // Accompanist
+    def accompanist_version = "0.25.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
     //Firebase
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.7'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
     //Navigation
     def nav_version = "2.5.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$nav_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$nav_version"
     implementation "androidx.navigation:navigation-compose:$nav_version"
     //Tests
     testImplementation 'junit:junit:4.13.2'

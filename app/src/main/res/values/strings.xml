@@ -12,6 +12,7 @@
     <string name="input_sms_code_body_text">Сообщение с кодом было направлено на номер </string>
     <string name="input_sms_code_hint">код</string>
     <string name="input_user_info_title">О себе</string>
+    <string name="main_screen">Главный экран</string>
     <string name="dashboard">События</string>
     <string name="messages">Сообщения</string>
     <string name="settings">Настройки</string>

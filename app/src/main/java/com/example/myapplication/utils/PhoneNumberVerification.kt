@@ -21,7 +21,7 @@ fun startPhoneNumberVerification(phoneNumber: String) {
         .setPhoneNumber(phoneNumber)       // Phone number to verify
         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
         .setActivity(ACTIVITY_CONTEXT)                 // Activity (for callback binding)
-        .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
+        .setCallbacks(Callbacks)          // OnVerificationStateChangedCallbacks
         .build()
     PhoneAuthProvider.verifyPhoneNumber(options)
     // [END start_phone_auth]
@@ -46,6 +46,7 @@ private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
                 Log.w(TAG, "signInWithCredential:failure", task.exception)
                 if (task.exception is FirebaseAuthInvalidCredentialsException) {
                     // The verification code entered was invalid
+                    Log.w(TAG, "signInWithCredential:invalid verification code")
                 }
                 // Update UI
             }
@@ -53,7 +54,7 @@ private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
 }
 // [END sign_in_with_phone]
 
-object callbacks : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+object Callbacks : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
     override fun onVerificationCompleted(credential: PhoneAuthCredential) {
         // This callback will be invoked in two situations:
         // 1 - Instant verification. In some cases the phone number can be instantly
@@ -74,6 +75,7 @@ object callbacks : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             // Invalid request
         } else if (e is FirebaseTooManyRequestsException) {
             // The SMS quota for the project has been exceeded
+            Log.w(TAG, "SMS quota for the project has been exceeded")
         }
 
         // Show a message and update the UI

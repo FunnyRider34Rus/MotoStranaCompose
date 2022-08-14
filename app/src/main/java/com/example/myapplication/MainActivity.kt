@@ -11,8 +11,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.database.AUTH
 import com.example.myapplication.database.initFirebase
-import com.example.myapplication.ui.screens.Screen
-import com.example.myapplication.ui.screens.SetupNavGraph
+import com.example.myapplication.ui.screens.registration.navigation.Screen
+import com.example.myapplication.ui.screens.registration.navigation.SetupNavGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 lateinit var ACTIVITY_CONTEXT: ComponentActivity
@@ -34,7 +34,6 @@ fun App() {
     lateinit var navController: NavHostController
 
     MyApplicationTheme {
-        // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
             navController = rememberNavController()
             SetupNavGraph(navController = navController)
