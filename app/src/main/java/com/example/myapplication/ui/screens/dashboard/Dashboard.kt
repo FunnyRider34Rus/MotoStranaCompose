@@ -6,11 +6,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import com.example.myapplication.R
 import com.example.myapplication.ui.screens.dashboard.tabs.navigation.TabItem
 import com.example.myapplication.ui.theme.black
-import com.example.myapplication.ui.theme.golbat_60
 import com.example.myapplication.ui.theme.white
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
@@ -39,7 +36,6 @@ fun Dashboard() {
 @Composable
 fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
     val scope = rememberCoroutineScope()
-    // OR ScrollableTabRow()
     TabRow(
         selectedTabIndex = pagerState.currentPage,
         backgroundColor = white,

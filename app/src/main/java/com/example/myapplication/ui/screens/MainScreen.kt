@@ -17,7 +17,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.database.AUTH
-import com.example.myapplication.ui.screens.registration.navigation.Screen
+import com.example.myapplication.ui.navigation.BottomBarScreen
+import com.example.myapplication.ui.navigation.SetupNavGraph
+import com.example.myapplication.ui.navigation.Screen
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.white
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -26,12 +28,13 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-fun MainScreen() {
-    val navController = rememberNavController()
+fun MainScreen(navController: NavHostController) {
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
+        bottomBar = {
+            BottomBar(navController = navController)
+        }
     ) {
-        BottomNavGraph(navController = navController)
+
     }
     if (AUTH.currentUser?.uid == null) {
         navController.navigate(Screen.Welcome.route)
@@ -51,7 +54,7 @@ fun BottomBar(navController: NavHostController) {
     BottomNavigation(
         modifier = Modifier.height(88.dp),
         backgroundColor = white,
-        contentColor = black
+        contentColor = black,
     ) {
         screens.forEach { screen ->
             AddItem(
@@ -84,10 +87,10 @@ fun RowScope.AddItem(
                 imageVector = ImageVector.vectorResource(id = screen.icon),
                 contentDescription = "navigation icon"
             )
-        /*},
-        label = {
-            Text(text = screen.title)*/
         },
+        /*label = {
+            Text(text = screen.title, textAlign = TextAlign.Center)
+        },*/
         unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled)
     )
 }

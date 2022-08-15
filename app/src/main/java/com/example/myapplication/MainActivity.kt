@@ -3,16 +3,16 @@ package com.example.myapplication
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.database.AUTH
 import com.example.myapplication.database.initFirebase
-import com.example.myapplication.ui.screens.registration.navigation.Screen
-import com.example.myapplication.ui.screens.registration.navigation.SetupNavGraph
+import com.example.myapplication.ui.navigation.SetupNavGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 
