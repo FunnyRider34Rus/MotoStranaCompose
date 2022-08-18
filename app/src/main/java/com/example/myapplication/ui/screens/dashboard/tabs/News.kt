@@ -13,5 +13,6 @@ fun News(model: DashboardViewModel = viewModel()) {
     val news = model.getEvent(NODE_NEWS)
     LazyColumn(contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp)) {
 
+
     }
 }

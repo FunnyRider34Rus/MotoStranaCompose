@@ -21,7 +21,7 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun MyApplicationTheme(
+fun MotoStranaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {

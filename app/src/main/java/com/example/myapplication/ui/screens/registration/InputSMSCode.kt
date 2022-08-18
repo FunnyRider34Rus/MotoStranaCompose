@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
-import com.example.myapplication.ui.navigation.Screen
-import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.ui.navigation.AuthScreen
+import com.example.myapplication.ui.theme.MotoStranaTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
 import com.example.myapplication.ui.theme.golbat_60
@@ -40,7 +40,7 @@ fun InputSMSCode(
                 .padding(24.dp, 32.dp, 0.dp, 0.dp)
                 .height(24.dp)
                 .width(24.dp)
-                .clickable { navController.navigate(Screen.InputPhoneNumber.route) }
+                .clickable { navController.navigate(AuthScreen.InputPhone.route) }
         )
         Text(
             text = stringResource(R.string.input_sms_code_title_text),
@@ -88,7 +88,7 @@ fun InputSMSCode(
                 code = code.filter { it.isDigit() }
                 if (code.length == 6) {
                     verifyPhoneNumberWithCode(code)
-                    navController.navigate(Screen.InputUserInfo.withArgs(userPhoneNumber))
+                    navController.navigate(route = "INPUT_USER_INFO/$userPhoneNumber")
                 }
             },
             modifier = Modifier
@@ -109,7 +109,7 @@ fun InputSMSCode(
 @Preview(showBackground = true)
 @Composable
 fun InputSMSCodePreview() {
-    MyApplicationTheme {
+    MotoStranaTheme {
         InputSMSCode(
             navController = rememberNavController(), "+7(xxx)xxx-xx-xx"
         )

@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
-import com.example.myapplication.ui.navigation.Screen
-import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.ui.navigation.AuthScreen
+import com.example.myapplication.ui.theme.MotoStranaTheme
 import com.example.myapplication.ui.theme.golbat_60
 
 @Composable
@@ -54,7 +54,7 @@ fun Welcome(navController: NavController) {
         contentAlignment = Alignment.BottomCenter
         ){
         Button(
-            onClick = { navController.navigate(Screen.InputPhoneNumber.route) },
+            onClick = { navController.navigate(AuthScreen.InputPhone.route) },
             modifier = Modifier
                 .padding(24.dp,0.dp,24.dp,24.dp)
                 .height(56.dp)
@@ -72,7 +72,7 @@ fun Welcome(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun WelcomePreview() {
-    MyApplicationTheme {
+    MotoStranaTheme {
         Welcome(
             navController = rememberNavController()
         )

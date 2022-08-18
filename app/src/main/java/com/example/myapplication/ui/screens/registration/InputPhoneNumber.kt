@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
-import com.example.myapplication.ui.navigation.Screen
-import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.ui.navigation.AuthScreen
+import com.example.myapplication.ui.theme.MotoStranaTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
 import com.example.myapplication.utils.startPhoneNumberVerification
@@ -39,7 +39,7 @@ fun InputPhoneNumber(navController: NavController) {
                 .padding(24.dp, 32.dp, 0.dp, 0.dp)
                 .height(24.dp)
                 .width(24.dp)
-                .clickable { navController.navigate(Screen.Welcome.route) },
+                .clickable { navController.navigate(AuthScreen.Welcome.route) },
         )
         Text(
             text = stringResource(R.string.input_phone_number_title_text),
@@ -100,7 +100,7 @@ fun InputPhoneNumber(navController: NavController) {
                 if (phone.length == 10) {
                     userPhoneNumber = "+7$phone"
                     startPhoneNumberVerification(userPhoneNumber)
-                    navController.navigate(Screen.InputSMSCode.withArgs(userPhoneNumber))
+                    navController.navigate(route = "INPUT_SMS_CODE/$userPhoneNumber")
                 }
             },
             modifier = Modifier
@@ -120,7 +120,7 @@ fun InputPhoneNumber(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun InputPhoneNumberPreview() {
-    MyApplicationTheme {
+    MotoStranaTheme {
         InputPhoneNumber(
             navController = rememberNavController()
         )
