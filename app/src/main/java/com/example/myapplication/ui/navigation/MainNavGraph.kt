@@ -1,14 +1,11 @@
 package com.example.myapplication.ui.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.myapplication.ACTIVITY_CONTEXT
+import com.example.myapplication.R
 import com.example.myapplication.ui.screens.dashboard.Dashboard
 import com.example.myapplication.ui.screens.messages.Messages
 import com.example.myapplication.ui.screens.settings.Settings
@@ -18,9 +15,9 @@ fun MainNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         route = Graph.MAIN,
-        startDestination = BottomBarScreen.Home.route
+        startDestination = BottomBarScreen.Dashboard.route
     ) {
-        composable(route = BottomBarScreen.Home.route) {
+        composable(route = BottomBarScreen.Dashboard.route) {
             Dashboard()
         }
         composable(route = BottomBarScreen.Profile.route) {
@@ -29,29 +26,30 @@ fun MainNavGraph(navController: NavHostController) {
         composable(route = BottomBarScreen.Settings.route) {
             Settings()
         }
+        authNavGraph(navController = navController)
     }
 }
 
 sealed class BottomBarScreen(
     val route: String,
     val title: String,
-    val icon: ImageVector
+    val icon: Int
 ) {
-    object Home : BottomBarScreen(
-        route = "HOME",
-        title = "HOME",
-        icon = Icons.Default.Home
+    object Dashboard : BottomBarScreen(
+        route = "DASHBOARD",
+        title = ACTIVITY_CONTEXT.getString(R.string.dashboard),
+        icon = R.drawable.ic_menu_dashboard
     )
 
     object Profile : BottomBarScreen(
-        route = "PROFILE",
-        title = "PROFILE",
-        icon = Icons.Default.Person
+        route = "MESSAGE",
+        title = ACTIVITY_CONTEXT.getString(R.string.messages),
+        icon = R.drawable.ic_menu_message
     )
 
     object Settings : BottomBarScreen(
         route = "SETTINGS",
-        title = "SETTINGS",
-        icon = Icons.Default.Settings
+        title = ACTIVITY_CONTEXT.getString(R.string.settings),
+        icon = R.drawable.ic_menu_settings
     )
 }

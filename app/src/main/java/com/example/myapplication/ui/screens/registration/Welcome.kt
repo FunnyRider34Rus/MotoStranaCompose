@@ -2,8 +2,12 @@ package com.example.myapplication.ui.screens.registration
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -15,7 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
+import com.example.myapplication.database.AUTH
 import com.example.myapplication.ui.navigation.AuthScreen
+import com.example.myapplication.ui.navigation.Graph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.golbat_60
 
@@ -54,7 +60,9 @@ fun Welcome(navController: NavController) {
             contentAlignment = Alignment.BottomCenter
         ) {
             Button(
-                onClick = { navController.navigate(AuthScreen.InputUserPhone.route) },
+                onClick = {
+                    navController.navigate(AuthScreen.InputUserPhone.route)
+                },
                 modifier = Modifier
                     .padding(24.dp, 0.dp, 24.dp, 24.dp)
                     .height(56.dp)

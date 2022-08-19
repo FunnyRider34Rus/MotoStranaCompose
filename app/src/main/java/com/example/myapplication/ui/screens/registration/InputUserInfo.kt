@@ -18,7 +18,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
 import com.example.myapplication.database.*
-import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.navigation.Graph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black

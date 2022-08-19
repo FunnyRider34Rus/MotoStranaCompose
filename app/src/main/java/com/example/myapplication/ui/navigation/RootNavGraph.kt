@@ -5,14 +5,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.myapplication.ui.screens.ContentContainer
-import com.example.myapplication.ui.screens.dashboard.Dashboard
 
 @Composable
 fun RootNavGraph (navController: NavHostController) {
     NavHost(
         navController = navController,
         route = Graph.ROOT,
-        startDestination = Graph.AUTHENTICATION
+        startDestination = Graph.MAIN
     ) {
         authNavGraph(navController = navController)
         composable(route = Graph.MAIN) {
@@ -24,5 +23,5 @@ fun RootNavGraph (navController: NavHostController) {
 object Graph {
     const val ROOT = "root_graph"
     const val AUTHENTICATION = "auth_graph"
-    const val MAIN = "home_graph"
+    const val MAIN = "main_graph"
 }
