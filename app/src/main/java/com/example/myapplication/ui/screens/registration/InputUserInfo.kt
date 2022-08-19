@@ -18,7 +18,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
 import com.example.myapplication.database.*
-import com.example.myapplication.ui.screens.registration.navigation.Screen
+import com.example.myapplication.ui.navigation.AuthScreen
+import com.example.myapplication.ui.navigation.Graph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
@@ -40,7 +41,7 @@ fun InputUserInfo(
                 .padding(24.dp, 32.dp, 0.dp, 0.dp)
                 .height(24.dp)
                 .width(24.dp)
-                .clickable { navController.navigate(Screen.InputSMSCode.route) }
+                .clickable {  }
         )
         Text(
             text = stringResource(R.string.input_user_info_title_text),
@@ -107,7 +108,7 @@ fun InputUserInfo(
             onClick = {
                 if (userFirstName.isNotBlank() && userSecondName.isNotBlank()) {
                     saveUserInfoToDB(userFirstName, userSecondName, userPhoneNumber)
-                    navController.navigate(Screen.MainScreen.route)
+                    navController.navigate(Graph.MAIN)
                 }
             },
             modifier = Modifier
