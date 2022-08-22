@@ -22,6 +22,9 @@ import com.example.myapplication.ui.navigation.Graph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 @Composable
 fun InputUserInfo(
@@ -31,6 +34,8 @@ fun InputUserInfo(
 
     var userFirstName by remember { mutableStateOf("") }
     var userSecondName by remember { mutableStateOf("") }
+
+    reAuthentication(navController, userPhoneNumber)
 
     Column(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -124,9 +129,24 @@ fun InputUserInfo(
     }
 }
 
+fun reAuthentication(navController: NavController, userPhoneNumber: String) {
+    REMOTE_DATABASE.child(NODE_PHONES).addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            if (snapshot.hasChild(userPhoneNumber)) {
+                navController.navigate(Graph.MAIN)
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+
+        }
+    })
+}
+
 fun saveUserInfoToDB(userFirstName: String, userSecondName: String, phoneNumber: String) {
     val fullname = "$userFirstName $userSecondName"
     val currentUser = AUTH.currentUser?.uid
+    REMOTE_DATABASE.child(NODE_PHONES).setValue(phoneNumber)
     REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_FULLNAME).setValue(fullname)
     REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_PHONE).setValue(phoneNumber)
 }

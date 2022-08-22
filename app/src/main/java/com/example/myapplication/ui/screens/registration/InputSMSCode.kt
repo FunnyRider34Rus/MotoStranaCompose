@@ -48,7 +48,7 @@ fun InputSMSCode(
             style = MaterialTheme.typography.h1
         )
         Text(
-            text = stringResource(R.string.input_sms_code_body_text) + userPhoneNumber,
+            text = stringResource(R.string.input_sms_code_body_text) + " " + userPhoneNumber,
             modifier = Modifier
                 .padding(24.dp, 0.dp, 24.dp, 0.dp)
                 .fillMaxWidth(),
