@@ -66,6 +66,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$nav_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$nav_version"
     implementation "androidx.navigation:navigation-compose:$nav_version"
+    //Coil
+    implementation "io.coil-kt:coil-compose:2.2.0"
     //Tests
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
