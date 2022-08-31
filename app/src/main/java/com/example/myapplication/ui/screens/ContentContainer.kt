@@ -10,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -22,7 +21,6 @@ import com.example.myapplication.database.AUTH
 import com.example.myapplication.ui.navigation.BottomBarScreen
 import com.example.myapplication.ui.navigation.Graph
 import com.example.myapplication.ui.navigation.MainNavGraph
-import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.white
 
@@ -100,12 +98,4 @@ fun RowScope.AddItem(
             }
         }
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainPreview() {
-    MyApplicationTheme {
-        ContentContainer(navController = rememberNavController())
-    }
 }

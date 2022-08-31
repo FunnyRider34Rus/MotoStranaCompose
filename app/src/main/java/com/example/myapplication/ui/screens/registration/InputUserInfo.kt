@@ -45,7 +45,7 @@ fun InputUserInfo(
                 .padding(24.dp, 32.dp, 0.dp, 0.dp)
                 .height(24.dp)
                 .width(24.dp)
-                .clickable {  }
+                .clickable { }
         )
         Text(
             text = stringResource(R.string.input_user_info_title_text),
@@ -132,8 +132,10 @@ fun InputUserInfo(
 fun reAuthentication(navController: NavController, userPhoneNumber: String) {
     REMOTE_DATABASE.child(NODE_PHONES).addListenerForSingleValueEvent(object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
-            if (snapshot.hasChild(userPhoneNumber)) {
-                navController.navigate(Graph.MAIN)
+            snapshot.children.forEach {
+                if (it.hasChild(userPhoneNumber)) {
+                    navController.navigate(Graph.MAIN)
+                }
             }
         }
 
@@ -147,8 +149,10 @@ fun saveUserInfoToDB(userFirstName: String, userSecondName: String, phoneNumber:
     val fullname = "$userFirstName $userSecondName"
     val currentUser = AUTH.currentUser?.uid
     REMOTE_DATABASE.child(NODE_PHONES).setValue(phoneNumber)
-    REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_FULLNAME).setValue(fullname)
-    REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_PHONE).setValue(phoneNumber)
+    REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_FULLNAME)
+        .setValue(fullname)
+    REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_PHONE)
+        .setValue(phoneNumber)
 }
 
 @Preview(showBackground = true)

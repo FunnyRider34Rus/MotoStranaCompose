@@ -22,7 +22,6 @@ class DashboardViewModel @Inject constructor() : ViewModel(), EventHandler<Dashb
 
     private val _viewState = MutableLiveData(DashboardViewState())
     val viewState: LiveData<DashboardViewState> = _viewState
-    private val listEvents: MutableList<Event?> = mutableListOf()
     override fun obtainEvent(event: DashboardEvent) {
         when (event) {
             DashboardEvent.NewsClicked -> displayEvents(NODE_NEWS)
@@ -33,21 +32,20 @@ class DashboardViewModel @Inject constructor() : ViewModel(), EventHandler<Dashb
     }
 
     private fun displayEvents(event: String) {
-        REMOTE_DATABASE.child(event).child("date")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    snapshot.children.forEach { it ->
-                        val singleEvent = it.getValue(Event::class.java)
-                        listEvents.add(singleEvent)
-                        _viewState.postValue(_viewState.value?.copy(dashboardValue = listEvents as List<Event?>))
+            var listEvents: List<Event?> = emptyList()
+            REMOTE_DATABASE.child(event).child("date")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        snapshot.children.forEach {
+                            val singleEvent = it.getValue(Event::class.java)
+                            listEvents = listEvents + singleEvent
+                        }
+                        _viewState.postValue(_viewState.value?.copy(dashboardValue = listEvents.asReversed()))
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-
-                }
-
-            })
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+                })
     }
 
     private fun displayItem(index: Int) {
