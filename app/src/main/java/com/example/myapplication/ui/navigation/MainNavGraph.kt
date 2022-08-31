@@ -1,12 +1,14 @@
 package com.example.myapplication.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.myapplication.ACTIVITY_CONTEXT
 import com.example.myapplication.R
 import com.example.myapplication.ui.screens.dashboard.Dashboard
+import com.example.myapplication.ui.screens.dashboard.DashboardViewModel
 import com.example.myapplication.ui.screens.messages.Messages
 import com.example.myapplication.ui.screens.settings.Settings
 
@@ -18,7 +20,8 @@ fun MainNavGraph(navController: NavHostController) {
         startDestination = BottomBarScreen.Dashboard.route
     ) {
         composable(route = BottomBarScreen.Dashboard.route) {
-            Dashboard()
+            val dashboardViewModel = hiltViewModel<DashboardViewModel>()
+            Dashboard(dashboardViewModel)
         }
         composable(route = BottomBarScreen.Profile.route) {
             Messages()
