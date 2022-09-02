@@ -18,7 +18,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
 import com.example.myapplication.database.*
-import com.example.myapplication.ui.navigation.Graph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
@@ -112,7 +111,7 @@ fun InputUserInfo(
             onClick = {
                 if (userFirstName.isNotBlank() && userSecondName.isNotBlank()) {
                     saveUserInfoToDB(userFirstName, userSecondName, userPhoneNumber)
-                    navController.navigate(Graph.MAIN)
+                    //navController.navigate(Graph.MAIN)
                 }
             },
             modifier = Modifier
@@ -134,7 +133,7 @@ fun reAuthentication(navController: NavController, userPhoneNumber: String) {
         override fun onDataChange(snapshot: DataSnapshot) {
             snapshot.children.forEach {
                 if (it.hasChild(userPhoneNumber)) {
-                    navController.navigate(Graph.MAIN)
+                    //navController.navigate(Graph.MAIN)
                 }
             }
         }

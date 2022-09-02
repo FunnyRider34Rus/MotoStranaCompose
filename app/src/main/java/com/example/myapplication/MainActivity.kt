@@ -3,18 +3,15 @@ package com.example.myapplication
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.database.NODE_EVENT
-import com.example.myapplication.database.NODE_NEWS
 import com.example.myapplication.database.REMOTE_DATABASE
 import com.example.myapplication.database.initFirebase
 import com.example.myapplication.models.Event
-import com.example.myapplication.ui.navigation.RootNavGraph
+import com.example.myapplication.ui.navigation.NavigationGraph
+import com.example.myapplication.ui.screens.BottomNavigationMenu
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,8 +45,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     MyApplicationTheme {
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-            RootNavGraph(navController = rememberNavController())
+        val navController = rememberNavController()
+        Scaffold(
+            bottomBar = { BottomNavigationMenu(navController = navController) }
+        ) {
+            NavigationGraph(navController = navController)
         }
     }
 }

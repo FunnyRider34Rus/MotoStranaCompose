@@ -26,8 +26,7 @@ class DashboardViewModel @Inject constructor() : ViewModel(), EventHandler<Dashb
         when (event) {
             DashboardEvent.NewsClicked -> displayEvents(NODE_NEWS)
             DashboardEvent.EventClicked -> displayEvents(NODE_EVENT)
-            is DashboardEvent.ItemNewsClicked -> displayItem(event.index)
-            is DashboardEvent.ItemEventClicked -> displayItem(event.index)
+            is DashboardEvent.ItemClicked -> displayItem(event.index)
         }
     }
 

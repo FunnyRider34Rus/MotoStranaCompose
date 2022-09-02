@@ -1,15 +1,19 @@
 package com.example.myapplication.ui.navigation
 
+import androidx.compose.runtime.Composable
 import androidx.navigation.*
 import androidx.navigation.compose.composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import com.example.myapplication.ui.screens.registration.InputPhoneNumber
 import com.example.myapplication.ui.screens.registration.InputSMSCode
 import com.example.myapplication.ui.screens.registration.InputUserInfo
 import com.example.myapplication.ui.screens.registration.Welcome
 
-fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
-    navigation(
-        route = Graph.AUTHENTICATION,
+@Composable
+fun AuthNavGraph(navController: NavHostController) {
+    NavHost(
+        navController = navController,
         startDestination = AuthScreen.Welcome.route
     ) {
         composable(route = AuthScreen.Welcome.route) {
@@ -25,7 +29,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                     defaultValue = ""
                     nullable = false
                 }
-                )) { entry ->
+            )) { entry ->
             InputSMSCode(
                 navController,
                 entry.arguments?.getString("phone").toString()
