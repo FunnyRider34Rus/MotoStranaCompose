@@ -1,9 +1,11 @@
 package com.example.myapplication.ui.screens.dashboard
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -22,6 +24,7 @@ import com.example.myapplication.ui.screens.dashboard.model.DashboardEvent
 import com.example.myapplication.ui.screens.dashboard.model.DashboardViewState
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_60
+import com.example.myapplication.ui.theme.golbat_80
 import com.example.myapplication.ui.theme.white
 import kotlinx.coroutines.launch
 import androidx.compose.material.Text as Text
@@ -52,6 +55,24 @@ fun Dashboard(
     with(viewState.value) {
         ModalBottomSheetLayout(
             sheetContent = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Divider(
+                        modifier = Modifier
+                            .width(26.dp)
+                            .height(6.dp)
+                            .border(
+                                width = 26.dp,
+                                color = golbat_80,
+                                shape = RoundedCornerShape(8.dp)
+                            ),
+                        color = white
+                    )
+                }
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     Text(
                         text = itemValue?.title_text.toString(),
@@ -86,14 +107,12 @@ fun Dashboard(
                     )
                 }
             },
-            modifier = Modifier
-                .fillMaxSize(),
             sheetState = stateSheet
         ) {
             Scaffold(
                 bottomBar = { BottomNavigationMenu(navController = navController) }
             ) { paddingValues ->
-                Column (modifier = Modifier.padding(paddingValues)) {
+                Column(modifier = Modifier.padding(paddingValues)) {
                     //Табсы с новостями и мероприятиями
                     TabRow(
                         selectedTabIndex = tabIndex,
