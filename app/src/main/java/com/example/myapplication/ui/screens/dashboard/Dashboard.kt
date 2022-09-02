@@ -3,6 +3,8 @@ package com.example.myapplication.ui.screens.dashboard
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -12,8 +14,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.myapplication.R
+import com.example.myapplication.ui.screens.BottomNavigationMenu
 import com.example.myapplication.ui.screens.dashboard.model.DashboardEvent
 import com.example.myapplication.ui.screens.dashboard.model.DashboardViewState
 import com.example.myapplication.ui.theme.black
@@ -25,7 +29,7 @@ import androidx.compose.material.Text as Text
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Dashboard(
-    viewModel: DashboardViewModel
+    navController: NavController, viewModel: DashboardViewModel
 ) {
     var tabIndex by remember { mutableStateOf(0) }
     var index by remember { mutableStateOf(0) }
@@ -48,47 +52,48 @@ fun Dashboard(
     with(viewState.value) {
         ModalBottomSheetLayout(
             sheetContent = {
-                Card {
-                    Column {
-                        Text(
-                            text = itemValue?.title_text.toString(),
-                            modifier = Modifier.padding(horizontal = 16.dp),
-                            style = MaterialTheme.typography.h1
-                        )
-                        Text(
-                            text = itemValue?.date.toString(),
-                            modifier = Modifier.padding(horizontal = 8.dp),
-                            textAlign = TextAlign.End,
-                            style = MaterialTheme.typography.h5
-                        )
-                        AsyncImage(
-                            model = itemValue?.image,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxWidth(),
-                            alignment = Alignment.Center,
-                            contentScale = ContentScale.FillWidth
-                        )
-                        Text(
-                            text = itemValue?.header_text.toString(),
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp),
-                            style = MaterialTheme.typography.h2
-                        )
-                        Text(
-                            text = itemValue?.body_text.toString(),
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp),
-                            color = golbat_60,
-                            style = MaterialTheme.typography.h3
-                        )
-                    }
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                    Text(
+                        text = itemValue?.title_text.toString(),
+                        modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 0.dp),
+                        style = MaterialTheme.typography.h1
+                    )
+                    Text(
+                        text = itemValue?.date.toString(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 8.dp),
+                        textAlign = TextAlign.End,
+                        style = MaterialTheme.typography.h5
+                    )
+                    AsyncImage(
+                        model = itemValue?.image,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxWidth(),
+                        alignment = Alignment.Center,
+                        contentScale = ContentScale.FillWidth
+                    )
+                    Text(
+                        text = itemValue?.header_text.toString(),
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                        style = MaterialTheme.typography.h2
+                    )
+                    Text(
+                        text = itemValue?.body_text.toString(),
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        color = golbat_60,
+                        style = MaterialTheme.typography.h3
+                    )
                 }
             },
+            modifier = Modifier
+                .fillMaxSize(),
             sheetState = stateSheet
         ) {
-            Scaffold(content = { padding ->
-                Column(
-                    modifier = Modifier
-                        .padding(padding)
-                ) {
+            Scaffold(
+                bottomBar = { BottomNavigationMenu(navController = navController) }
+            ) { paddingValues ->
+                Column (modifier = Modifier.padding(paddingValues)) {
                     //Табсы с новостями и мероприятиями
                     TabRow(
                         selectedTabIndex = tabIndex,
@@ -108,8 +113,7 @@ fun Dashboard(
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .wrapContentHeight()
-                            .padding(0.dp, 0.dp, 0.dp, 88.dp),
+                            .wrapContentHeight(),
                         state = scrollState,
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
@@ -149,7 +153,7 @@ fun Dashboard(
                         }
                     }
                 }
-            })
+            }
         }
     }
 }

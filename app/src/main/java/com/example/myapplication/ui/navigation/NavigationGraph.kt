@@ -21,7 +21,7 @@ fun NavigationGraph(navController: NavController) {
         startDestination = BottomNavItem.Dashboard.route
     ) {
         composable(route = BottomNavItem.Dashboard.route) {
-            Dashboard(dashboardViewModel)
+            Dashboard(navController, dashboardViewModel)
         }
         composable(route = BottomNavItem.Messages.route) {
             Messages()
