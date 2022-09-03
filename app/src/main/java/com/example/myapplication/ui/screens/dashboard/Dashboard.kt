@@ -1,5 +1,9 @@
 package com.example.myapplication.ui.screens.dashboard
 
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.myapplication.R
@@ -28,7 +33,6 @@ import com.example.myapplication.ui.theme.golbat_60
 import com.example.myapplication.ui.theme.golbat_80
 import com.example.myapplication.ui.theme.white
 import kotlinx.coroutines.launch
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -43,22 +47,28 @@ fun Dashboard(
     var itemIndex by rememberSaveable { mutableStateOf(0) }
     //названия табс
     val titles = listOf(stringResource(id = R.string.news), stringResource(id = R.string.events))
+    //идикатор таб
+    val indicator = @Composable { tabPositions: List<TabPosition> ->
+        AnimatedIndicator(tabPositions = tabPositions, selectedTabIndex = tabIndex)
+    }
     //позиция скролла
     val scrollState = rememberLazyListState()
     //состояние bottomSheet
-    val stateSheet = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded = true
-    )
+    val stateSheet = rememberBottomSheetScaffoldState()
     val scope = rememberCoroutineScope()
+
 
     when (tabIndex) {
         0 -> viewModel.obtainEvent(DashboardEvent.NewsClicked)
         1 -> viewModel.obtainEvent(DashboardEvent.EventClicked)
     }
 
+    LaunchedEffect(null) {
+        stateSheet.bottomSheetState.collapse()
+    }
+
     with(viewState.value) {
-        ModalBottomSheetLayout(
+        BottomSheetScaffold(
             sheetContent = {
                 Box(
                     modifier = Modifier
@@ -112,20 +122,23 @@ fun Dashboard(
                     )
                 }
             },
-            sheetState = stateSheet,
-            sheetShape = RoundedCornerShape(0.dp)
+            scaffoldState = stateSheet,
+            sheetShape = RoundedCornerShape(0.dp),
+            sheetPeekHeight = 0.dp
         ) {
             Scaffold(
                 bottomBar = { BottomNavigationMenu(navController = navController) }
             ) { paddingValues ->
-                Column(modifier = Modifier
-                    .padding(paddingValues)) {
+                Column(
+                    modifier = Modifier.padding(paddingValues)
+                ) {
                     //Табсы с новостями и мероприятиями
                     TabRow(
                         selectedTabIndex = tabIndex,
                         modifier = Modifier.height(88.dp),
                         backgroundColor = white,
-                        contentColor = black
+                        contentColor = black,
+                        indicator = indicator
                     ) {
                         titles.forEachIndexed { index, title ->
                             Tab(
@@ -136,7 +149,8 @@ fun Dashboard(
                                 text = {
                                     Text(
                                         text = title,
-                                        style = MaterialTheme.typography.h1)
+                                        style = MaterialTheme.typography.h1
+                                    )
                                 }
                             )
                         }
@@ -154,7 +168,12 @@ fun Dashboard(
                                 onClick = {
                                     itemIndex = item
                                     viewModel.obtainEvent(DashboardEvent.ItemClicked(itemIndex))
-                                    scope.launch { stateSheet.show() }
+                                    scope.launch {
+                                        stateSheet.bottomSheetState.animateTo(
+                                            BottomSheetValue.Expanded,
+                                            tween(800)
+                                        )
+                                    }
                                 },
                                 modifier = Modifier.padding(vertical = 1.dp),
                                 shape = RoundedCornerShape(0.dp)
@@ -203,4 +222,64 @@ fun Dashboard(
             }
         }
     }
+}
+
+@Composable
+fun Indicator(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .border(
+                width = 126.dp,
+                color = black,
+                shape = RoundedCornerShape(8.dp)),
+        contentAlignment = Alignment.BottomCenter
+    )
+    {
+        Divider(
+            modifier = Modifier
+                .height(4.dp)
+                .border(
+                    width = 26.dp,
+                    color = black,
+                    shape = RoundedCornerShape(4.dp)
+                ),
+            color = white
+        )
+    }
+}
+
+@Composable
+fun AnimatedIndicator(tabPositions: List<TabPosition>, selectedTabIndex: Int) {
+    val transition = updateTransition(selectedTabIndex, label = "")
+    val indicatorStart by transition.animateDp(
+        transitionSpec = {
+            if (initialState < targetState) {
+                spring(dampingRatio = 1f, stiffness = 50f)
+            } else {
+                spring(dampingRatio = 1f, stiffness = 1000f)
+            }
+        }, label = ""
+    ) {
+        tabPositions[it].left
+    }
+
+    val indicatorEnd by transition.animateDp(
+        transitionSpec = {
+            if (initialState < targetState) {
+                spring(dampingRatio = 1f, stiffness = 1000f)
+            } else {
+                spring(dampingRatio = 1f, stiffness = 50f)
+            }
+        }, label = ""
+    ) {
+        tabPositions[it].right
+    }
+
+    Indicator(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentSize(align = Alignment.BottomStart)
+            .offset(x = indicatorStart + 8.dp)
+            .width((indicatorEnd - 16.dp) - indicatorStart)
+    )
 }
