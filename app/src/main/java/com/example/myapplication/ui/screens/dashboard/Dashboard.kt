@@ -28,10 +28,7 @@ import com.example.myapplication.R
 import com.example.myapplication.ui.screens.BottomNavigationMenu
 import com.example.myapplication.ui.screens.dashboard.model.DashboardEvent
 import com.example.myapplication.ui.screens.dashboard.model.DashboardViewState
-import com.example.myapplication.ui.theme.black
-import com.example.myapplication.ui.theme.golbat_60
-import com.example.myapplication.ui.theme.golbat_80
-import com.example.myapplication.ui.theme.white
+import com.example.myapplication.ui.theme.*
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -88,7 +85,9 @@ fun Dashboard(
                         color = white
                     )
                 }
-                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                Column(modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState())) {
                     Text(
                         text = itemValue?.title_text.toString(),
                         modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 0.dp),
@@ -122,12 +121,14 @@ fun Dashboard(
                     )
                 }
             },
+            modifier = Modifier.padding(top = 2.dp),
             scaffoldState = stateSheet,
-            sheetShape = RoundedCornerShape(0.dp),
+            sheetShape = RoundedCornerShape(24.dp),
             sheetPeekHeight = 0.dp
         ) {
             Scaffold(
-                bottomBar = { BottomNavigationMenu(navController = navController) }
+                bottomBar = { BottomNavigationMenu(navController = navController) },
+                backgroundColor = golbat_10
             ) { paddingValues ->
                 Column(
                     modifier = Modifier.padding(paddingValues)
@@ -175,8 +176,8 @@ fun Dashboard(
                                         )
                                     }
                                 },
-                                modifier = Modifier.padding(vertical = 1.dp),
-                                shape = RoundedCornerShape(0.dp)
+                                modifier = Modifier.padding(horizontal = 8.dp,vertical = 8.dp),
+                                shape = RoundedCornerShape(16.dp)
                             ) {
                                 Column {
                                     AsyncImage(
@@ -237,7 +238,7 @@ fun Indicator(modifier: Modifier = Modifier) {
     {
         Divider(
             modifier = Modifier
-                .height(4.dp)
+                .height(6.dp)
                 .border(
                     width = 26.dp,
                     color = black,
