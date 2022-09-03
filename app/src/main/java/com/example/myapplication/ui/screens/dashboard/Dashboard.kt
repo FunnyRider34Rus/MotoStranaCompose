@@ -28,19 +28,21 @@ import com.example.myapplication.ui.theme.golbat_60
 import com.example.myapplication.ui.theme.golbat_80
 import com.example.myapplication.ui.theme.white
 import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Dashboard(
-    navController: NavController, viewModel: DashboardViewModel
+    navController: NavController, viewModel: DashboardViewModel = viewModel()
 ) {
+    //state
+    val viewState = viewModel.viewState.observeAsState(DashboardViewState())
     //индекс для активного таб
     var tabIndex by rememberSaveable { mutableStateOf(0) }
     //выбраный элемент события
     var itemIndex by rememberSaveable { mutableStateOf(0) }
     //названия табс
     val titles = listOf(stringResource(id = R.string.news), stringResource(id = R.string.events))
-    val viewState = viewModel.viewState.observeAsState(DashboardViewState())
     //позиция скролла
     val scrollState = rememberLazyListState()
     //состояние bottomSheet
@@ -186,9 +188,9 @@ fun Dashboard(
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(
-                                            horizontal = 8.dp,
-                                            vertical = 8.dp
-                                        ),
+                                                horizontal = 8.dp,
+                                                vertical = 8.dp
+                                            ),
                                         color = golbat_60,
                                         textAlign = TextAlign.End,
                                         style = MaterialTheme.typography.h5
