@@ -25,9 +25,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.myapplication.R
+import com.example.myapplication.database.AUTH
+import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.screens.BottomNavigationMenu
 import com.example.myapplication.ui.screens.dashboard.model.DashboardEvent
 import com.example.myapplication.ui.screens.dashboard.model.DashboardViewState
+import com.example.myapplication.ui.screens.dashboard.screen.ShowError
+import com.example.myapplication.ui.screens.dashboard.screen.ShowLoading
 import com.example.myapplication.ui.theme.*
 import kotlinx.coroutines.launch
 
@@ -54,14 +58,17 @@ fun Dashboard(
     val stateSheet = rememberBottomSheetScaffoldState()
     val scope = rememberCoroutineScope()
 
+    LaunchedEffect(null) {
+        stateSheet.bottomSheetState.collapse()
+        //Проверяем авторизацию
+        if (AUTH.currentUser?.uid == null) {
+            navController.navigate(AuthScreen.Welcome.route)
+        }
+    }
 
     when (tabIndex) {
         0 -> viewModel.obtainEvent(DashboardEvent.NewsClicked)
         1 -> viewModel.obtainEvent(DashboardEvent.EventClicked)
-    }
-
-    LaunchedEffect(null) {
-        stateSheet.bottomSheetState.collapse()
     }
 
     with(viewState.value) {
@@ -138,7 +145,6 @@ fun Dashboard(
                     //Табсы с новостями и мероприятиями
                     TabRow(
                         selectedTabIndex = tabIndex,
-                        modifier = Modifier.height(88.dp),
                         backgroundColor = white,
                         contentColor = black,
                         indicator = indicator
@@ -152,79 +158,86 @@ fun Dashboard(
                                 text = {
                                     Text(
                                         text = title,
-                                        style = MaterialTheme.typography.h1
                                     )
                                 }
                             )
                         }
                     }
+
+                    //Обработка загрузки
                     if (isLoading) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
+                        ShowLoading()
                     } else {
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(),
-                            state = scrollState,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            items(dashboardValue.size) { item ->
-                                Card(
-                                    onClick = {
-                                        itemIndex = item
-                                        viewModel.obtainEvent(DashboardEvent.ItemClicked(itemIndex))
-                                        scope.launch {
-                                            stateSheet.bottomSheetState.animateTo(
-                                                BottomSheetValue.Expanded,
-                                                tween(800)
+                        if (isError) {
+                            ShowError()
+                        } else {
+                            LazyColumn(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight(),
+                                state = scrollState,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                items(dashboardValue.size) { item ->
+                                    Card(
+                                        onClick = {
+                                            itemIndex = item
+                                            viewModel.obtainEvent(
+                                                DashboardEvent.ItemClicked(
+                                                    itemIndex
+                                                )
+                                            )
+                                            scope.launch {
+                                                stateSheet.bottomSheetState.animateTo(
+                                                    BottomSheetValue.Expanded,
+                                                    tween(800)
+                                                )
+                                            }
+                                        },
+                                        modifier = Modifier.padding(
+                                            horizontal = 8.dp,
+                                            vertical = 8.dp
+                                        ),
+                                        shape = RoundedCornerShape(16.dp)
+                                    ) {
+                                        Column {
+                                            AsyncImage(
+                                                model = dashboardValue[item]?.image,
+                                                contentDescription = null,
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .heightIn(max = 288.dp),
+                                                alignment = Alignment.Center,
+                                                contentScale = ContentScale.FillWidth
+                                            )
+                                            Text(
+                                                text = dashboardValue[item]?.title_text.toString(),
+                                                modifier = Modifier.padding(horizontal = 16.dp),
+                                                style = MaterialTheme.typography.h1
+                                            )
+                                            Text(
+                                                text = dashboardValue[item]?.header_text.toString(),
+                                                modifier = Modifier.padding(
+                                                    horizontal = 8.dp,
+                                                    vertical = 16.dp
+                                                ),
+                                                color = golbat_60,
+                                                style = MaterialTheme.typography.h3
+                                            )
+                                            Text(
+                                                text = dashboardValue[item]?.date.toString(),
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(
+                                                        horizontal = 8.dp,
+                                                        vertical = 8.dp
+                                                    ),
+                                                color = golbat_60,
+                                                textAlign = TextAlign.End,
+                                                style = MaterialTheme.typography.h5
                                             )
                                         }
-                                    },
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
-                                    shape = RoundedCornerShape(16.dp)
-                                ) {
-                                    Column {
-                                        AsyncImage(
-                                            model = dashboardValue[item]?.image,
-                                            contentDescription = null,
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .heightIn(max = 288.dp),
-                                            alignment = Alignment.Center,
-                                            contentScale = ContentScale.FillWidth
-                                        )
-                                        Text(
-                                            text = dashboardValue[item]?.title_text.toString(),
-                                            modifier = Modifier.padding(horizontal = 16.dp),
-                                            style = MaterialTheme.typography.h1
-                                        )
-                                        Text(
-                                            text = dashboardValue[item]?.header_text.toString(),
-                                            modifier = Modifier.padding(
-                                                horizontal = 8.dp,
-                                                vertical = 16.dp
-                                            ),
-                                            color = golbat_60,
-                                            style = MaterialTheme.typography.h3
-                                        )
-                                        Text(
-                                            text = dashboardValue[item]?.date.toString(),
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(
-                                                    horizontal = 8.dp,
-                                                    vertical = 8.dp
-                                                ),
-                                            color = golbat_60,
-                                            textAlign = TextAlign.End,
-                                            style = MaterialTheme.typography.h5
-                                        )
                                     }
                                 }
                             }
@@ -250,11 +263,11 @@ fun Indicator(modifier: Modifier = Modifier) {
     {
         Divider(
             modifier = Modifier
-                .height(6.dp)
+                .height(2.dp)
                 .border(
                     width = 26.dp,
                     color = black,
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(2.dp)
                 ),
             color = white
         )

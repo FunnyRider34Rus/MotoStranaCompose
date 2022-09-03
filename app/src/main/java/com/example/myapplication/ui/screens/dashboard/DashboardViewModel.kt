@@ -25,6 +25,7 @@ class DashboardViewModel @Inject constructor() : ViewModel(), EventHandler<Dashb
 
     private val _viewState = MutableLiveData(DashboardViewState())
     val viewState: LiveData<DashboardViewState> = _viewState
+
     override fun obtainEvent(event: DashboardEvent) {
         when (event) {
             DashboardEvent.NewsClicked -> getEvents(NODE_NEWS)

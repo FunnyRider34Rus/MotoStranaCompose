@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
 import com.example.myapplication.database.*
+import com.example.myapplication.ui.navigation.BottomNavItem
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
@@ -34,7 +35,9 @@ fun InputUserInfo(
     var userFirstName by remember { mutableStateOf("") }
     var userSecondName by remember { mutableStateOf("") }
 
-    reAuthentication(navController, userPhoneNumber)
+    LaunchedEffect(null) {
+        reAuthentication(navController, userPhoneNumber)
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -111,7 +114,7 @@ fun InputUserInfo(
             onClick = {
                 if (userFirstName.isNotBlank() && userSecondName.isNotBlank()) {
                     saveUserInfoToDB(userFirstName, userSecondName, userPhoneNumber)
-                    //navController.navigate(Graph.MAIN)
+                    navController.navigate(BottomNavItem.Dashboard.route)
                 }
             },
             modifier = Modifier
@@ -131,12 +134,10 @@ fun InputUserInfo(
 fun reAuthentication(navController: NavController, userPhoneNumber: String) {
     REMOTE_DATABASE.child(NODE_PHONES).addListenerForSingleValueEvent(object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
-            snapshot.children.forEach {
-                if (it.hasChild(userPhoneNumber)) {
-                    //navController.navigate(Graph.MAIN)
+            if (snapshot.hasChild(userPhoneNumber)) {
+                    navController.navigate(BottomNavItem.Dashboard.route)
                 }
             }
-        }
 
         override fun onCancelled(error: DatabaseError) {
 
@@ -147,7 +148,7 @@ fun reAuthentication(navController: NavController, userPhoneNumber: String) {
 fun saveUserInfoToDB(userFirstName: String, userSecondName: String, phoneNumber: String) {
     val fullname = "$userFirstName $userSecondName"
     val currentUser = AUTH.currentUser?.uid
-    REMOTE_DATABASE.child(NODE_PHONES).setValue(phoneNumber)
+    REMOTE_DATABASE.child(NODE_PHONES).child(phoneNumber).setValue(currentUser)
     REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_FULLNAME)
         .setValue(fullname)
     REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_PHONE)

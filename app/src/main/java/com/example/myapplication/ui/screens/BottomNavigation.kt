@@ -68,7 +68,7 @@ fun RowScope.AddItem(
             Icon(
                 painter = painterResource(id = item.icon),
                 contentDescription = "Navigation Icon",
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(24.dp)
             )
         },
         modifier = Modifier.background(white),
