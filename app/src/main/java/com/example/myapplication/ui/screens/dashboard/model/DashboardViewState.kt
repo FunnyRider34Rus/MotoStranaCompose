@@ -6,5 +6,6 @@ import com.example.myapplication.models.Event
 @Stable
 data class DashboardViewState(
     val dashboardValue : List<Event?> = listOf(),
-    val itemValue: Event? = null
+    val itemValue: Event? = null,
+    val isLoading: Boolean = false
 )
