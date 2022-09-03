@@ -1,10 +1,11 @@
 package com.example.myapplication.ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.*
-import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.myapplication.ui.screens.registration.InputPhoneNumber
 import com.example.myapplication.ui.screens.registration.InputSMSCode
 import com.example.myapplication.ui.screens.registration.InputUserInfo

@@ -10,6 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -27,23 +28,25 @@ import com.example.myapplication.ui.theme.golbat_60
 import com.example.myapplication.ui.theme.golbat_80
 import com.example.myapplication.ui.theme.white
 import kotlinx.coroutines.launch
-import androidx.compose.material.Text as Text
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Dashboard(
     navController: NavController, viewModel: DashboardViewModel
 ) {
-    var tabIndex by remember { mutableStateOf(0) }
-    var index by remember { mutableStateOf(0) }
-    val skipHalfExpanded by remember { mutableStateOf(true) }
+    //индекс для активного таб
+    var tabIndex by rememberSaveable { mutableStateOf(0) }
+    //выбраный элемент события
+    var itemIndex by rememberSaveable { mutableStateOf(0) }
+    //названия табс
     val titles = listOf(stringResource(id = R.string.news), stringResource(id = R.string.events))
     val viewState = viewModel.viewState.observeAsState(DashboardViewState())
+    //позиция скролла
     val scrollState = rememberLazyListState()
-
+    //состояние bottomSheet
     val stateSheet = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded = skipHalfExpanded
+        skipHalfExpanded = true
     )
     val scope = rememberCoroutineScope()
 
@@ -107,15 +110,18 @@ fun Dashboard(
                     )
                 }
             },
-            sheetState = stateSheet
+            sheetState = stateSheet,
+            sheetShape = RoundedCornerShape(0.dp)
         ) {
             Scaffold(
                 bottomBar = { BottomNavigationMenu(navController = navController) }
             ) { paddingValues ->
-                Column(modifier = Modifier.padding(paddingValues)) {
+                Column(modifier = Modifier
+                    .padding(paddingValues)) {
                     //Табсы с новостями и мероприятиями
                     TabRow(
                         selectedTabIndex = tabIndex,
+                        modifier = Modifier.height(88.dp),
                         backgroundColor = white,
                         contentColor = black
                     ) {
@@ -125,7 +131,11 @@ fun Dashboard(
                                 onClick = {
                                     tabIndex = index
                                 },
-                                text = { Text(text = title) }
+                                text = {
+                                    Text(
+                                        text = title,
+                                        style = MaterialTheme.typography.h1)
+                                }
                             )
                         }
                     }
@@ -137,19 +147,23 @@ fun Dashboard(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        items(viewState.value.dashboardValue.size) { item ->
+                        items(dashboardValue.size) { item ->
                             Card(
-                                modifier = Modifier.padding(horizontal = 1.dp, vertical = 6.dp),
                                 onClick = {
-                                    index = item
-                                    viewModel.obtainEvent(DashboardEvent.ItemClicked(index))
+                                    itemIndex = item
+                                    viewModel.obtainEvent(DashboardEvent.ItemClicked(itemIndex))
                                     scope.launch { stateSheet.show() }
-                                }) {
+                                },
+                                modifier = Modifier.padding(vertical = 1.dp),
+                                shape = RoundedCornerShape(0.dp)
+                            ) {
                                 Column {
                                     AsyncImage(
                                         model = dashboardValue[item]?.image,
                                         contentDescription = null,
-                                        modifier = Modifier.fillMaxWidth(),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .heightIn(max = 288.dp),
                                         alignment = Alignment.Center,
                                         contentScale = ContentScale.FillWidth
                                     )
@@ -166,6 +180,18 @@ fun Dashboard(
                                         ),
                                         color = golbat_60,
                                         style = MaterialTheme.typography.h3
+                                    )
+                                    Text(
+                                        text = dashboardValue[item]?.date.toString(),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(
+                                            horizontal = 8.dp,
+                                            vertical = 8.dp
+                                        ),
+                                        color = golbat_60,
+                                        textAlign = TextAlign.End,
+                                        style = MaterialTheme.typography.h5
                                     )
                                 }
                             }

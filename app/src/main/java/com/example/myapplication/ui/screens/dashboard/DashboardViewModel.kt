@@ -24,13 +24,13 @@ class DashboardViewModel @Inject constructor() : ViewModel(), EventHandler<Dashb
     val viewState: LiveData<DashboardViewState> = _viewState
     override fun obtainEvent(event: DashboardEvent) {
         when (event) {
-            DashboardEvent.NewsClicked -> displayEvents(NODE_NEWS)
-            DashboardEvent.EventClicked -> displayEvents(NODE_EVENT)
-            is DashboardEvent.ItemClicked -> displayItem(event.index)
+            DashboardEvent.NewsClicked -> getEvents(NODE_NEWS)
+            DashboardEvent.EventClicked -> getEvents(NODE_EVENT)
+            is DashboardEvent.ItemClicked -> getEvent(event.index)
         }
     }
 
-    private fun displayEvents(event: String) {
+    private fun getEvents(event: String) {
             var listEvents: List<Event?> = emptyList()
             REMOTE_DATABASE.child(event).child("date")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -47,7 +47,7 @@ class DashboardViewModel @Inject constructor() : ViewModel(), EventHandler<Dashb
                 })
     }
 
-    private fun displayItem(index: Int) {
+    private fun getEvent(index: Int) {
         _viewState.postValue(
             _viewState.value?.copy(
                 itemValue = _viewState.value?.dashboardValue?.get(
