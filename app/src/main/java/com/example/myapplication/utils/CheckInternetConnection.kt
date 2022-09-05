@@ -1,4 +1,4 @@
-package com.example.myapplication.common
+package com.example.myapplication.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -10,7 +10,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.platform.LocalContext
-import com.example.myapplication.ui.screens.dashboard.screen.ShowError
+import com.example.myapplication.common.ShowError
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow

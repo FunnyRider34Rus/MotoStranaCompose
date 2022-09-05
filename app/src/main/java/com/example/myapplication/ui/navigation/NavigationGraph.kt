@@ -22,7 +22,7 @@ import com.example.myapplication.ui.screens.settings.Settings
 fun NavigationGraph(navController: NavController) {
     NavHost(
         navController = navController as NavHostController,
-        startDestination = BottomNavItem.Dashboard.route
+        startDestination = AuthScreen.Welcome.route
     ) {
         composable(route = BottomNavItem.Dashboard.route) {
             val dashboardViewModel = hiltViewModel<DashboardViewModel>()

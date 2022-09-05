@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screens.dashboard.screen
+package com.example.myapplication.common
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

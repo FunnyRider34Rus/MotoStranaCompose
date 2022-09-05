@@ -1,9 +1,6 @@
 package com.example.myapplication.ui.screens.dashboard
 
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,20 +17,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.myapplication.R
-import com.example.myapplication.database.AUTH
-import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.screens.BottomNavigationMenu
 import com.example.myapplication.ui.screens.dashboard.model.DashboardEvent
 import com.example.myapplication.ui.screens.dashboard.model.DashboardViewState
-import com.example.myapplication.ui.screens.dashboard.screen.ShowError
-import com.example.myapplication.ui.screens.dashboard.screen.ShowLoading
+import com.example.myapplication.common.ShowError
+import com.example.myapplication.common.ShowLoading
 import com.example.myapplication.ui.theme.*
 import kotlinx.coroutines.launch
+import com.example.myapplication.common.AnimatedIndicator
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -60,10 +58,6 @@ fun Dashboard(
 
     LaunchedEffect(null) {
         stateSheet.bottomSheetState.collapse()
-        //Проверяем авторизацию
-        if (AUTH.currentUser?.uid == null) {
-            navController.navigate(AuthScreen.Welcome.route)
-        }
     }
 
     when (tabIndex) {
@@ -87,7 +81,7 @@ fun Dashboard(
                             .border(
                                 width = 26.dp,
                                 color = golbat_80,
-                                shape = RoundedCornerShape(8.dp)
+                                shape = MaterialTheme.shapes.small
                             ),
                         color = white
                     )
@@ -99,14 +93,14 @@ fun Dashboard(
                 ) {
                     Text(
                         text = itemValue?.title_text.toString(),
-                        modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 0.dp),
+                        modifier = Modifier.padding(top = 16.dp),
                         style = MaterialTheme.typography.h1
                     )
                     Text(
                         text = itemValue?.date.toString(),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 8.dp),
+                            .padding(vertical = 8.dp),
                         textAlign = TextAlign.End,
                         style = MaterialTheme.typography.h5
                     )
@@ -119,12 +113,11 @@ fun Dashboard(
                     )
                     Text(
                         text = itemValue?.header_text.toString(),
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                        modifier = Modifier.padding(vertical = 16.dp),
                         style = MaterialTheme.typography.h2
                     )
                     Text(
                         text = itemValue?.body_text.toString(),
-                        modifier = Modifier.padding(horizontal = 16.dp),
                         color = golbat_60,
                         style = MaterialTheme.typography.h3
                     )
@@ -132,7 +125,7 @@ fun Dashboard(
             },
             modifier = Modifier.padding(top = 2.dp),
             scaffoldState = stateSheet,
-            sheetShape = RoundedCornerShape(24.dp),
+            sheetShape = MaterialTheme.shapes.large,
             sheetPeekHeight = 0.dp
         ) {
             Scaffold(
@@ -211,32 +204,27 @@ fun Dashboard(
                                                 alignment = Alignment.Center,
                                                 contentScale = ContentScale.FillWidth
                                             )
-                                            Text(
-                                                text = dashboardValue[item]?.title_text.toString(),
-                                                modifier = Modifier.padding(horizontal = 16.dp),
-                                                style = MaterialTheme.typography.h1
-                                            )
-                                            Text(
-                                                text = dashboardValue[item]?.header_text.toString(),
-                                                modifier = Modifier.padding(
-                                                    horizontal = 8.dp,
-                                                    vertical = 16.dp
-                                                ),
-                                                color = golbat_60,
-                                                style = MaterialTheme.typography.h3
-                                            )
-                                            Text(
-                                                text = dashboardValue[item]?.date.toString(),
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .padding(
-                                                        horizontal = 8.dp,
-                                                        vertical = 8.dp
-                                                    ),
-                                                color = golbat_60,
-                                                textAlign = TextAlign.End,
-                                                style = MaterialTheme.typography.h5
-                                            )
+                                            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                                                Text(
+                                                    text = dashboardValue[item]?.title_text.toString(),
+                                                    style = MaterialTheme.typography.h1
+                                                )
+                                                Text(
+                                                    text = dashboardValue[item]?.header_text.toString(),
+                                                    modifier = Modifier.padding(vertical = 16.dp),
+                                                    color = golbat_60,
+                                                    style = MaterialTheme.typography.h3
+                                                )
+                                                Text(
+                                                    text = dashboardValue[item]?.date.toString(),
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .padding(vertical = 8.dp),
+                                                    color = golbat_60,
+                                                    textAlign = TextAlign.End,
+                                                    style = MaterialTheme.typography.h5
+                                                )
+                                            }
                                         }
                                     }
                                 }
@@ -249,63 +237,10 @@ fun Dashboard(
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-fun Indicator(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .border(
-                width = 126.dp,
-                color = black,
-                shape = RoundedCornerShape(8.dp)
-            ),
-        contentAlignment = Alignment.BottomCenter
-    )
-    {
-        Divider(
-            modifier = Modifier
-                .height(2.dp)
-                .border(
-                    width = 26.dp,
-                    color = black,
-                    shape = RoundedCornerShape(2.dp)
-                ),
-            color = white
-        )
+fun DashboardPreview() {
+    MyApplicationTheme {
+        Dashboard(navController = rememberNavController(), viewModel = DashboardViewModel())
     }
-}
-
-@Composable
-fun AnimatedIndicator(tabPositions: List<TabPosition>, selectedTabIndex: Int) {
-    val transition = updateTransition(selectedTabIndex, label = "")
-    val indicatorStart by transition.animateDp(
-        transitionSpec = {
-            if (initialState < targetState) {
-                spring(dampingRatio = 1f, stiffness = 50f)
-            } else {
-                spring(dampingRatio = 1f, stiffness = 1000f)
-            }
-        }, label = ""
-    ) {
-        tabPositions[it].left
-    }
-
-    val indicatorEnd by transition.animateDp(
-        transitionSpec = {
-            if (initialState < targetState) {
-                spring(dampingRatio = 1f, stiffness = 1000f)
-            } else {
-                spring(dampingRatio = 1f, stiffness = 50f)
-            }
-        }, label = ""
-    ) {
-        tabPositions[it].right
-    }
-
-    Indicator(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentSize(align = Alignment.BottomStart)
-            .offset(x = indicatorStart + 8.dp)
-            .width((indicatorEnd - 16.dp) - indicatorStart)
-    )
 }

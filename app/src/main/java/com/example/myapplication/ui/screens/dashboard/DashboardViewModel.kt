@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.common.EventHandler
+import com.example.myapplication.common.UIEvent
 import com.example.myapplication.database.NODE_EVENT
 import com.example.myapplication.database.NODE_NEWS
 import com.example.myapplication.database.REMOTE_DATABASE
@@ -19,9 +19,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
-class DashboardViewModel @Inject constructor() : ViewModel(), EventHandler<DashboardEvent> {
+class DashboardViewModel @Inject constructor() : ViewModel(), UIEvent<DashboardEvent> {
 
     private val _viewState = MutableLiveData(DashboardViewState())
     val viewState: LiveData<DashboardViewState> = _viewState

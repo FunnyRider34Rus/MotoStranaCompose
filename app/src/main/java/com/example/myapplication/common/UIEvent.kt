@@ -1,5 +1,5 @@
 package com.example.myapplication.common
 
-interface EventHandler<E> {
+interface UIEvent<E> {
     fun obtainEvent(event: E)
 }

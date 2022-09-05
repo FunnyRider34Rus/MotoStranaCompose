@@ -5,13 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.common.ConnectivityStatus
 import com.example.myapplication.database.NODE_EVENT
 import com.example.myapplication.database.REMOTE_DATABASE
-import com.example.myapplication.database.initFirebase
+import com.example.myapplication.database.firebase.initFirebase
 import com.example.myapplication.models.Event
 import com.example.myapplication.ui.navigation.NavigationGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.utils.ConnectivityStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

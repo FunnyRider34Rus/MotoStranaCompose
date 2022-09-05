@@ -35,6 +35,7 @@ fun MyApplicationTheme(
             color = Color.White
         )
     }
+
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {

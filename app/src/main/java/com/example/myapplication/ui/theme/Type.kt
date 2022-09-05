@@ -8,31 +8,37 @@ import androidx.compose.ui.unit.sp
 
 val Typography = Typography(
         h1 = TextStyle(
+                color = black,
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Light,
                 fontSize = 32.sp
         ),
         h2 = TextStyle(
+                color = black,
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Normal,
                 fontSize = 18.sp
         ),
         h3 = TextStyle(
+                color = golbat_60,
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp
         ),
         h4 = TextStyle(
+                color = black,
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp
         ),
         h5 = TextStyle(
+                color = black,
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Normal,
                 fontSize = 10.sp
         ),
         button = TextStyle(
+                color = black,
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Light,
                 fontSize = 16.sp

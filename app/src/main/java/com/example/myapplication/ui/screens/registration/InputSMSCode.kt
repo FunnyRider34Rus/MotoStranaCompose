@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.screens.registration
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,7 +20,6 @@ import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
-import com.example.myapplication.ui.theme.golbat_60
 import com.example.myapplication.utils.verifyPhoneNumberWithCode
 
 @Composable
@@ -32,27 +30,26 @@ fun InputSMSCode(
 
     var code by remember { mutableStateOf("") }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        Image(
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(horizontal = 24.dp)
+    ) {
+        Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_button_back),
             contentDescription = stringResource(R.string.button_back_description),
             modifier = Modifier
-                .padding(24.dp, 32.dp, 0.dp, 0.dp)
-                .height(24.dp)
-                .width(24.dp)
+                .padding(top = 32.dp)
+                .size(24.dp)
                 .clickable { navController.navigate(AuthScreen.InputUserPhone.route) }
         )
         Text(
             text = stringResource(R.string.input_sms_code_title_text),
-            modifier = Modifier.padding(24.dp, 16.dp, 24.dp, 8.dp),
+            modifier = Modifier.padding(top = 40.dp),
             style = MaterialTheme.typography.h1
         )
         Text(
             text = stringResource(R.string.input_sms_code_body_text) + " " + userPhoneNumber,
-            modifier = Modifier
-                .padding(24.dp, 0.dp, 24.dp, 0.dp)
-                .fillMaxWidth(),
-            color = golbat_60,
+            modifier = Modifier.fillMaxWidth(),
             style = MaterialTheme.typography.h3
         )
         OutlinedTextField(
@@ -60,7 +57,7 @@ fun InputSMSCode(
                 code = inputCode
             },
             modifier = Modifier
-                .padding(24.dp, 24.dp, 24.dp, 0.dp)
+                .padding(top = 24.dp)
                 .height(56.dp)
                 .fillMaxWidth(),
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
@@ -92,7 +89,7 @@ fun InputSMSCode(
                 }
             },
             modifier = Modifier
-                .padding(24.dp, 72.dp, 24.dp, 0.dp)
+                .padding(top = 72.dp)
                 .height(56.dp)
                 .fillMaxWidth(),
             shape = MaterialTheme.shapes.large

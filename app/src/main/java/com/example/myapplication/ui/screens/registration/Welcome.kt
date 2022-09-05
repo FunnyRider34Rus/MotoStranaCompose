@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -18,57 +19,74 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
+import com.example.myapplication.database.AUTH
 import com.example.myapplication.ui.navigation.AuthScreen
+import com.example.myapplication.ui.navigation.BottomNavItem
 import com.example.myapplication.ui.theme.MyApplicationTheme
-import com.example.myapplication.ui.theme.golbat_60
 
 @Composable
 fun Welcome(navController: NavController) {
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
+
+    //Проверяем авторизацию
+    LaunchedEffect(null) {
+        if (AUTH.currentUser?.uid != null) {
+            navController.navigate(BottomNavItem.Dashboard.route)
+        }
+    }
+
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.background
+    ) {
         Column {
             Image(
                 painter = painterResource(R.drawable.welcome_wallpaper),
                 contentDescription = stringResource(R.string.welcome_image_description),
-                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .height(340.dp)
                     .fillMaxWidth(),
+                alignment = Alignment.Center,
+                contentScale = ContentScale.Crop
             )
-            Text(
-                text = stringResource(R.string.app_name),
-                modifier = Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp),
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.h1
-            )
-            Text(
-                text = stringResource(R.string.welcome_title_text),
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp, 8.dp, 24.dp, 0.dp),
-                color = golbat_60,
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.h3
-            )
-
-        }
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            Button(
-                onClick = {
-                    navController.navigate(AuthScreen.InputUserPhone.route)
-                },
-                modifier = Modifier
-                    .padding(24.dp, 0.dp, 24.dp, 24.dp)
-                    .height(56.dp)
-                    .fillMaxWidth(),
-                shape = MaterialTheme.shapes.large
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.welcome_signin_button_text),
+                    text = stringResource(R.string.app_name),
+                    modifier = Modifier.padding(top = 24.dp),
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.h1
+                )
+                Text(
+                    text = stringResource(R.string.welcome_title_text),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.h3
                 )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    Button(
+                        onClick = {
+                            navController.navigate(AuthScreen.InputUserPhone.route)
+                        },
+                        modifier = Modifier
+                            .padding(bottom = 24.dp)
+                            .height(56.dp)
+                            .fillMaxWidth(),
+                        shape = MaterialTheme.shapes.large
+                    ) {
+                        Text(
+                            text = stringResource(R.string.welcome_signin_button_text),
+                            style = MaterialTheme.typography.h3
+                        )
+                    }
+                }
             }
         }
     }
