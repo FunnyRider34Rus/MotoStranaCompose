@@ -26,14 +26,6 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
 fun Welcome(navController: NavController) {
-
-    //Проверяем авторизацию
-    LaunchedEffect(null) {
-        if (AUTH.currentUser?.uid != null) {
-            navController.navigate(BottomNavItem.Dashboard.route)
-        }
-    }
-
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background

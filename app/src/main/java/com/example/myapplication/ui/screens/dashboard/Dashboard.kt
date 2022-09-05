@@ -32,6 +32,9 @@ import com.example.myapplication.common.ShowLoading
 import com.example.myapplication.ui.theme.*
 import kotlinx.coroutines.launch
 import com.example.myapplication.common.AnimatedIndicator
+import com.example.myapplication.database.AUTH
+import com.example.myapplication.ui.navigation.AuthScreen
+import com.example.myapplication.ui.navigation.BottomNavItem
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -57,6 +60,11 @@ fun Dashboard(
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(null) {
+        //Проверяем авторизацию
+        if (AUTH.currentUser?.uid == null) {
+            navController.navigate(AuthScreen.Welcome.route)
+        }
+        //Скрываем bottomSheet
         stateSheet.bottomSheetState.collapse()
     }
 

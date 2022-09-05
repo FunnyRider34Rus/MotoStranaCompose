@@ -1,4 +1,4 @@
-package com.example.myapplication.utils
+package com.example.myapplication.common.utils
 
 import android.content.ContentValues.TAG
 import android.util.Log

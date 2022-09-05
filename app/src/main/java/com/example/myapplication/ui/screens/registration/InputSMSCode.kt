@@ -20,7 +20,7 @@ import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_5
-import com.example.myapplication.utils.verifyPhoneNumberWithCode
+import com.example.myapplication.common.utils.verifyPhoneNumberWithCode
 
 @Composable
 fun InputSMSCode(
