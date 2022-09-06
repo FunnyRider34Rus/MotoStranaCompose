@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -21,7 +22,7 @@ import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.navigation.BottomNavItem
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
-import com.example.myapplication.ui.theme.golbat_5
+import com.example.myapplication.ui.theme.golbat_10
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -32,8 +33,8 @@ fun InputUserInfo(
     userPhoneNumber: String
 ) {
 
-    var userFirstName by remember { mutableStateOf("") }
-    var userSecondName by remember { mutableStateOf("") }
+    var userFirstName by rememberSaveable { mutableStateOf("") }
+    var userSecondName by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(null) {
         reAuthentication(navController, userPhoneNumber)
@@ -80,13 +81,14 @@ fun InputUserInfo(
             shape = MaterialTheme.shapes.large,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 textColor = black,
-                backgroundColor = golbat_5,
-                focusedBorderColor = golbat_5,
-                unfocusedBorderColor = golbat_5
+                backgroundColor = golbat_10,
+                focusedBorderColor = golbat_10,
+                unfocusedBorderColor = golbat_10
             )
         )
         OutlinedTextField(
-            value = userSecondName, onValueChange = { input ->
+            value = userSecondName,
+            onValueChange = { input ->
                 userSecondName = input
             },
             modifier = Modifier
@@ -108,9 +110,9 @@ fun InputUserInfo(
             shape = MaterialTheme.shapes.large,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 textColor = black,
-                backgroundColor = golbat_5,
-                focusedBorderColor = golbat_5,
-                unfocusedBorderColor = golbat_5
+                backgroundColor = golbat_10,
+                focusedBorderColor = golbat_10,
+                unfocusedBorderColor = golbat_10
             )
         )
         Button(
@@ -128,7 +130,7 @@ fun InputUserInfo(
         ) {
             Text(
                 text = stringResource(R.string.button_next_text),
-                style = MaterialTheme.typography.h3
+                style = MaterialTheme.typography.button
             )
         }
     }

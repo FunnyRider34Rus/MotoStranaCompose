@@ -4,7 +4,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -16,11 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
+import com.example.myapplication.common.utils.verifyPhoneNumberWithCode
 import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
-import com.example.myapplication.ui.theme.golbat_5
-import com.example.myapplication.common.utils.verifyPhoneNumberWithCode
+import com.example.myapplication.ui.theme.golbat_10
 
 @Composable
 fun InputSMSCode(
@@ -28,7 +32,7 @@ fun InputSMSCode(
     userPhoneNumber: String
 ) {
 
-    var code by remember { mutableStateOf("") }
+    var code by rememberSaveable { mutableStateOf("") }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -49,7 +53,9 @@ fun InputSMSCode(
         )
         Text(
             text = stringResource(R.string.input_sms_code_body_text) + " " + userPhoneNumber,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
             style = MaterialTheme.typography.h3
         )
         OutlinedTextField(
@@ -75,9 +81,9 @@ fun InputSMSCode(
             shape = MaterialTheme.shapes.large,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 textColor = black,
-                backgroundColor = golbat_5,
-                focusedBorderColor = golbat_5,
-                unfocusedBorderColor = golbat_5
+                backgroundColor = golbat_10,
+                focusedBorderColor = golbat_10,
+                unfocusedBorderColor = golbat_10
             )
         )
         Button(
@@ -96,7 +102,7 @@ fun InputSMSCode(
         ) {
             Text(
                 text = stringResource(R.string.button_next_text),
-                style = MaterialTheme.typography.h3
+                style = MaterialTheme.typography.button
             )
         }
     }

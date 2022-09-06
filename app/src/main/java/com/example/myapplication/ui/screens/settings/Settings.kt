@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
 import com.example.myapplication.database.AUTH
 import com.example.myapplication.ui.navigation.AuthScreen
+import com.example.myapplication.ui.navigation.SettingsScreen
 import com.example.myapplication.ui.screens.BottomNavigationMenu
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
@@ -43,7 +44,6 @@ fun Settings(navController: NavController) {
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_button_search),
                     contentDescription = stringResource(R.string.button_back_description),
                     modifier = Modifier
-                        .padding(start = 24.dp)
                         .size(24.dp)
                         .clickable { },
                 )
@@ -51,7 +51,6 @@ fun Settings(navController: NavController) {
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_button_logout),
                     contentDescription = stringResource(R.string.button_back_description),
                     modifier = Modifier
-                        .padding(end = 24.dp)
                         .size(24.dp)
                         .clickable {
                             AUTH.signOut()
@@ -66,7 +65,9 @@ fun Settings(navController: NavController) {
             )
             Text(
                 text = "Профиль",
-                modifier = Modifier.padding(top = 40.dp),
+                modifier = Modifier
+                    .padding(top = 40.dp)
+                    .clickable { navController.navigate(SettingsScreen.Profile.route) },
                 style = MaterialTheme.typography.h2
             )
             Text(

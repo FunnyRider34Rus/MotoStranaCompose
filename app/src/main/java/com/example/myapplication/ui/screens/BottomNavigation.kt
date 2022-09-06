@@ -37,6 +37,7 @@ fun BottomNavigationMenu(navController: NavController) {
         modifier = Modifier
             .height(88.dp)
             .fillMaxWidth()
+            .background(white)
     ) {
         items.forEach { screen ->
             AddItem(

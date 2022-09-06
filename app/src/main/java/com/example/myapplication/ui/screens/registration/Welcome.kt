@@ -7,7 +7,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -19,9 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
-import com.example.myapplication.database.AUTH
 import com.example.myapplication.ui.navigation.AuthScreen
-import com.example.myapplication.ui.navigation.BottomNavItem
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
@@ -75,7 +72,7 @@ fun Welcome(navController: NavController) {
                     ) {
                         Text(
                             text = stringResource(R.string.welcome_signin_button_text),
-                            style = MaterialTheme.typography.h3
+                            style = MaterialTheme.typography.button
                         )
                     }
                 }

@@ -38,7 +38,7 @@ val Typography = Typography(
                 fontSize = 10.sp
         ),
         button = TextStyle(
-                color = black,
+                color = white,
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Light,
                 fontSize = 16.sp

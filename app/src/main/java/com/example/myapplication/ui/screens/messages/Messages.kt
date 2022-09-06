@@ -1,7 +1,8 @@
 package com.example.myapplication.ui.screens.messages
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.common.AnimatedIndicator
 import com.example.myapplication.ui.screens.BottomNavigationMenu
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.white
-import com.example.myapplication.common.AnimatedIndicator
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -41,7 +42,6 @@ fun Messages(navController: NavController){
             TabRow(
                 selectedTabIndex = tabIndex,
                 backgroundColor = white,
-                contentColor = black,
                 indicator = indicator
             ) {
                 titles.forEachIndexed { index, title ->
@@ -53,6 +53,7 @@ fun Messages(navController: NavController){
                         text = {
                             Text(
                                 text = title,
+                                color = black
                             )
                         }
                     )

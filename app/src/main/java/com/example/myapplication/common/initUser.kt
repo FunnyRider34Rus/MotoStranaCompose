@@ -1,0 +1,30 @@
+package com.example.myapplication.common
+
+import com.example.myapplication.database.AUTH
+import com.example.myapplication.database.NODE_USERS
+import com.example.myapplication.database.REMOTE_DATABASE
+import com.example.myapplication.database.USER
+import com.example.myapplication.models.User
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+
+fun initUser() {
+    /* Функция высшего порядка, инициализация текущей модели USER */
+    val currentUID = AUTH.currentUser?.uid
+    REMOTE_DATABASE.child(NODE_USERS).child(currentUID.toString())
+        .addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                USER =
+                    snapshot.getValue(User::class.java)
+                        ?: User()
+                if (USER.username.isEmpty()) {
+                    USER.username =
+                        currentUID.toString()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+}

@@ -1,13 +1,9 @@
 package com.example.myapplication.ui.screens.dashboard
 
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -24,17 +20,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.myapplication.R
+import com.example.myapplication.common.AnimatedIndicator
+import com.example.myapplication.common.ShowError
+import com.example.myapplication.common.ShowLoading
+import com.example.myapplication.database.AUTH
+import com.example.myapplication.ui.navigation.AuthScreen
+import com.example.myapplication.ui.navigation.DetailScreen
 import com.example.myapplication.ui.screens.BottomNavigationMenu
 import com.example.myapplication.ui.screens.dashboard.model.DashboardEvent
 import com.example.myapplication.ui.screens.dashboard.model.DashboardViewState
-import com.example.myapplication.common.ShowError
-import com.example.myapplication.common.ShowLoading
 import com.example.myapplication.ui.theme.*
-import kotlinx.coroutines.launch
-import com.example.myapplication.common.AnimatedIndicator
-import com.example.myapplication.database.AUTH
-import com.example.myapplication.ui.navigation.AuthScreen
-import com.example.myapplication.ui.navigation.BottomNavItem
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -57,7 +52,6 @@ fun Dashboard(
     val scrollState = rememberLazyListState()
     //состояние bottomSheet
     val stateSheet = rememberBottomSheetScaffoldState()
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(null) {
         //Проверяем авторизацию
@@ -74,165 +68,97 @@ fun Dashboard(
     }
 
     with(viewState.value) {
-        BottomSheetScaffold(
-            sheetContent = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    contentAlignment = Alignment.Center
+        Scaffold(
+            bottomBar = { BottomNavigationMenu(navController = navController) },
+            backgroundColor = golbat_10
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier.padding(paddingValues)
+            ) {
+                //Табсы с новостями и мероприятиями
+                TabRow(
+                    selectedTabIndex = tabIndex,
+                    backgroundColor = white,
+                    indicator = indicator
                 ) {
-                    Divider(
-                        modifier = Modifier
-                            .width(26.dp)
-                            .height(6.dp)
-                            .border(
-                                width = 26.dp,
-                                color = golbat_80,
-                                shape = MaterialTheme.shapes.small
-                            ),
-                        color = white
-                    )
-                }
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    Text(
-                        text = itemValue?.title_text.toString(),
-                        modifier = Modifier.padding(top = 16.dp),
-                        style = MaterialTheme.typography.h1
-                    )
-                    Text(
-                        text = itemValue?.date.toString(),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        textAlign = TextAlign.End,
-                        style = MaterialTheme.typography.h5
-                    )
-                    AsyncImage(
-                        model = itemValue?.image,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxWidth(),
-                        alignment = Alignment.Center,
-                        contentScale = ContentScale.FillWidth
-                    )
-                    Text(
-                        text = itemValue?.header_text.toString(),
-                        modifier = Modifier.padding(vertical = 16.dp),
-                        style = MaterialTheme.typography.h2
-                    )
-                    Text(
-                        text = itemValue?.body_text.toString(),
-                        color = golbat_60,
-                        style = MaterialTheme.typography.h3
-                    )
-                }
-            },
-            modifier = Modifier.padding(top = 2.dp),
-            scaffoldState = stateSheet,
-            sheetShape = MaterialTheme.shapes.large,
-            sheetPeekHeight = 0.dp
-        ) {
-            Scaffold(
-                bottomBar = { BottomNavigationMenu(navController = navController) },
-                backgroundColor = golbat_10
-            ) { paddingValues ->
-                Column(
-                    modifier = Modifier.padding(paddingValues)
-                ) {
-                    //Табсы с новостями и мероприятиями
-                    TabRow(
-                        selectedTabIndex = tabIndex,
-                        backgroundColor = white,
-                        contentColor = black,
-                        indicator = indicator
-                    ) {
-                        titles.forEachIndexed { index, title ->
-                            Tab(
-                                selected = tabIndex == index,
-                                onClick = {
-                                    tabIndex = index
-                                },
-                                text = {
-                                    Text(
-                                        text = title,
-                                    )
-                                }
-                            )
-                        }
+                    titles.forEachIndexed { index, title ->
+                        Tab(
+                            selected = tabIndex == index,
+                            onClick = {
+                                tabIndex = index
+                            },
+                            text = {
+                                Text(
+                                    text = title,
+                                    color = black
+                                )
+                            }
+                        )
                     }
+                }
 
-                    //Обработка загрузки
-                    if (isLoading) {
-                        ShowLoading()
+                //Обработка загрузки
+                if (isLoading) {
+                    ShowLoading()
+                } else {
+                    if (isError) {
+                        ShowError()
                     } else {
-                        if (isError) {
-                            ShowError()
-                        } else {
-                            LazyColumn(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(),
-                                state = scrollState,
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                items(dashboardValue.size) { item ->
-                                    Card(
-                                        onClick = {
-                                            itemIndex = item
-                                            viewModel.obtainEvent(
-                                                DashboardEvent.ItemClicked(
-                                                    itemIndex
-                                                )
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(),
+                            state = scrollState,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            items(dashboardValue.size) { item ->
+                                Card(
+                                    onClick = {
+                                        itemIndex = item
+                                        viewModel.obtainEvent(
+                                            DashboardEvent.ItemClicked(
+                                                itemIndex
                                             )
-                                            scope.launch {
-                                                stateSheet.bottomSheetState.animateTo(
-                                                    BottomSheetValue.Expanded,
-                                                    tween(800)
-                                                )
-                                            }
-                                        },
-                                        modifier = Modifier.padding(
-                                            horizontal = 8.dp,
-                                            vertical = 8.dp
-                                        ),
-                                        shape = RoundedCornerShape(16.dp)
-                                    ) {
-                                        Column {
-                                            AsyncImage(
-                                                model = dashboardValue[item]?.image,
-                                                contentDescription = null,
+                                        )
+                                        navController.navigate(DetailScreen.Detail.route)
+                                    },
+                                    modifier = Modifier.padding(
+                                        horizontal = 8.dp,
+                                        vertical = 8.dp
+                                    ),
+                                    shape = RoundedCornerShape(16.dp)
+                                ) {
+                                    Column {
+                                        AsyncImage(
+                                            model = dashboardValue[item]?.image,
+                                            contentDescription = null,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .heightIn(max = 288.dp),
+                                            alignment = Alignment.Center,
+                                            contentScale = ContentScale.FillWidth
+                                        )
+                                        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                                            Text(
+                                                text = dashboardValue[item]?.title_text.toString(),
+                                                style = MaterialTheme.typography.h1
+                                            )
+                                            Text(
+                                                text = dashboardValue[item]?.header_text.toString(),
+                                                modifier = Modifier.padding(vertical = 16.dp),
+                                                color = golbat_60,
+                                                style = MaterialTheme.typography.h3
+                                            )
+                                            Text(
+                                                text = dashboardValue[item]?.date.toString(),
                                                 modifier = Modifier
                                                     .fillMaxWidth()
-                                                    .heightIn(max = 288.dp),
-                                                alignment = Alignment.Center,
-                                                contentScale = ContentScale.FillWidth
+                                                    .padding(vertical = 8.dp),
+                                                color = golbat_60,
+                                                textAlign = TextAlign.End,
+                                                style = MaterialTheme.typography.h5
                                             )
-                                            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                                                Text(
-                                                    text = dashboardValue[item]?.title_text.toString(),
-                                                    style = MaterialTheme.typography.h1
-                                                )
-                                                Text(
-                                                    text = dashboardValue[item]?.header_text.toString(),
-                                                    modifier = Modifier.padding(vertical = 16.dp),
-                                                    color = golbat_60,
-                                                    style = MaterialTheme.typography.h3
-                                                )
-                                                Text(
-                                                    text = dashboardValue[item]?.date.toString(),
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .padding(vertical = 8.dp),
-                                                    color = golbat_60,
-                                                    textAlign = TextAlign.End,
-                                                    style = MaterialTheme.typography.h5
-                                                )
-                                            }
                                         }
                                     }
                                 }

@@ -5,12 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.common.initUser
+import com.example.myapplication.common.utils.ConnectivityStatus
 import com.example.myapplication.database.NODE_EVENT
 import com.example.myapplication.database.REMOTE_DATABASE
 import com.example.myapplication.models.Event
 import com.example.myapplication.ui.navigation.NavigationGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
-import com.example.myapplication.common.utils.ConnectivityStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -45,6 +46,7 @@ class MainActivity : ComponentActivity() {
 fun App() {
     MyApplicationTheme {
         ConnectivityStatus()
+        initUser()
         val navController = rememberNavController()
         NavigationGraph(navController = navController)
     }

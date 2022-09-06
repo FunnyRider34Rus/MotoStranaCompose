@@ -10,23 +10,30 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.myapplication.R
 import com.example.myapplication.ui.screens.dashboard.Dashboard
+import com.example.myapplication.ui.screens.dashboard.DashboardEventDetailScreen
 import com.example.myapplication.ui.screens.dashboard.DashboardViewModel
 import com.example.myapplication.ui.screens.messages.Messages
 import com.example.myapplication.ui.screens.registration.InputPhoneNumber
 import com.example.myapplication.ui.screens.registration.InputSMSCode
 import com.example.myapplication.ui.screens.registration.InputUserInfo
 import com.example.myapplication.ui.screens.registration.Welcome
+import com.example.myapplication.ui.screens.settings.Profile
 import com.example.myapplication.ui.screens.settings.Settings
 
 @Composable
 fun NavigationGraph(navController: NavController) {
+
+    val dashboardViewModel = hiltViewModel<DashboardViewModel>()
+
     NavHost(
         navController = navController as NavHostController,
         startDestination = BottomNavItem.Dashboard.route
     ) {
         composable(route = BottomNavItem.Dashboard.route) {
-            val dashboardViewModel = hiltViewModel<DashboardViewModel>()
             Dashboard(navController, dashboardViewModel)
+        }
+        composable(route = DetailScreen.Detail.route) {
+            DashboardEventDetailScreen(navController, dashboardViewModel)
         }
         composable(route = BottomNavItem.Messages.route) {
             Messages(navController)
@@ -66,6 +73,9 @@ fun NavigationGraph(navController: NavController) {
                 entry.arguments?.getString("phone").toString()
             )
         }
+        composable(route = SettingsScreen.Profile.route) {
+            Profile(navController = navController)
+        }
     }
 }
 
@@ -94,4 +104,12 @@ sealed class AuthScreen(val route: String) {
     object InputUserPhone : AuthScreen(route = "INPUT_USER_PHONE")
     object InputSMSCode : AuthScreen(route = "INPUT_SMS_CODE")
     object InputUserInfo : AuthScreen(route = "INPUT_USER_INFO")
+}
+
+sealed class SettingsScreen(val route: String) {
+    object Profile : SettingsScreen(route = "PROFILE")
+}
+
+sealed class DetailScreen(val route: String) {
+    object Detail : DetailScreen(route = "DASHBOARD_EVENT_DETAIL")
 }

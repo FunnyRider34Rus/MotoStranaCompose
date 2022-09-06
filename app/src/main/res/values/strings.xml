@@ -2,6 +2,7 @@
     <string name="app_name">МотоСтрана</string>
     <string name="welcome_image_description">Заставка</string>
     <string name="button_back_description">Вернуться назад</string>
+    <string name="button_edit_description">Сохранить изминения</string>
     <string name="welcome_title_text">Добро пожаловать в приложение для совместных мотопутешествий!</string>
     <string name="welcome_signin_button_text">Войти по номеру телефона</string>
     <string name="input_phone_number_title_text">Введите номер телефона</string>
@@ -21,4 +22,6 @@
     <string name="input_user_info_title_text">Введите Ваше имя и фамилию</string>
     <string name="input_user_info_user_first_name_hint">Имя</string>
     <string name="input_user_info_user_second_name_hint">Фамилия</string>
+    <string name="input_user_info_user_name_hint">Псевдоним</string>
+    <string name="input_user_info_user_bike_hint">Модель мотоцикла</string>
 </resources>

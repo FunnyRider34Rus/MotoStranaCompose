@@ -9,7 +9,6 @@ import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.database.firebase.initFirebase
-import kotlinx.coroutines.delay
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : ComponentActivity() {
@@ -24,7 +23,6 @@ class SplashScreenActivity : ComponentActivity() {
 
         setContent {
             lifecycleScope.launchWhenCreated {
-                delay(1000)
                 val intent = Intent(this@SplashScreenActivity, MainActivity::class.java)
                 startActivity(intent)
                 finish()
