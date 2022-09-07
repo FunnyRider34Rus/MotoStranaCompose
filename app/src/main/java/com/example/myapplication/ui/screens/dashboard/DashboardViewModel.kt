@@ -34,7 +34,7 @@ class DashboardViewModel @Inject constructor() : ViewModel(), UIEvent<DashboardE
     }
 
     private fun getEvents(event: String) {
-        _viewState.postValue(_viewState.value?.copy(isLoading = true))
+        _viewState.value?.isLoading = true
         viewModelScope.launch(Dispatchers.IO) {
             var listEvents: List<Event?> = emptyList()
             REMOTE_DATABASE.child(event).child("date")
@@ -51,7 +51,7 @@ class DashboardViewModel @Inject constructor() : ViewModel(), UIEvent<DashboardE
                     }
                 })
         }
-        _viewState.postValue(_viewState.value?.copy(isLoading = false))
+        _viewState.value?.isLoading = false
     }
 
     private fun getEvent(index: Int) {

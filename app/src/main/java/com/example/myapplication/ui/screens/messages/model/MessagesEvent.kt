@@ -5,4 +5,6 @@ sealed class MessagesEvent {
     object CityClicked: MessagesEvent()
     data class SendMessagesClicked (val text: String): MessagesEvent()
     data class SendMediaClicked (val uri: String): MessagesEvent()
+    object OnPermissionGranted : MessagesEvent()
+    object OnPermissionDenied : MessagesEvent()
 }

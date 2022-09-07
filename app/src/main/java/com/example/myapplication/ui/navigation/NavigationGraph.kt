@@ -13,6 +13,7 @@ import com.example.myapplication.ui.screens.dashboard.Dashboard
 import com.example.myapplication.ui.screens.dashboard.DashboardEventDetailScreen
 import com.example.myapplication.ui.screens.dashboard.DashboardViewModel
 import com.example.myapplication.ui.screens.messages.Messages
+import com.example.myapplication.ui.screens.messages.MessagesViewModel
 import com.example.myapplication.ui.screens.registration.InputPhoneNumber
 import com.example.myapplication.ui.screens.registration.InputSMSCode
 import com.example.myapplication.ui.screens.registration.InputUserInfo
@@ -24,6 +25,7 @@ import com.example.myapplication.ui.screens.settings.Settings
 fun NavigationGraph(navController: NavController) {
 
     val dashboardViewModel = hiltViewModel<DashboardViewModel>()
+    val messagesViewModel = hiltViewModel<MessagesViewModel>()
 
     NavHost(
         navController = navController as NavHostController,
@@ -36,7 +38,7 @@ fun NavigationGraph(navController: NavController) {
             DashboardEventDetailScreen(navController, dashboardViewModel)
         }
         composable(route = BottomNavItem.Messages.route) {
-            Messages(navController)
+            Messages(navController, messagesViewModel)
         }
         composable(route = BottomNavItem.Settings.route) {
             Settings(navController)

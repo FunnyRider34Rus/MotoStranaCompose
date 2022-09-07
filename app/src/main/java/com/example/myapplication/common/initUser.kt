@@ -18,10 +18,6 @@ fun initUser() {
                 USER =
                     snapshot.getValue(User::class.java)
                         ?: User()
-                if (USER.username.isEmpty()) {
-                    USER.username =
-                        currentUID.toString()
-                }
             }
             override fun onCancelled(error: DatabaseError) {
 

@@ -24,4 +24,10 @@
     <string name="input_user_info_user_second_name_hint">Фамилия</string>
     <string name="input_user_info_user_name_hint">Псевдоним</string>
     <string name="input_user_info_user_bike_hint">Модель мотоцикла</string>
+
+    <!--Ресурсы для запроса геолокации-->
+    <string name="enable_now">Да</string>
+    <string name="enable_not">Нет</string>
+    <string name="enable_gps">Доступ к геолокации</string>
+    <string name="required_for_this_app">Для полного функционирования приложения необходим доступ к Вашей геолокации</string>
 </resources>

@@ -18,9 +18,7 @@ import kotlinx.coroutines.flow.callbackFlow
 @ExperimentalCoroutinesApi
 @Composable
 fun ConnectivityStatus() {
-    // This will cause re-composition on every network state change
     val connection by connectivityState()
-
     val isConnected = connection === ConnectionState.Available
 
     if (isConnected) {
@@ -35,9 +33,7 @@ fun ConnectivityStatus() {
 fun connectivityState(): State<ConnectionState> {
     val context = LocalContext.current
 
-    // Creates a State<ConnectionState> with current connectivity state as initial value
     return produceState(initialValue = context.currentConnectivityState) {
-        // In a coroutine, can make suspend calls
         context.observeConnectivityAsFlow().collect { value = it }
     }
 }
@@ -78,13 +74,10 @@ fun Context.observeConnectivityAsFlow() = callbackFlow {
 
     connectivityManager.registerNetworkCallback(networkRequest, callback)
 
-    // Set current state
     val currentState = getCurrentConnectivityState(connectivityManager)
     trySend(currentState)
 
-    // Remove callback when not used
     awaitClose {
-        // Remove listeners
         connectivityManager.unregisterNetworkCallback(callback)
     }
 }

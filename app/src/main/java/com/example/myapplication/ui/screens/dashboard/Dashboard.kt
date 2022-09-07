@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.screens.dashboard
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -38,6 +40,7 @@ fun Dashboard(
 ) {
     //state
     val viewState = viewModel.viewState.observeAsState(DashboardViewState())
+    val scaffoldState = rememberScaffoldState()
     //индекс для активного таб
     var tabIndex by rememberSaveable { mutableStateOf(0) }
     //выбраный элемент события
@@ -69,6 +72,7 @@ fun Dashboard(
 
     with(viewState.value) {
         Scaffold(
+            scaffoldState = scaffoldState,
             bottomBar = { BottomNavigationMenu(navController = navController) },
             backgroundColor = golbat_10
         ) { paddingValues ->
@@ -104,6 +108,7 @@ fun Dashboard(
                     if (isError) {
                         ShowError()
                     } else {
+
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxWidth()

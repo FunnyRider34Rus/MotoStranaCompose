@@ -3,10 +3,7 @@ package com.example.myapplication.ui.screens.settings
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -26,7 +23,11 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun Settings(navController: NavController) {
+
+    val scaffoldState = rememberScaffoldState()
+
     Scaffold(
+        scaffoldState = scaffoldState,
         bottomBar = { BottomNavigationMenu(navController = navController) }
     ) {
         Column(

@@ -156,6 +156,8 @@ fun saveUserInfoToDB(userFirstName: String, userSecondName: String, phoneNumber:
     REMOTE_DATABASE.child(NODE_PHONES).child(phoneNumber).setValue(currentUser)
     REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_FULLNAME)
         .setValue(fullname)
+    REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_USERNAME)
+        .setValue(currentUser)
     REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_PHONE)
         .setValue(phoneNumber)
 }

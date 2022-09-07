@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.common.initUser
@@ -12,6 +13,7 @@ import com.example.myapplication.database.REMOTE_DATABASE
 import com.example.myapplication.models.Event
 import com.example.myapplication.ui.navigation.NavigationGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.ui.theme.white
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -30,13 +32,13 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun recordToDBEvent() {
-        val event = Event (
+        val event = Event(
             "2022-09-03",
             "ПРОХВАТ «Дорога В Мотомир»",
             "Россия, Санкт-Петербург, территория Малая Охта",
             "Вас приветствует команда SNAKE WAY!\nПриглашаем всех первосезонников и выпускников мотошкол на наш тренировочный прохват!\nМы проведем вас по незабываемым дорогам и интересным достопримечательностям. Научим правильно ездить в колонне и междурядье, в городском трафике и трассе. Познакомим с мотомиром, подарим компанию и друзей.\nСпециально для тех, кто недавно получил категорию «А» и оседлал железного коня, мы создали телеграм-канал и чат. Там вы сможете получать информацию о наших закрытых мероприятиях, а также общаться друг с другом.\nРазыграем 2 мультисертификата среди первосезонников на занятие по повышению навыков управления мотоциклом.\nПеред выездом рекомендуем плотно поесть.\nНа одной из локаций мы приготовим фирменный кофе от Snake Way и устроим перекус.\nМероприятие подготовлено специально для первосезонников и неопытных мотоциклистов, поедем строго колонной в шахматном порядке.\nЕсли будет сильная жара, то обязательно заедем на озеро искупаться, не забудьте взять купальные принадлежности.\nМы ждем тебя,так что не стесняйся, а присоединяйся!\nОбещаем, все пройдет душевно, весело, да по-доброму!\nВремя сбора в 13:00.",
             "https://img.spb.systems/new/events/300/54/7354.jpg"
-                )
+        )
         REMOTE_DATABASE.child(NODE_EVENT).child("date").child(event.date).setValue(event)
     }
 }
@@ -45,9 +47,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     MyApplicationTheme {
-        ConnectivityStatus()
-        initUser()
-        val navController = rememberNavController()
-        NavigationGraph(navController = navController)
+        Surface(color = white) {
+            ConnectivityStatus()
+            val navController = rememberNavController()
+            NavigationGraph(navController = navController)
+        }
     }
 }

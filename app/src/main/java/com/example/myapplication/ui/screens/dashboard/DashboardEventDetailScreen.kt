@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -59,7 +60,10 @@ fun DashboardEventDetailScreen(
                 AsyncImage(
                     model = itemValue?.image,
                     contentDescription = null,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                    placeholder = painterResource(id = R.drawable.ic_no_profile),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
                     alignment = Alignment.Center,
                     contentScale = ContentScale.FillWidth
                 )

@@ -4,7 +4,6 @@ plugins {
     id 'com.google.gms.google-services'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'kotlin-parcelize'
 }
 
 android {
@@ -58,12 +57,12 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.5.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
     // Accompanist
-    def accompanist_version = "0.25.0"
+    def accompanist_version = "0.25.1"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
-    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
     //Firebase
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.7'
-    implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.8'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.6'
     //Navigation
     def nav_version = "2.5.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$nav_version"

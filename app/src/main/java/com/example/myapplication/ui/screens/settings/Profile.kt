@@ -54,7 +54,6 @@ fun Profile(navController: NavController) {
     var userName by rememberSaveable { mutableStateOf(displayUserName) }
     var userBike by rememberSaveable { mutableStateOf(displayUserBike) }
 
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -83,26 +82,31 @@ fun Profile(navController: NavController) {
                     .size(24.dp)
                     .clickable {
                         scope.launch {
-                            val currentUser = AUTH.currentUser?.uid
+                            val currentID = AUTH.currentUser?.uid
                             if (userFirstName.isNotBlank() && userSecondName.isNotBlank()) {
                                 val fullname = "$userFirstName $userSecondName"
                                 REMOTE_DATABASE
                                     .child(NODE_USERS)
-                                    .child(currentUser.toString())
+                                    .child(currentID.toString())
                                     .child(CHILD_FULLNAME)
                                     .setValue(fullname)
                             }
+
                             if (userName.isNotBlank()) {
                                 REMOTE_DATABASE
                                     .child(NODE_USERS)
-                                    .child(currentUser.toString())
+                                    .child(currentID.toString())
                                     .child(CHILD_USERNAME)
                                     .setValue(userName)
+                                REMOTE_DATABASE
+                                    .child(NODE_NICKNAMES)
+                                    .child(userName)
+                                    .setValue(currentID)
                             }
                             if (userBike.isNotBlank()) {
                                 REMOTE_DATABASE
                                     .child(NODE_USERS)
-                                    .child(currentUser.toString())
+                                    .child(currentID.toString())
                                     .child(CHILD_BIKE)
                                     .setValue(userBike)
                             }
@@ -133,7 +137,7 @@ fun Profile(navController: NavController) {
                         .data("https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/512px-User_font_awesome.svg.png?20160212005950")
                         .crossfade(true)
                         .build(),
-                    placeholder = painterResource(R.drawable.no_profile_icon),
+                    placeholder = painterResource(R.drawable.ic_no_profile),
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier
