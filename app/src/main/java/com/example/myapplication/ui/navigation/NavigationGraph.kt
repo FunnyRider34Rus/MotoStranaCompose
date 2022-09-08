@@ -8,6 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.myapplication.common.utils.LocationViewModel
 import com.example.myapplication.R
 import com.example.myapplication.ui.screens.dashboard.Dashboard
 import com.example.myapplication.ui.screens.dashboard.DashboardEventDetailScreen
@@ -26,6 +27,7 @@ fun NavigationGraph(navController: NavController) {
 
     val dashboardViewModel = hiltViewModel<DashboardViewModel>()
     val messagesViewModel = hiltViewModel<MessagesViewModel>()
+    val locationViewModel = hiltViewModel<LocationViewModel>()
 
     NavHost(
         navController = navController as NavHostController,
@@ -38,7 +40,7 @@ fun NavigationGraph(navController: NavController) {
             DashboardEventDetailScreen(navController, dashboardViewModel)
         }
         composable(route = BottomNavItem.Messages.route) {
-            Messages(navController, messagesViewModel)
+            Messages(navController, messagesViewModel, locationViewModel)
         }
         composable(route = BottomNavItem.Settings.route) {
             Settings(navController)

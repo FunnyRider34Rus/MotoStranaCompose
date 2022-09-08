@@ -6,7 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun ShowError() {
+fun ShowError(text: String) {
     AlertDialog(
         onDismissRequest = {
 
@@ -19,7 +19,7 @@ fun ShowError() {
         },
         text = {
             Text(
-                text = "Пожалуйста, проверьте соединение с интернетом",
+                text = text,
                 style = MaterialTheme.typography.h2
             )
         },

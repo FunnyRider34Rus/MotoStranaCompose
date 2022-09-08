@@ -30,4 +30,5 @@
     <string name="enable_not">Нет</string>
     <string name="enable_gps">Доступ к геолокации</string>
     <string name="required_for_this_app">Для полного функционирования приложения необходим доступ к Вашей геолокации</string>
+    <string name="permission_location_rationale">Для полноценной работы приложения необходимо предоставить доступ к геолокации</string>
 </resources>

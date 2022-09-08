@@ -24,7 +24,7 @@ fun ConnectivityStatus() {
     if (isConnected) {
 
     } else {
-        ShowError()
+        ShowError("Пожалуйста, проверьте соединение с интернетом")
     }
 }
 

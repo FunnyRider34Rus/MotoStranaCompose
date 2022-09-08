@@ -6,29 +6,21 @@ import androidx.lifecycle.ViewModel
 import com.example.myapplication.common.UIEvent
 import com.example.myapplication.ui.screens.dashboard.model.DashboardViewState
 import com.example.myapplication.ui.screens.messages.model.MessagesEvent
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.example.myapplication.ui.screens.messages.model.MessagesViewState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class MessagesViewModel @Inject constructor() : ViewModel(), UIEvent<MessagesEvent> {
 
-    private val _performLocationAction: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val performLocationAction = _performLocationAction.asStateFlow()
-
-    fun setPerformLocationAction(request: Boolean) {
-        _performLocationAction.value = request
-    }
-
-    private val _viewState = MutableLiveData(DashboardViewState())
-    val viewState: LiveData<DashboardViewState> = _viewState
+    private val _viewState = MutableLiveData(MessagesViewState())
+    val viewState: LiveData<MessagesViewState> = _viewState
     override fun obtainEvent(event: MessagesEvent) {
         when (event) {
-                MessagesEvent.StateClicked -> { }
-                MessagesEvent.CityClicked -> { }
-                MessagesEvent.OnPermissionGranted -> { }
-                MessagesEvent.OnPermissionDenied -> { }
-                is MessagesEvent.SendMessagesClicked -> { }
-                is MessagesEvent.SendMediaClicked -> { }
+            is MessagesEvent.StateClicked -> {}
+            is MessagesEvent.CityClicked -> {}
+            is MessagesEvent.SendMessagesClicked -> {}
+            is MessagesEvent.SendMediaClicked -> {}
 
         }
     }

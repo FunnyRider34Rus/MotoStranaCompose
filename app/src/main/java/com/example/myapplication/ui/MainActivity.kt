@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.common.initUser
 import com.example.myapplication.common.utils.ConnectivityStatus
+import com.example.myapplication.common.utils.initLocation
 import com.example.myapplication.database.NODE_EVENT
 import com.example.myapplication.database.REMOTE_DATABASE
 import com.example.myapplication.models.Event
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ACTIVITY_CONTEXT = this
-            App()
+            Application()
             //Служебная функция для записи событий в базу данных
             //recordToDBEvent()
         }
@@ -45,10 +46,12 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun App() {
+fun Application() {
     MyApplicationTheme {
         Surface(color = white) {
+            initUser()
             ConnectivityStatus()
+            initLocation()
             val navController = rememberNavController()
             NavigationGraph(navController = navController)
         }

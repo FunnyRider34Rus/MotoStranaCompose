@@ -5,7 +5,7 @@ import com.example.myapplication.models.Message
 data class MessagesViewState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val stateOfRegion: String = "",
-    val cityOfRegion: String = "",
+    val city: String = "",
+    val state: String = "",
     val messages: List<Message> = listOf()
 )

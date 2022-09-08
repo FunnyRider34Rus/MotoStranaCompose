@@ -5,6 +5,5 @@ data class Message(
     var text: String = "",
     var date: String = "",
     var time: String = "",
-    var imageUrl: String = "",
-    var reply: String = "",
+    var mediaUrl: String = "",
 )

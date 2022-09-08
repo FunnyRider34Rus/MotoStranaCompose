@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.myapplication.MotoStranaCompose
+import com.example.myapplication.App
 import com.example.myapplication.models.Event
 
 @Database(entities = [Event::class], version = 1)
@@ -17,7 +17,7 @@ abstract class EventDatabase : RoomDatabase() {
         fun getInstance() : EventDatabase {
             synchronized(this) {
                 var instance = INSTANCE
-                val context: Context = MotoStranaCompose.applicationContext()
+                val context: Context = App.applicationContext()
 
                 if (instance == null) {
                     instance = Room.databaseBuilder(context, EventDatabase::class.java, "event_database")

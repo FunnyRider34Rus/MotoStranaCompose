@@ -1,7 +1,5 @@
 package com.example.myapplication.ui.screens.dashboard
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -53,16 +51,12 @@ fun Dashboard(
     }
     //позиция скролла
     val scrollState = rememberLazyListState()
-    //состояние bottomSheet
-    val stateSheet = rememberBottomSheetScaffoldState()
 
     LaunchedEffect(null) {
         //Проверяем авторизацию
         if (AUTH.currentUser?.uid == null) {
             navController.navigate(AuthScreen.Welcome.route)
         }
-        //Скрываем bottomSheet
-        stateSheet.bottomSheetState.collapse()
     }
 
     when (tabIndex) {
@@ -71,6 +65,8 @@ fun Dashboard(
     }
 
     with(viewState.value) {
+        if (isLoading) ShowLoading()
+
         Scaffold(
             scaffoldState = scaffoldState,
             bottomBar = { BottomNavigationMenu(navController = navController) },
@@ -100,72 +96,61 @@ fun Dashboard(
                         )
                     }
                 }
-
-                //Обработка загрузки
-                if (isLoading) {
-                    ShowLoading()
-                } else {
-                    if (isError) {
-                        ShowError()
-                    } else {
-
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(),
-                            state = scrollState,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    state = scrollState,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    items(dashboardValue.size) { item ->
+                        Card(
+                            onClick = {
+                                itemIndex = item
+                                viewModel.obtainEvent(
+                                    DashboardEvent.ItemClicked(
+                                        itemIndex
+                                    )
+                                )
+                                navController.navigate(DetailScreen.Detail.route)
+                            },
+                            modifier = Modifier.padding(
+                                horizontal = 8.dp,
+                                vertical = 8.dp
+                            ),
+                            shape = RoundedCornerShape(16.dp)
                         ) {
-                            items(dashboardValue.size) { item ->
-                                Card(
-                                    onClick = {
-                                        itemIndex = item
-                                        viewModel.obtainEvent(
-                                            DashboardEvent.ItemClicked(
-                                                itemIndex
-                                            )
-                                        )
-                                        navController.navigate(DetailScreen.Detail.route)
-                                    },
-                                    modifier = Modifier.padding(
-                                        horizontal = 8.dp,
-                                        vertical = 8.dp
-                                    ),
-                                    shape = RoundedCornerShape(16.dp)
-                                ) {
-                                    Column {
-                                        AsyncImage(
-                                            model = dashboardValue[item]?.image,
-                                            contentDescription = null,
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .heightIn(max = 288.dp),
-                                            alignment = Alignment.Center,
-                                            contentScale = ContentScale.FillWidth
-                                        )
-                                        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                                            Text(
-                                                text = dashboardValue[item]?.title_text.toString(),
-                                                style = MaterialTheme.typography.h1
-                                            )
-                                            Text(
-                                                text = dashboardValue[item]?.header_text.toString(),
-                                                modifier = Modifier.padding(vertical = 16.dp),
-                                                color = golbat_60,
-                                                style = MaterialTheme.typography.h3
-                                            )
-                                            Text(
-                                                text = dashboardValue[item]?.date.toString(),
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .padding(vertical = 8.dp),
-                                                color = golbat_60,
-                                                textAlign = TextAlign.End,
-                                                style = MaterialTheme.typography.h5
-                                            )
-                                        }
-                                    }
+                            Column {
+                                AsyncImage(
+                                    model = dashboardValue[item]?.image,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .heightIn(max = 288.dp),
+                                    alignment = Alignment.Center,
+                                    contentScale = ContentScale.FillWidth
+                                )
+                                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                                    Text(
+                                        text = dashboardValue[item]?.title_text.toString(),
+                                        style = MaterialTheme.typography.h1
+                                    )
+                                    Text(
+                                        text = dashboardValue[item]?.header_text.toString(),
+                                        modifier = Modifier.padding(vertical = 16.dp),
+                                        color = golbat_60,
+                                        style = MaterialTheme.typography.h3
+                                    )
+                                    Text(
+                                        text = dashboardValue[item]?.date.toString(),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 8.dp),
+                                        color = golbat_60,
+                                        textAlign = TextAlign.End,
+                                        style = MaterialTheme.typography.h5
+                                    )
                                 }
                             }
                         }
@@ -175,6 +160,7 @@ fun Dashboard(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
