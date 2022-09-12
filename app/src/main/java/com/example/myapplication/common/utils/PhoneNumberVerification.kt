@@ -2,7 +2,7 @@ package com.example.myapplication.common.utils
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import com.example.myapplication.database.AUTH
+import com.example.myapplication.database.firebase.AUTH
 import com.example.myapplication.ui.ACTIVITY_CONTEXT
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException

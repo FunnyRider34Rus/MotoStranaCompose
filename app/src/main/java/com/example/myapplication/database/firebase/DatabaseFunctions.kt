@@ -1,8 +1,6 @@
 package com.example.myapplication.database.firebase
 
 import com.example.myapplication.App.Companion.applicationContext
-import com.example.myapplication.database.AUTH
-import com.example.myapplication.database.REMOTE_DATABASE
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database

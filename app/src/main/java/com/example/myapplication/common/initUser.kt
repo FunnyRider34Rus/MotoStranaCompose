@@ -1,9 +1,9 @@
 package com.example.myapplication.common
 
-import com.example.myapplication.database.AUTH
-import com.example.myapplication.database.NODE_USERS
-import com.example.myapplication.database.REMOTE_DATABASE
-import com.example.myapplication.database.USER
+import com.example.myapplication.database.firebase.AUTH
+import com.example.myapplication.database.firebase.NODE_USERS
+import com.example.myapplication.database.firebase.REMOTE_DATABASE
+import com.example.myapplication.database.firebase.USER
 import com.example.myapplication.models.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
-import com.example.myapplication.database.*
+import com.example.myapplication.database.firebase.*
 import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.navigation.BottomNavItem
 import com.example.myapplication.ui.theme.MyApplicationTheme
@@ -140,6 +140,7 @@ fun reAuthentication(navController: NavController, userPhoneNumber: String) {
     REMOTE_DATABASE.child(NODE_PHONES).addListenerForSingleValueEvent(object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             if (snapshot.hasChild(userPhoneNumber)) {
+                Thread.sleep(400L)
                 navController.navigate(BottomNavItem.Dashboard.route)
             }
         }

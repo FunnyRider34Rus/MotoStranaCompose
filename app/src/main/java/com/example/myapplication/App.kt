@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.app.Application
 import android.content.Context
+import androidx.compose.runtime.MutableState
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -12,8 +13,8 @@ class App : Application() {
 
     companion object {
         var instance: App? = null
-        lateinit var cityName: String
-        lateinit var stateName: String
+        lateinit var cityName: MutableState<String>
+        lateinit var stateName: MutableState<String>
 
 
         fun applicationContext() : Context {

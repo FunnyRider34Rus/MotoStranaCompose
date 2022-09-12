@@ -1,8 +1,7 @@
 package com.example.myapplication.ui.screens.messages.model
 
 sealed class MessagesEvent {
-    data class StateClicked(val state: String): MessagesEvent()
-    data class CityClicked(val city: String): MessagesEvent()
-    data class SendMessagesClicked (val text: String): MessagesEvent()
-    data class SendMediaClicked (val uri: String): MessagesEvent()
+    data class TabsClicked(val location: String?): MessagesEvent()
+    data class SendMessagesClicked (val location: String?, val text: String, val mediaUrl: String): MessagesEvent()
+    data class SendMediaClicked (val location: String?, val text: String, val mediaUrl: String): MessagesEvent()
 }

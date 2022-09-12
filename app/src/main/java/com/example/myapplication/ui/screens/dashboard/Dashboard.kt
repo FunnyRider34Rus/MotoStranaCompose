@@ -21,9 +21,8 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.myapplication.R
 import com.example.myapplication.common.AnimatedIndicator
-import com.example.myapplication.common.ShowError
 import com.example.myapplication.common.ShowLoading
-import com.example.myapplication.database.AUTH
+import com.example.myapplication.database.firebase.AUTH
 import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.navigation.DetailScreen
 import com.example.myapplication.ui.screens.BottomNavigationMenu
@@ -70,7 +69,6 @@ fun Dashboard(
         Scaffold(
             scaffoldState = scaffoldState,
             bottomBar = { BottomNavigationMenu(navController = navController) },
-            backgroundColor = golbat_10
         ) { paddingValues ->
             Column(
                 modifier = Modifier.padding(paddingValues)
@@ -115,10 +113,8 @@ fun Dashboard(
                                 )
                                 navController.navigate(DetailScreen.Detail.route)
                             },
-                            modifier = Modifier.padding(
-                                horizontal = 8.dp,
-                                vertical = 8.dp
-                            ),
+                            modifier = Modifier.padding(8.dp),
+                            backgroundColor = golbat_5,
                             shape = RoundedCornerShape(16.dp)
                         ) {
                             Column {

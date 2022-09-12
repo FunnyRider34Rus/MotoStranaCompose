@@ -107,10 +107,10 @@ class LocationLiveData(private var context: Context) : LiveData<LocationDetails>
     }
 
     companion object {
-        private const val HOUR: Long = 360000
+        private const val MINUTE: Long = 6000
         val locationRequest: LocationRequest = LocationRequest.create().apply {
-            interval = HOUR
-            fastestInterval = HOUR / 4
+            interval = MINUTE
+            fastestInterval = MINUTE / 4
             priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         }
     }

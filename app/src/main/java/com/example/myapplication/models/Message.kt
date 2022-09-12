@@ -2,8 +2,10 @@ package com.example.myapplication.models
 
 data class Message(
     val uid: String = "",
-    var text: String = "",
-    var date: String = "",
-    var time: String = "",
-    var mediaUrl: String = "",
+    val fullname: String = "",
+    val logo: String = "",
+    val text: String = "",
+    val date: String = "",
+    val time: String = "",
+    val mediaUrl: String = "",
 )

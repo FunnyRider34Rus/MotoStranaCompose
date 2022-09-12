@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
-import com.example.myapplication.database.AUTH
+import com.example.myapplication.database.firebase.AUTH
 import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.navigation.SettingsScreen
 import com.example.myapplication.ui.screens.BottomNavigationMenu

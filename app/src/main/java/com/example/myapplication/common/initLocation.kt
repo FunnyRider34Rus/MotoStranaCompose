@@ -6,6 +6,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
@@ -15,20 +17,15 @@ import com.example.myapplication.App.Companion.stateName
 import com.example.myapplication.common.utils.LocationViewModel
 
 @Composable
-fun initLocation(locationViewModel: LocationViewModel = viewModel()) {
+fun initLocation() {
     val context = LocalContext.current
-    var result = false
-    val fineLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-    val requestSinglePermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
-            isGranted ->
-        result = isGranted
-    }
-
-    if (result) {
-        requestLocationUpdates()
-    } else {
-        ShowError(error = Error.NO_LOCATION)
-    }
+    var result = true
+    val fineLocation =
+        ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+    val requestSinglePermissionLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            result = isGranted
+        }
 
     if (fineLocation == PERMISSION_GRANTED) {
         requestLocationUpdates()
@@ -37,15 +34,20 @@ fun initLocation(locationViewModel: LocationViewModel = viewModel()) {
             requestSinglePermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
+
+    if (result) {
+        requestLocationUpdates()
+    } else {
+        ShowError(error = Error.NO_LOCATION)
+    }
 }
+
 @Composable
 fun requestLocationUpdates(locationViewModel: LocationViewModel = viewModel()) {
     locationViewModel.startLocationUpdates()
     val location = locationViewModel.getLocationLiveData().observeAsState()
     if (location.value?.city != null && location.value?.state != null) {
-        cityName = location.value?.city!!
-        stateName = location.value?.state!!
-    } else {
-        ShowError(Error.NO_LOCATION)
+        cityName = rememberSaveable { mutableStateOf(location.value!!.city) }
+        stateName = rememberSaveable { mutableStateOf(location.value!!.state) }
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -12,7 +13,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -20,23 +24,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.myapplication.App.Companion.cityName
 import com.example.myapplication.App.Companion.stateName
 import com.example.myapplication.R
 import com.example.myapplication.common.AnimatedIndicator
 import com.example.myapplication.common.ShowLoading
+import com.example.myapplication.database.firebase.AUTH
 import com.example.myapplication.ui.screens.BottomNavigationMenu
 import com.example.myapplication.ui.screens.messages.model.MessagesEvent
 import com.example.myapplication.ui.screens.messages.model.MessagesViewState
-import com.example.myapplication.ui.theme.black
-import com.example.myapplication.ui.theme.golbat_10
-import com.example.myapplication.ui.theme.white
+import com.example.myapplication.ui.theme.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "MissingPermission")
 @Composable
 fun Messages(
     navController: NavController,
-    viewModel: MessagesViewModel = viewModel()) {
+    viewModel: MessagesViewModel = viewModel()
+) {
 
     //State
     val viewState = viewModel.viewState.observeAsState(MessagesViewState())
@@ -45,13 +50,20 @@ fun Messages(
     //Tabs
     var tabIndex by rememberSaveable { mutableStateOf(0) }
     var textState by remember { mutableStateOf(TextFieldValue("")) }
+    var location by rememberSaveable { mutableStateOf("") }
 
     when (tabIndex) {
-        0 -> viewModel.obtainEvent(MessagesEvent.StateClicked(stateName))
-        1 -> viewModel.obtainEvent(MessagesEvent.CityClicked(cityName))
+        0 -> {
+            location = stateName.value
+            viewModel.obtainEvent(MessagesEvent.TabsClicked(stateName.value))
+        }
+        1 -> {
+            location = stateName.value
+            viewModel.obtainEvent(MessagesEvent.TabsClicked(cityName.value))
+        }
     }
 
-    val titles = listOf(stateName, cityName)
+    val titles = listOf(stateName.value, cityName.value)
     val indicator = @Composable { tabPositions: List<TabPosition> ->
         AnimatedIndicator(
             tabPositions = tabPositions,
@@ -91,21 +103,130 @@ fun Messages(
                     }
                 }
                 LazyColumn(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxSize(),
                     state = scrollState,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Bottom
                 ) {
                     items(messages.size) { item ->
-
+                        if (messages[item]?.uid == AUTH.currentUser?.uid) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
+                                horizontalAlignment = Alignment.End
+                            ) {
+                                Card(
+                                    backgroundColor = golbat_5
+                                ) {
+                                    Column(
+                                        modifier = Modifier.padding(8.dp),
+                                        horizontalAlignment = Alignment.Start
+                                    ) {
+                                        Text(
+                                            text = messages[item]?.fullname.toString(),
+                                            color = buldasaur_140,
+                                            textAlign = TextAlign.Start,
+                                            style = MaterialTheme.typography.h4
+                                        )
+                                        if (messages[item]?.mediaUrl.toString().isNotBlank()) {
+                                            AsyncImage(
+                                                model = messages[item]?.mediaUrl,
+                                                contentDescription = null,
+                                                modifier = Modifier
+                                                    .heightIn(max = 180.dp)
+                                                    .clip(RoundedCornerShape(14.dp)),
+                                                alignment = Alignment.CenterStart,
+                                                contentScale = ContentScale.FillHeight
+                                            )
+                                        }
+                                        Text(
+                                            text = messages[item]?.text.toString(),
+                                            textAlign = TextAlign.Start,
+                                            style = MaterialTheme.typography.h2
+                                        )
+                                    }
+                                }
+                                Text(
+                                    text = messages[item]?.time.toString(),
+                                    modifier = Modifier.padding(2.dp),
+                                    style = MaterialTheme.typography.h5
+                                )
+                            }
+                        } else {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
+                                verticalArrangement = Arrangement.Bottom,
+                                horizontalAlignment = Alignment.Start
+                            ) {
+                                Row(
+                                    horizontalArrangement = Arrangement.Start,
+                                    verticalAlignment = Alignment.Bottom
+                                ) {
+                                    AsyncImage(
+                                        model = messages[item]?.logo,
+                                        contentDescription = null,
+                                        placeholder = painterResource(R.drawable.ic_no_profile),
+                                        modifier = Modifier
+                                            .size(44.dp)
+                                            .clip(RoundedCornerShape(12.dp)),
+                                        alignment = Alignment.Center,
+                                        contentScale = ContentScale.Fit
+                                    )
+                                    Column(
+                                        modifier = Modifier.padding(start = 8.dp)
+                                    ) {
+                                        Card(
+                                            backgroundColor = golbat_5
+                                        ) {
+                                            Column(modifier = Modifier.padding(8.dp)) {
+                                                Text(
+                                                    text = messages[item]?.fullname.toString(),
+                                                    color = krabby_140,
+                                                    textAlign = TextAlign.Start,
+                                                    style = MaterialTheme.typography.h4
+                                                )
+                                                if (messages[item]?.mediaUrl.toString()
+                                                        .isNotBlank()
+                                                ) {
+                                                    AsyncImage(
+                                                        model = messages[item]?.mediaUrl,
+                                                        contentDescription = null,
+                                                        modifier = Modifier
+                                                            .heightIn(max = 180.dp)
+                                                            .clip(RoundedCornerShape(14.dp)),
+                                                        alignment = Alignment.CenterStart,
+                                                        contentScale = ContentScale.FillHeight
+                                                    )
+                                                }
+                                                Text(
+                                                    text = messages[item]?.text.toString(),
+                                                    textAlign = TextAlign.Start,
+                                                    style = MaterialTheme.typography.h2
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                                Text(
+                                    text = messages[item]?.time.toString(),
+                                    modifier = Modifier.padding(2.dp),
+                                    style = MaterialTheme.typography.h5
+                                )
+                            }
+                        }
                     }
                 }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_button_add_media),
                         contentDescription = null,
@@ -116,7 +237,7 @@ fun Messages(
                     OutlinedTextField(
                         value = textState,
                         onValueChange = {
-                                        textState = it
+                            textState = it
                         },
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
@@ -125,7 +246,7 @@ fun Messages(
                         placeholder = {
                             Box(
                                 modifier = Modifier
-                                .fillMaxWidth(),
+                                    .fillMaxWidth(),
                                 contentAlignment = Alignment.CenterStart
                             ) {
                                 Text(
@@ -141,16 +262,28 @@ fun Messages(
                         shape = MaterialTheme.shapes.large,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             textColor = black,
-                            backgroundColor = golbat_10,
-                            focusedBorderColor = golbat_10,
-                            unfocusedBorderColor = golbat_10
+                            backgroundColor = golbat_5,
+                            focusedBorderColor = golbat_5,
+                            unfocusedBorderColor = golbat_5
                         )
                     )
-                    Icon(imageVector = ImageVector.vectorResource(id = R.drawable.ic_button_send),
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_button_send),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(24.dp)
-                            .clickable { },
+                            .size(32.dp)
+                            .clickable {
+                                if (textState.text.isNotBlank()) {
+                                    viewModel.obtainEvent(
+                                        MessagesEvent.SendMessagesClicked(
+                                            location,
+                                            textState.text,
+                                            ""
+                                        )
+                                    )
+                                    textState = TextFieldValue("")
+                                }
+                            },
                     )
                 }
             }

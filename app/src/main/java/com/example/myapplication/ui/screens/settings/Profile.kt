@@ -27,7 +27,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.myapplication.R
 import com.example.myapplication.common.TextInput
-import com.example.myapplication.database.*
+import com.example.myapplication.database.firebase.*
 import com.example.myapplication.ui.navigation.BottomNavItem
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.launch

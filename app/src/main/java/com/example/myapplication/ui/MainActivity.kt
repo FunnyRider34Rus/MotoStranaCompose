@@ -6,17 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.common.initLocation
-import com.example.myapplication.common.initUser
-import com.example.myapplication.common.utils.ConnectivityStatus
-import com.example.myapplication.database.NODE_EVENT
-import com.example.myapplication.database.REMOTE_DATABASE
+import com.example.myapplication.database.firebase.NODE_EVENT
+import com.example.myapplication.database.firebase.REMOTE_DATABASE
 import com.example.myapplication.models.Event
 import com.example.myapplication.ui.navigation.NavigationGraph
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.white
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 lateinit var ACTIVITY_CONTEXT: ComponentActivity
 
@@ -44,14 +40,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun Application() {
     MyApplicationTheme {
         Surface(color = white) {
-            initUser()
-            ConnectivityStatus()
-            initLocation()
             val navController = rememberNavController()
             NavigationGraph(navController = navController)
         }

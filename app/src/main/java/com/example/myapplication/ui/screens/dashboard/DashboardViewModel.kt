@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.common.Error
 import com.example.myapplication.common.UIEvent
-import com.example.myapplication.database.NODE_EVENT
-import com.example.myapplication.database.NODE_NEWS
-import com.example.myapplication.database.REMOTE_DATABASE
+import com.example.myapplication.database.firebase.NODE_EVENT
+import com.example.myapplication.database.firebase.NODE_NEWS
+import com.example.myapplication.database.firebase.REMOTE_DATABASE
 import com.example.myapplication.models.Event
 import com.example.myapplication.ui.screens.dashboard.model.DashboardEvent
 import com.example.myapplication.ui.screens.dashboard.model.DashboardViewState
