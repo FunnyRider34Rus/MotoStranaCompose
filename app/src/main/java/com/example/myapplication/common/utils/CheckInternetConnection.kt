@@ -10,6 +10,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.platform.LocalContext
+import com.example.myapplication.common.Error
 import com.example.myapplication.common.ShowError
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -24,7 +25,7 @@ fun ConnectivityStatus() {
     if (isConnected) {
 
     } else {
-        ShowError("Пожалуйста, проверьте соединение с интернетом")
+        ShowError(Error.NO_INTERNET)
     }
 }
 

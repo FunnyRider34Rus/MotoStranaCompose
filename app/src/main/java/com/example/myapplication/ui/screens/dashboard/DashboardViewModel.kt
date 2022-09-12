@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.common.Error
 import com.example.myapplication.common.UIEvent
 import com.example.myapplication.database.NODE_EVENT
 import com.example.myapplication.database.NODE_NEWS
@@ -44,10 +45,12 @@ class DashboardViewModel @Inject constructor() : ViewModel(), UIEvent<DashboardE
                             val singleEvent = it.getValue(Event::class.java)
                             listEvents = listEvents + singleEvent
                         }
+                        _viewState.value?.isError = Error.NONE
                         _viewState.postValue(_viewState.value?.copy(dashboardValue = listEvents.asReversed()))
                     }
 
                     override fun onCancelled(error: DatabaseError) {
+                        _viewState.value?.isError = Error.DB_ERROR
                     }
                 })
         }

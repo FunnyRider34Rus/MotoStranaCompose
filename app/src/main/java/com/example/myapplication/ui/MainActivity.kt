@@ -6,9 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.common.initLocation
 import com.example.myapplication.common.initUser
 import com.example.myapplication.common.utils.ConnectivityStatus
-import com.example.myapplication.common.utils.initLocation
 import com.example.myapplication.database.NODE_EVENT
 import com.example.myapplication.database.REMOTE_DATABASE
 import com.example.myapplication.models.Event

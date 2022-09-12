@@ -11,7 +11,10 @@ class App : Application() {
     }
 
     companion object {
-        private var instance: App? = null
+        var instance: App? = null
+        lateinit var cityName: String
+        lateinit var stateName: String
+
 
         fun applicationContext() : Context {
             return instance!!.applicationContext

@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Looper
-import androidx.annotation.WorkerThread
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import com.example.myapplication.models.LocationDetails
@@ -47,7 +46,7 @@ class LocationLiveData(private var context: Context) : LiveData<LocationDetails>
         startLocationUpdates()
     }
 
-    internal fun startLocationUpdates() {
+    fun startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
