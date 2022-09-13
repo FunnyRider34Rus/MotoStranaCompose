@@ -64,8 +64,6 @@ fun Dashboard(
     }
 
     with(viewState.value) {
-        if (isLoading) ShowLoading()
-
         Scaffold(
             scaffoldState = scaffoldState,
             bottomBar = { BottomNavigationMenu(navController = navController) },
@@ -153,6 +151,7 @@ fun Dashboard(
                     }
                 }
             }
+            if (isLoading) ShowLoading()
         }
     }
 }

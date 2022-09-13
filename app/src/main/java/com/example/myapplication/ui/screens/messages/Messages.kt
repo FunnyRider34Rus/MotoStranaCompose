@@ -25,6 +25,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ChainStyle
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -45,16 +47,16 @@ fun Messages(
     navController: NavController,
     viewModel: MessagesViewModel = viewModel()
 ) {
-
     //State
     val viewState = viewModel.viewState.observeAsState(MessagesViewState())
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberLazyListState()
     //Tabs
-    var tabIndex by rememberSaveable { mutableStateOf(1) }
+    var tabIndex by rememberSaveable { mutableStateOf(0) }
     var textState by remember { mutableStateOf(TextFieldValue("")) }
     var location by rememberSaveable { mutableStateOf("") }
 
+    //Получение ссылки на локальное фото
     val launcher = rememberLauncherForActivityResult(
         contract =
         ActivityResultContracts.GetContent()
@@ -87,7 +89,6 @@ fun Messages(
     }
 
     with(viewState.value) {
-        if (isLoading) ShowLoading()
         Scaffold(
             scaffoldState = scaffoldState,
             bottomBar = { BottomNavigationMenu(navController = navController) },
@@ -122,53 +123,95 @@ fun Messages(
                         .weight(1f)
                         .fillMaxSize(),
                     state = scrollState,
-                    horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Bottom
                 ) {
                     items(messages.size) { item ->
+                        //Отображение сообщений текущего пользователя
                         if (messages[item]?.uid == AUTH.currentUser?.uid) {
+                            //Сообщения текущего пользователя
                             Column(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(8.dp),
+                                    .padding(8.dp)
+                                    .fillParentMaxWidth(),
+                                verticalArrangement = Arrangement.Bottom,
                                 horizontalAlignment = Alignment.End
                             ) {
                                 Card(
                                     backgroundColor = golbat_5
                                 ) {
-                                    Column(
-                                        modifier = Modifier.padding(8.dp),
-                                        horizontalAlignment = Alignment.Start
-                                    ) {
+                                    ConstraintLayout {
+                                        val (header, image, body) = createRefs()
+                                        createVerticalChain(
+                                            header,
+                                            image,
+                                            body,
+                                            chainStyle = ChainStyle.Spread
+                                        )
                                         Text(
                                             text = messages[item]?.fullname.toString(),
+                                            modifier = Modifier
+                                                .padding(start = 8.dp, top = 8.dp, end = 8.dp)
+                                                .constrainAs(header) {
+                                                    top.linkTo(parent.top)
+                                                    start.linkTo(parent.start)
+                                                },
                                             color = buldasaur_140,
                                             textAlign = TextAlign.Start,
                                             style = MaterialTheme.typography.h4
                                         )
-                                        AsyncImage(
-                                            model = messages[item]?.mediaUrl,
-                                            contentDescription = null,
-                                            modifier = Modifier
-                                                .heightIn(max = 180.dp)
-                                                .clip(RoundedCornerShape(14.dp)),
-                                            alignment = Alignment.CenterStart,
-                                            contentScale = ContentScale.FillHeight
-                                        )
-                                        Text(
-                                            text = messages[item]?.text.toString(),
-                                            textAlign = TextAlign.Start,
-                                            style = MaterialTheme.typography.h2
-                                        )
+                                        if (!messages[item]?.mediaUrl.isNullOrBlank()) {
+                                            AsyncImage(
+                                                model = messages[item]?.mediaUrl,
+                                                contentDescription = null,
+                                                modifier = Modifier
+                                                    .padding(8.dp)
+                                                    .constrainAs(image) {
+                                                        top.linkTo(header.bottom)
+                                                        start.linkTo(header.start)
+                                                    }
+                                                    .heightIn(min = 0.dp, max = 180.dp)
+                                                    .widthIn(min = 0.dp, max = 132.dp)
+                                                    .clip(RoundedCornerShape(14.dp))
+                                                    .clickable {
+                                                        viewModel.obtainEvent(
+                                                            MessagesEvent.FullImageMode(
+                                                                messages[item]?.mediaUrl
+                                                            )
+                                                        )
+                                                    },
+                                                alignment = Alignment.CenterStart,
+                                                contentScale = ContentScale.FillHeight
+                                            )
+                                        }
+                                        if (!messages[item]?.text.isNullOrBlank()) {
+                                            Text(
+                                                text = messages[item]?.text.toString(),
+                                                modifier = Modifier
+                                                    .padding(
+                                                        start = 8.dp,
+                                                        end = 8.dp,
+                                                        bottom = 8.dp
+                                                    )
+                                                    .constrainAs(body) {
+                                                        top.linkTo(image.bottom)
+                                                        start.linkTo(parent.start)
+                                                        bottom.linkTo(parent.bottom)
+                                                    },
+                                                style = MaterialTheme.typography.h2
+                                            )
+                                        }
                                     }
                                 }
                                 Text(
                                     text = messages[item]?.time.toString(),
-                                    modifier = Modifier.padding(2.dp),
+                                    modifier = Modifier
+                                        .padding(2.dp),
                                     style = MaterialTheme.typography.h5
                                 )
                             }
+
                         } else {
+                            //Отображение сообщений других пользователей
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -196,31 +239,71 @@ fun Messages(
                                         Card(
                                             backgroundColor = golbat_5
                                         ) {
-                                            Column(modifier = Modifier.padding(8.dp)) {
+                                            ConstraintLayout {
+                                                val (header, image, body) = createRefs()
+                                                createVerticalChain(
+                                                    header,
+                                                    image,
+                                                    body,
+                                                    chainStyle = ChainStyle.Spread
+                                                )
                                                 Text(
                                                     text = messages[item]?.fullname.toString(),
+                                                    modifier = Modifier
+                                                        .padding(
+                                                            start = 8.dp,
+                                                            top = 8.dp,
+                                                            end = 8.dp
+                                                        )
+                                                        .constrainAs(header) {
+                                                            top.linkTo(parent.top)
+                                                            start.linkTo(parent.start)
+                                                        },
                                                     color = krabby_140,
                                                     textAlign = TextAlign.Start,
                                                     style = MaterialTheme.typography.h4
                                                 )
-                                                if (messages[item]?.mediaUrl.toString()
-                                                        .isNotBlank()
-                                                ) {
+                                                if (!messages[item]?.mediaUrl.isNullOrBlank()) {
                                                     AsyncImage(
                                                         model = messages[item]?.mediaUrl,
                                                         contentDescription = null,
                                                         modifier = Modifier
-                                                            .heightIn(max = 180.dp)
-                                                            .clip(RoundedCornerShape(14.dp)),
+                                                            .padding(8.dp)
+                                                            .constrainAs(image) {
+                                                                top.linkTo(header.bottom)
+                                                                start.linkTo(header.start)
+                                                            }
+                                                            .heightIn(min = 0.dp, max = 180.dp)
+                                                            .widthIn(min = 0.dp, max = 132.dp)
+                                                            .clip(RoundedCornerShape(14.dp))
+                                                            .clickable {
+                                                                viewModel.obtainEvent(
+                                                                    MessagesEvent.FullImageMode(
+                                                                        messages[item]?.mediaUrl
+                                                                    )
+                                                                )
+                                                            },
                                                         alignment = Alignment.CenterStart,
                                                         contentScale = ContentScale.FillHeight
                                                     )
                                                 }
-                                                Text(
-                                                    text = messages[item]?.text.toString(),
-                                                    textAlign = TextAlign.Start,
-                                                    style = MaterialTheme.typography.h2
-                                                )
+                                                if (!messages[item]?.text.isNullOrBlank()) {
+                                                    Text(
+                                                        text = messages[item]?.text.toString(),
+                                                        modifier = Modifier
+                                                            .padding(
+                                                                start = 8.dp,
+                                                                end = 8.dp,
+                                                                bottom = 8.dp
+                                                            )
+                                                            .constrainAs(body) {
+                                                                top.linkTo(image.bottom)
+                                                                start.linkTo(parent.start)
+                                                                bottom.linkTo(parent.bottom)
+                                                            },
+                                                        style = MaterialTheme.typography.h2
+                                                    )
+                                                }
                                             }
                                         }
                                     }
@@ -297,12 +380,45 @@ fun Messages(
                                     )
                                     textState = TextFieldValue("")
                                 }
-                            },
+                            }
                     )
                 }
             }
+            //Обработка полноэкранного открытия изображения
+            if (isFullMode) {
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = 86.dp)
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.TopEnd
+                ) {
+                    if (!imageUri.isNullOrBlank()) {
+                        AsyncImage(
+                            model = imageUri,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .clip(RoundedCornerShape(14.dp)),
+                            alignment = Alignment.CenterStart,
+                            contentScale = ContentScale.FillBounds
+                        )
+                        Icon(imageVector = ImageVector.vectorResource(id = R.drawable.ic_button_close),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .size(32.dp)
+                                .clickable {
+                                    viewModel.obtainEvent(MessagesEvent.FullImageMode(imageUri))
+                                }
+                        )
+                    }
+                }
+            }
+            //Экран загрузки
+            if (isLoading) ShowLoading()
         }
     }
 }
+
 
 

@@ -37,7 +37,13 @@ class MessagesViewModel @Inject constructor() : ViewModel(), UIEvent<MessagesEve
             is MessagesEvent.TabsClicked -> getMessages(event.location)
             is MessagesEvent.SendImageClicked -> writeImage(event.location, event.mediaUrl)
             is MessagesEvent.SendMessageClicked -> writeMessage(event.location, event.text)
+            is MessagesEvent.FullImageMode -> fullImageMode(event.mediaUrl)
         }
+    }
+
+    private fun fullImageMode(mediaUrl: String?) {
+        _viewState.value?.isFullMode = !_viewState.value!!.isFullMode
+        _viewState.postValue(_viewState.value?.copy(imageUri = mediaUrl))
     }
 
     private fun writeMessage(location: String?, text: String) {
