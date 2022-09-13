@@ -1,6 +1,9 @@
 package com.example.myapplication.ui.screens.messages
 
 import android.annotation.SuppressLint
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -48,9 +51,21 @@ fun Messages(
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberLazyListState()
     //Tabs
-    var tabIndex by rememberSaveable { mutableStateOf(0) }
+    var tabIndex by rememberSaveable { mutableStateOf(1) }
     var textState by remember { mutableStateOf(TextFieldValue("")) }
     var location by rememberSaveable { mutableStateOf("") }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract =
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        viewModel.obtainEvent(
+            MessagesEvent.SendImageClicked(
+                location,
+                uri
+            )
+        )
+    }
 
     when (tabIndex) {
         0 -> {
@@ -131,17 +146,15 @@ fun Messages(
                                             textAlign = TextAlign.Start,
                                             style = MaterialTheme.typography.h4
                                         )
-                                        if (messages[item]?.mediaUrl.toString().isNotBlank()) {
-                                            AsyncImage(
-                                                model = messages[item]?.mediaUrl,
-                                                contentDescription = null,
-                                                modifier = Modifier
-                                                    .heightIn(max = 180.dp)
-                                                    .clip(RoundedCornerShape(14.dp)),
-                                                alignment = Alignment.CenterStart,
-                                                contentScale = ContentScale.FillHeight
-                                            )
-                                        }
+                                        AsyncImage(
+                                            model = messages[item]?.mediaUrl,
+                                            contentDescription = null,
+                                            modifier = Modifier
+                                                .heightIn(max = 180.dp)
+                                                .clip(RoundedCornerShape(14.dp)),
+                                            alignment = Alignment.CenterStart,
+                                            contentScale = ContentScale.FillHeight
+                                        )
                                         Text(
                                             text = messages[item]?.text.toString(),
                                             textAlign = TextAlign.Start,
@@ -168,7 +181,7 @@ fun Messages(
                                     verticalAlignment = Alignment.Bottom
                                 ) {
                                     AsyncImage(
-                                        model = messages[item]?.logo,
+                                        model = messages[item]?.avatar,
                                         contentDescription = null,
                                         placeholder = painterResource(R.drawable.ic_no_profile),
                                         modifier = Modifier
@@ -232,7 +245,9 @@ fun Messages(
                         contentDescription = null,
                         modifier = Modifier
                             .size(24.dp)
-                            .clickable { },
+                            .clickable {
+                                launcher.launch("image/*")
+                            },
                     )
                     OutlinedTextField(
                         value = textState,
@@ -275,10 +290,9 @@ fun Messages(
                             .clickable {
                                 if (textState.text.isNotBlank()) {
                                     viewModel.obtainEvent(
-                                        MessagesEvent.SendMessagesClicked(
+                                        MessagesEvent.SendMessageClicked(
                                             location,
-                                            textState.text,
-                                            ""
+                                            textState.text
                                         )
                                     )
                                     textState = TextFieldValue("")
@@ -290,3 +304,5 @@ fun Messages(
         }
     }
 }
+
+

@@ -1,15 +1,13 @@
 package com.example.myapplication.ui.screens.messages
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.common.Error
 import com.example.myapplication.common.UIEvent
-import com.example.myapplication.database.firebase.AUTH
-import com.example.myapplication.database.firebase.NODE_COMMON_MESSAGES
-import com.example.myapplication.database.firebase.REMOTE_DATABASE
-import com.example.myapplication.database.firebase.USER
+import com.example.myapplication.database.firebase.*
 import com.example.myapplication.models.Message
 import com.example.myapplication.ui.screens.messages.model.MessagesEvent
 import com.example.myapplication.ui.screens.messages.model.MessagesViewState
@@ -22,6 +20,7 @@ import kotlinx.coroutines.launch
 import java.sql.Date
 import java.sql.Time
 import java.sql.Timestamp
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,24 +28,23 @@ class MessagesViewModel @Inject constructor() : ViewModel(), UIEvent<MessagesEve
 
     private val _viewState = MutableLiveData(MessagesViewState())
     val viewState: LiveData<MessagesViewState> = _viewState
+    private val stamp = Timestamp(System.currentTimeMillis())
+    private val date = Date(stamp.time).toString()
+    private val time = Time(stamp.time).toString()
 
     override fun obtainEvent(event: MessagesEvent) {
         when (event) {
-            is MessagesEvent.TabsClicked -> event.location?.let { getMessages(it) }
-            is MessagesEvent.SendMessagesClicked -> writeMessage(event.location, event.text, event.mediaUrl)
-            is MessagesEvent.SendMediaClicked -> writeMessage(event.location, event.text, event.mediaUrl)
-
+            is MessagesEvent.TabsClicked -> getMessages(event.location)
+            is MessagesEvent.SendImageClicked -> writeImage(event.location, event.mediaUrl)
+            is MessagesEvent.SendMessageClicked -> writeMessage(event.location, event.text)
         }
     }
 
-    private fun writeMessage(location: String?, text: String, mediaUrl: String) {
-        val stamp = Timestamp(System.currentTimeMillis())
-        val date = Date(stamp.time).toString()
-        val time = Time(stamp.time).toString()
+    private fun writeMessage(location: String?, text: String) {
         val message = Message(
             uid = AUTH.currentUser!!.uid,
             fullname = USER.fullname,
-            logo = USER.avatar,
+            avatar = USER.avatar,
             text = text,
             date = date,
             time = time,
@@ -57,15 +55,41 @@ class MessagesViewModel @Inject constructor() : ViewModel(), UIEvent<MessagesEve
         }
     }
 
-    private fun getMessages(location: String) {
+    private fun writeImage(location: String?, mediaUrl: Uri?) {
+        val path = location?.let { REMOTE_STORAGE.child(FOLDER_CONTENT_IMAGE).child(it).child(USER.id).child(UUID.randomUUID().toString()) }
+        var mediaUrlFromBase: String
+        if (mediaUrl != null) {
+            path?.putFile(mediaUrl)?.addOnCompleteListener {
+                path.downloadUrl.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        mediaUrlFromBase = task.result.toString()
+                        val message = Message(
+                            uid = AUTH.currentUser!!.uid,
+                            fullname = USER.fullname,
+                            avatar = USER.avatar,
+                            text = "",
+                            date = date,
+                            time = time,
+                            mediaUrl = mediaUrlFromBase
+                        )
+                        location.let {
+                            REMOTE_DATABASE.child(NODE_COMMON_MESSAGES).child(it).push().setValue(message)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getMessages(location: String?) {
         _viewState.value?.isLoading = true
         viewModelScope.launch(Dispatchers.IO) {
             var listMessages: List<Message> = listOf()
-            REMOTE_DATABASE.child(NODE_COMMON_MESSAGES).child(location).orderByChild("stamp")
+            location?.let { REMOTE_DATABASE.child(NODE_COMMON_MESSAGES).child(it).orderByChild("stamp")
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        snapshot.children.forEach {
-                            val singleMessage = it.getValue(Message::class.java)
+                        snapshot.children.forEach { data ->
+                            val singleMessage = data.getValue(Message::class.java)
                             listMessages = listMessages + singleMessage!!
                         }
                         _viewState.value?.isError = Error.NONE
@@ -77,6 +101,7 @@ class MessagesViewModel @Inject constructor() : ViewModel(), UIEvent<MessagesEve
                     }
 
                 })
+            }
         }
         _viewState.value?.isLoading = false
     }

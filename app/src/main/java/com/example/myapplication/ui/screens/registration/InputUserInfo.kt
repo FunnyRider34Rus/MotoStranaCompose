@@ -154,13 +154,15 @@ fun reAuthentication(navController: NavController, userPhoneNumber: String) {
 fun saveUserInfoToDB(userFirstName: String, userSecondName: String, phoneNumber: String) {
     val fullname = "$userFirstName $userSecondName"
     val currentUser = AUTH.currentUser?.uid
-    REMOTE_DATABASE.child(NODE_PHONES).child(phoneNumber).setValue(currentUser)
+    REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_ID)
+        .setValue(currentUser)
     REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_FULLNAME)
         .setValue(fullname)
     REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_USERNAME)
         .setValue(currentUser)
     REMOTE_DATABASE.child(NODE_USERS).child(currentUser.toString()).child(CHILD_PHONE)
         .setValue(phoneNumber)
+    REMOTE_DATABASE.child(NODE_PHONES).child(phoneNumber).setValue(currentUser)
 }
 
 @Preview(showBackground = true)
