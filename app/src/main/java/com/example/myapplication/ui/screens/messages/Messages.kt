@@ -131,13 +131,15 @@ fun Messages(
                         }
                     }
                     LazyColumn(
-                        modifier = Modifier.constrainAs(recycler) {
+                        modifier = Modifier
+                            .constrainAs(recycler) {
                             top.linkTo(tabs.bottom)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                             bottom.linkTo(divider.top)
                             height = Dimension.fillToConstraints
-                        },
+                        }
+                            .background(golbat_5),
                         state = scrollState
                     ) {
                         items(messages.size) { item ->
@@ -154,9 +156,7 @@ fun Messages(
                                         .fillParentMaxWidth(),
                                     contentAlignment = Alignment.BottomEnd,
                                     content = {
-                                        Card(
-                                            backgroundColor = golbat_5
-                                        ) {
+                                        Card {
                                             ConstraintLayout {
                                                 val (header, image, body, footer) = createRefs()
                                                 createVerticalChain(
@@ -169,15 +169,11 @@ fun Messages(
                                                 Text(
                                                     text = messages[item]?.fullname.toString(),
                                                     modifier = Modifier
-                                                        .padding(
-                                                            start = 8.dp,
-                                                            top = 8.dp,
-                                                            end = 8.dp
-                                                        )
                                                         .constrainAs(header) {
                                                             top.linkTo(parent.top)
                                                             start.linkTo(parent.start)
-                                                        },
+                                                        }
+                                                        .padding(8.dp),
                                                     color = buldasaur_140,
                                                     textAlign = TextAlign.Start,
                                                     style = MaterialTheme.typography.h4
@@ -187,10 +183,11 @@ fun Messages(
                                                         model = messages[item]?.mediaUrl,
                                                         contentDescription = null,
                                                         modifier = Modifier
-                                                            .padding(8.dp)
+                                                            .padding(horizontal = 8.dp)
                                                             .constrainAs(image) {
                                                                 top.linkTo(header.bottom)
-                                                                start.linkTo(header.start)
+                                                                start.linkTo(parent.start)
+                                                                end.linkTo(parent.end)
                                                             }
                                                             .heightIn(min = 0.dp, max = 180.dp)
                                                             .widthIn(min = 0.dp, max = 132.dp)
@@ -210,15 +207,12 @@ fun Messages(
                                                     Text(
                                                         text = messages[item]?.text.toString(),
                                                         modifier = Modifier
-                                                            .padding(
-                                                                start = 8.dp,
-                                                                end = 8.dp,
-                                                                bottom = 8.dp
-                                                            )
+                                                            .padding(horizontal = 8.dp)
                                                             .constrainAs(body) {
                                                                 top.linkTo(image.bottom)
                                                                 start.linkTo(parent.start)
                                                                 bottom.linkTo(footer.top)
+                                                                end.linkTo(parent.end)
                                                             },
                                                         style = MaterialTheme.typography.h2
                                                     )
@@ -230,7 +224,7 @@ fun Messages(
                                                             bottom.linkTo(parent.bottom)
                                                             end.linkTo(parent.end)
                                                         }
-                                                        .padding(4.dp),
+                                                        .padding(horizontal = 8.dp, vertical = 4.dp),
                                                     style = MaterialTheme.typography.h5
                                                 )
                                             }
@@ -260,10 +254,8 @@ fun Messages(
                                                 alignment = Alignment.Center,
                                                 contentScale = ContentScale.Fit
                                             )
-
                                             Card(
                                                 modifier = Modifier.padding(start = 8.dp),
-                                                backgroundColor = golbat_5
                                             ) {
                                                 ConstraintLayout {
                                                     val (header, image, body, footer) = createRefs()
@@ -277,15 +269,11 @@ fun Messages(
                                                     Text(
                                                         text = messages[item]?.fullname.toString(),
                                                         modifier = Modifier
-                                                            .padding(
-                                                                start = 8.dp,
-                                                                top = 8.dp,
-                                                                end = 8.dp
-                                                            )
                                                             .constrainAs(header) {
                                                                 top.linkTo(parent.top)
                                                                 start.linkTo(parent.start)
-                                                            },
+                                                            }
+                                                            .padding(8.dp),
                                                         color = krabby_140,
                                                         textAlign = TextAlign.Start,
                                                         style = MaterialTheme.typography.h4
@@ -298,7 +286,8 @@ fun Messages(
                                                                 .padding(8.dp)
                                                                 .constrainAs(image) {
                                                                     top.linkTo(header.bottom)
-                                                                    start.linkTo(header.start)
+                                                                    start.linkTo(parent.start)
+                                                                    end.linkTo(parent.end)
                                                                 }
                                                                 .heightIn(
                                                                     min = 0.dp,
@@ -324,15 +313,12 @@ fun Messages(
                                                         Text(
                                                             text = messages[item]?.text.toString(),
                                                             modifier = Modifier
-                                                                .padding(
-                                                                    start = 8.dp,
-                                                                    end = 8.dp,
-                                                                    bottom = 8.dp
-                                                                )
+                                                                .padding(horizontal = 8.dp)
                                                                 .constrainAs(body) {
                                                                     top.linkTo(image.bottom)
                                                                     start.linkTo(parent.start)
                                                                     bottom.linkTo(footer.top)
+                                                                    end.linkTo(parent.end)
                                                                 },
                                                             style = MaterialTheme.typography.h2
                                                         )
