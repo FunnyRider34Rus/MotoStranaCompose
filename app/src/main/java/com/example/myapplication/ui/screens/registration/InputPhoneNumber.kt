@@ -3,6 +3,7 @@ package com.example.myapplication.ui.screens.registration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,7 +34,6 @@ import com.example.myapplication.ui.theme.golbat_10
 fun InputPhoneNumber(navController: NavController) {
 
     var phone by rememberSaveable { mutableStateOf("") }
-    var userPhoneNumber: String
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -90,7 +91,13 @@ fun InputPhoneNumber(navController: NavController) {
                         style = MaterialTheme.typography.h3
                     )
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(onNext = {
+                    goToScreenForInputCode(navController, phone)
+                }),
                 singleLine = true,
                 shape = MaterialTheme.shapes.large,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -103,12 +110,7 @@ fun InputPhoneNumber(navController: NavController) {
         }
         Button(
             onClick = {
-                phone = phone.filter { it.isDigit() }
-                if (phone.length == 10) {
-                    userPhoneNumber = "+7$phone"
-                    startPhoneNumberVerification(userPhoneNumber)
-                    navController.navigate(route = AuthScreen.InputSMSCode.route + "/$userPhoneNumber")
-                }
+                goToScreenForInputCode(navController, phone)
             },
             modifier = Modifier
                 .padding(top = 72.dp)
@@ -121,6 +123,15 @@ fun InputPhoneNumber(navController: NavController) {
                 style = MaterialTheme.typography.button
             )
         }
+    }
+}
+
+fun goToScreenForInputCode(navController: NavController, phone: String) {
+    val mPhone = phone.filter { it.isDigit() }
+    if (mPhone.length == 10) {
+        val userPhoneNumber = "+7$mPhone"
+        startPhoneNumberVerification(userPhoneNumber)
+        navController.navigate(route = AuthScreen.InputSMSCode.route + "/$userPhoneNumber")
     }
 }
 

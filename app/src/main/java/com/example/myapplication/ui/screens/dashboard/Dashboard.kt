@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.screens.dashboard
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -71,6 +72,7 @@ fun Dashboard(
             scaffoldState = scaffoldState,
             bottomBar = { BottomNavigationMenu(navController = navController) },
         ) { paddingValues ->
+            if (isLoading) ShowLoading()
             Column(
                 modifier = Modifier.padding(paddingValues)
             ) {
@@ -98,7 +100,8 @@ fun Dashboard(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(),
+                        .wrapContentHeight()
+                        .background(golbat_5),
                     state = scrollState,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -115,7 +118,6 @@ fun Dashboard(
                                 navController.navigate(DetailScreen.Detail.route)
                             },
                             modifier = Modifier.padding(8.dp),
-                            backgroundColor = golbat_5,
                             shape = RoundedCornerShape(16.dp)
                         ) {
                             Column {
@@ -154,7 +156,6 @@ fun Dashboard(
                     }
                 }
             }
-            if (isLoading) ShowLoading()
         }
     }
 }

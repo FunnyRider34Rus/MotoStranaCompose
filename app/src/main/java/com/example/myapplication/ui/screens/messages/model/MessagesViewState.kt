@@ -6,7 +6,7 @@ import com.example.myapplication.models.Message
 
 @Stable
 data class MessagesViewState(
-    var isLoading: Boolean = false,
+    var isLoading: Boolean = true,
     var isFullMode: Boolean = false,
     var imageUri: String? = "",
     var isError: Error = Error.NONE,

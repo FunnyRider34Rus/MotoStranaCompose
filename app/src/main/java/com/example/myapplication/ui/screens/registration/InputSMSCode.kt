@@ -2,6 +2,7 @@ package com.example.myapplication.ui.screens.registration
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -76,7 +78,12 @@ fun InputSMSCode(
                     text = stringResource(R.string.input_sms_code_hint)
                 )
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = {
+                goToScreenForInputUserInfo(navController, code, userPhoneNumber)
+            }),
             singleLine = true,
             shape = MaterialTheme.shapes.large,
             colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -88,11 +95,7 @@ fun InputSMSCode(
         )
         Button(
             onClick = {
-                code = code.filter { it.isDigit() }
-                if (code.length == 6) {
-                    verifyPhoneNumberWithCode(code)
-                    navController.navigate(route =  AuthScreen.InputUserInfo.route +"/$userPhoneNumber")
-                }
+                goToScreenForInputUserInfo(navController, code, userPhoneNumber)
             },
             modifier = Modifier
                 .padding(top = 72.dp)
@@ -105,6 +108,14 @@ fun InputSMSCode(
                 style = MaterialTheme.typography.button
             )
         }
+    }
+}
+
+fun goToScreenForInputUserInfo(navController: NavController, code: String, userPhoneNumber: String) {
+    val mCode = code.filter { it.isDigit() }
+    if (mCode.length == 6) {
+        verifyPhoneNumberWithCode(mCode)
+        navController.navigate(route =  AuthScreen.InputUserInfo.route +"/$userPhoneNumber")
     }
 }
 
