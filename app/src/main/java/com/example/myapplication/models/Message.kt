@@ -5,6 +5,7 @@ data class Message(
     val fullname: String = "",
     val avatar: String = "",
     val text: String = "",
+    val timestamp: String = "",
     val date: String = "",
     val time: String = "",
     val mediaUrl: String = "",

@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.screens.messages.model
 
-import android.net.Uri
 import androidx.compose.runtime.Stable
 import com.example.myapplication.common.Error
 import com.example.myapplication.models.Message

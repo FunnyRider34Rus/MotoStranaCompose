@@ -22,6 +22,7 @@ import coil.compose.AsyncImage
 import com.example.myapplication.R
 import com.example.myapplication.common.AnimatedIndicator
 import com.example.myapplication.common.ShowLoading
+import com.example.myapplication.common.initUser
 import com.example.myapplication.database.firebase.AUTH
 import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.navigation.DetailScreen
@@ -55,6 +56,8 @@ fun Dashboard(
         //Проверяем авторизацию
         if (AUTH.currentUser?.uid == null) {
             navController.navigate(AuthScreen.Welcome.route)
+        } else {
+            initUser()
         }
     }
 

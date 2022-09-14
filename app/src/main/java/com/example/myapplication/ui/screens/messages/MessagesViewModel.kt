@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import java.sql.Date
 import java.sql.Time
 import java.sql.Timestamp
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,7 +62,10 @@ class MessagesViewModel @Inject constructor() : ViewModel(), UIEvent<MessagesEve
     }
 
     private fun writeImage(location: String?, mediaUrl: Uri?) {
-        val path = location?.let { REMOTE_STORAGE.child(FOLDER_CONTENT_IMAGE).child(it).child(USER.id).child(UUID.randomUUID().toString()) }
+        val path = location?.let {
+            REMOTE_STORAGE.child(FOLDER_CONTENT_IMAGE).child(it).child(USER.id)
+                .child(UUID.randomUUID().toString())
+        }
         var mediaUrlFromBase: String
         if (mediaUrl != null) {
             path?.putFile(mediaUrl)?.addOnCompleteListener {
@@ -79,7 +82,8 @@ class MessagesViewModel @Inject constructor() : ViewModel(), UIEvent<MessagesEve
                             mediaUrl = mediaUrlFromBase
                         )
                         location.let {
-                            REMOTE_DATABASE.child(NODE_COMMON_MESSAGES).child(it).push().setValue(message)
+                            REMOTE_DATABASE.child(NODE_COMMON_MESSAGES).child(it).push()
+                                .setValue(message)
                         }
                     }
                 }
@@ -91,22 +95,23 @@ class MessagesViewModel @Inject constructor() : ViewModel(), UIEvent<MessagesEve
         _viewState.value?.isLoading = true
         viewModelScope.launch(Dispatchers.IO) {
             var listMessages: List<Message> = listOf()
-            location?.let { REMOTE_DATABASE.child(NODE_COMMON_MESSAGES).child(it).orderByChild("stamp")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        snapshot.children.forEach { data ->
-                            val singleMessage = data.getValue(Message::class.java)
-                            listMessages = listMessages + singleMessage!!
+            location?.let {
+                REMOTE_DATABASE.child(NODE_COMMON_MESSAGES).child(it).orderByChild("stamp")
+                    .addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            snapshot.children.forEach { data ->
+                                val singleMessage = data.getValue(Message::class.java)
+                                listMessages = listMessages + singleMessage!!
+                            }
+                            _viewState.value?.isError = Error.NONE
+                            _viewState.postValue(_viewState.value?.copy(messages = listMessages))
                         }
-                        _viewState.value?.isError = Error.NONE
-                        _viewState.postValue(_viewState.value?.copy(messages = listMessages))
-                    }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        _viewState.value?.isError = Error.DB_ERROR
-                    }
+                        override fun onCancelled(error: DatabaseError) {
+                            _viewState.value?.isError = Error.DB_ERROR
+                        }
 
-                })
+                    })
             }
         }
         _viewState.value?.isLoading = false

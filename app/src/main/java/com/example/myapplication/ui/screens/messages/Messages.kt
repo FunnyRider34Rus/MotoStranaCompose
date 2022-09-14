@@ -24,11 +24,13 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.myapplication.App.Companion.cityName
 import com.example.myapplication.App.Companion.stateName
@@ -126,6 +128,10 @@ fun Messages(
                     verticalArrangement = Arrangement.Bottom
                 ) {
                     items(messages.size) { item ->
+                        //Скролл до нового сообщения
+                        LaunchedEffect(messages.size) {
+                            scrollState.animateScrollToItem(messages.size - 1)
+                        }
                         //Отображение сообщений текущего пользователя
                         if (messages[item]?.uid == AUTH.currentUser?.uid) {
                             //Сообщения текущего пользователя
@@ -417,6 +423,14 @@ fun Messages(
             //Экран загрузки
             if (isLoading) ShowLoading()
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MessagesPreview() {
+    MyApplicationTheme {
+        Messages(navController = rememberNavController(), viewModel = MessagesViewModel())
     }
 }
 
