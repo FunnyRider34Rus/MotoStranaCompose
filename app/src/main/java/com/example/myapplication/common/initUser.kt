@@ -12,6 +12,7 @@ import com.google.firebase.database.ValueEventListener
 fun initUser() {
     /* Функция высшего порядка, инициализация текущей модели USER */
     val currentUID = AUTH.currentUser?.uid
+    if (currentUID != null) {
     REMOTE_DATABASE.child(NODE_USERS).child(currentUID.toString())
         .addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -23,4 +24,5 @@ fun initUser() {
 
             }
         })
+    }
 }

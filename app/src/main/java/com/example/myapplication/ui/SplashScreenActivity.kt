@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.common.initLocation
 import com.example.myapplication.common.initUser
 import com.example.myapplication.common.utils.ConnectivityStatus
-import com.example.myapplication.database.firebase.AUTH
 import com.example.myapplication.database.firebase.initFirebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -25,11 +24,10 @@ class SplashScreenActivity : ComponentActivity() {
             splashScreen.setKeepOnScreenCondition { true }
         }
 
-        initFirebase()
-
         setContent {
+            initFirebase()
             initLocation()
-            if (AUTH.currentUser?.uid != null) { initUser() }
+            initUser()
             ConnectivityStatus()
 
             lifecycleScope.launchWhenCreated {

@@ -212,7 +212,6 @@ fun Messages(
                                                                 top.linkTo(image.bottom)
                                                                 start.linkTo(parent.start)
                                                                 bottom.linkTo(footer.top)
-                                                                end.linkTo(parent.end)
                                                             },
                                                         style = MaterialTheme.typography.h2
                                                     )
@@ -318,7 +317,6 @@ fun Messages(
                                                                     top.linkTo(image.bottom)
                                                                     start.linkTo(parent.start)
                                                                     bottom.linkTo(footer.top)
-                                                                    end.linkTo(parent.end)
                                                                 },
                                                             style = MaterialTheme.typography.h2
                                                         )

@@ -140,7 +140,7 @@ fun reAuthentication(navController: NavController, userPhoneNumber: String) {
     REMOTE_DATABASE.child(NODE_PHONES).addListenerForSingleValueEvent(object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             if (snapshot.hasChild(userPhoneNumber)) {
-                Thread.sleep(600L)
+                //Thread.sleep(600L)
                 navController.navigate(BottomNavItem.Dashboard.route)
             }
         }
