@@ -140,7 +140,8 @@ fun Messages(
                             height = Dimension.fillToConstraints
                         }
                             .background(golbat_5),
-                        state = scrollState
+                        state = scrollState,
+                        verticalArrangement = Arrangement.Bottom
                     ) {
                         items(messages.size) { item ->
                             //Скролл до нового сообщения
