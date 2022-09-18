@@ -10,18 +10,16 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 fun initUser() {
-    /* Функция высшего порядка, инициализация текущей модели USER */
     val currentUID = AUTH.currentUser?.uid
     if (currentUID != null) {
     REMOTE_DATABASE.child(NODE_USERS).child(currentUID.toString())
-        .addValueEventListener(object : ValueEventListener {
+        .addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 USER =
-                    snapshot.getValue(User::class.java)
-                        ?: User()
+                    snapshot.getValue(User::class.java) ?: User()
             }
-            override fun onCancelled(error: DatabaseError) {
 
+            override fun onCancelled(error: DatabaseError) {
             }
         })
     }

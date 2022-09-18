@@ -27,7 +27,7 @@ fun startPhoneNumberVerification(phoneNumber: String) {
     // [END start_phone_auth]
 }
 
-fun verifyPhoneNumberWithCode(code: String) {
+suspend fun verifyPhoneNumberWithCode(code: String) {
     // [START verify_with_code]
     val credential = PhoneAuthProvider.getCredential(storedVerificationId, code)
     signInWithPhoneAuthCredential(credential)

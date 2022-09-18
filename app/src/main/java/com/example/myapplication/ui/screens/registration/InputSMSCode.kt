@@ -5,11 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -27,6 +24,7 @@ import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_10
+import kotlinx.coroutines.*
 
 @Composable
 fun InputSMSCode(
@@ -36,9 +34,10 @@ fun InputSMSCode(
 
     var code by rememberSaveable { mutableStateOf("") }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = 24.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp)
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_button_back),
@@ -80,7 +79,8 @@ fun InputSMSCode(
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next),
+                imeAction = ImeAction.Next
+            ),
             keyboardActions = KeyboardActions(onNext = {
                 goToScreenForInputUserInfo(navController, code, userPhoneNumber)
             }),
@@ -111,11 +111,20 @@ fun InputSMSCode(
     }
 }
 
-fun goToScreenForInputUserInfo(navController: NavController, code: String, userPhoneNumber: String) {
+fun goToScreenForInputUserInfo(
+    navController: NavController,
+    code: String,
+    userPhoneNumber: String
+) = runBlocking {
     val mCode = code.filter { it.isDigit() }
     if (mCode.length == 6) {
-        verifyPhoneNumberWithCode(mCode)
-        navController.navigate(route =  AuthScreen.InputUserInfo.route +"/$userPhoneNumber")
+        launch {
+            verifyPhoneNumberWithCode(mCode)
+        }
+        launch {
+            delay(600)
+            navController.navigate(route = AuthScreen.InputUserInfo.route + "/$userPhoneNumber")
+        }
     }
 }
 

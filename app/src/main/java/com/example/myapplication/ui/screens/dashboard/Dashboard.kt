@@ -23,6 +23,7 @@ import coil.compose.AsyncImage
 import com.example.myapplication.R
 import com.example.myapplication.common.AnimatedIndicator
 import com.example.myapplication.common.ShowLoading
+import com.example.myapplication.common.initLocation
 import com.example.myapplication.database.firebase.AUTH
 import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.navigation.DetailScreen
@@ -36,6 +37,9 @@ import com.example.myapplication.ui.theme.*
 fun Dashboard(
     navController: NavController, viewModel: DashboardViewModel = viewModel()
 ) {
+
+    initLocation()
+
     //state
     val viewState = viewModel.viewState.observeAsState(DashboardViewState())
     val scaffoldState = rememberScaffoldState()
