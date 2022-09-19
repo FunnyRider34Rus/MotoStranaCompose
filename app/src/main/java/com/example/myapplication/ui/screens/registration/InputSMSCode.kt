@@ -1,5 +1,8 @@
 package com.example.myapplication.ui.screens.registration
 
+import android.content.Context
+import android.content.Intent
+import android.content.Intent.getIntent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -9,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
@@ -16,10 +20,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
 import com.example.myapplication.common.utils.verifyPhoneNumberWithCode
+import com.example.myapplication.ui.ACTIVITY_CONTEXT
+import com.example.myapplication.ui.SplashScreenActivity
 import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black

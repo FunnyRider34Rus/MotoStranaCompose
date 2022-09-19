@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.screens.registration
 
+import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,14 +19,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
 import com.example.myapplication.database.firebase.*
+import com.example.myapplication.ui.ACTIVITY_CONTEXT
+import com.example.myapplication.ui.SplashScreenActivity
 import com.example.myapplication.ui.navigation.AuthScreen
 import com.example.myapplication.ui.navigation.BottomNavItem
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.black
 import com.example.myapplication.ui.theme.golbat_10
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 
 @Composable
 fun InputUserInfo(
@@ -37,9 +37,12 @@ fun InputUserInfo(
     var userSecondName by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(null) {
-        if (AUTH.currentUser?.uid != null) navController.navigate(BottomNavItem.Dashboard.route)
-        //reAuthentication(navController, userPhoneNumber)
-    }
+        //Перезапускаем активити для реинициализации глобальных переменных
+        if (AUTH.currentUser?.uid != null) {
+           ACTIVITY_CONTEXT.finish()
+           ACTIVITY_CONTEXT.startActivity(Intent(ACTIVITY_CONTEXT, SplashScreenActivity::class.java))
+       }
+   }
 
     Column(
         modifier = Modifier
@@ -135,20 +138,6 @@ fun InputUserInfo(
             )
         }
     }
-}
-
-fun reAuthentication(navController: NavController, userPhoneNumber: String) {
-    REMOTE_DATABASE.child(NODE_PHONES).addListenerForSingleValueEvent(object : ValueEventListener {
-        override fun onDataChange(snapshot: DataSnapshot) {
-            if (snapshot.hasChild(userPhoneNumber)) {
-                navController.navigate(BottomNavItem.Dashboard.route)
-            }
-        }
-
-        override fun onCancelled(error: DatabaseError) {
-
-        }
-    })
 }
 
 fun saveUserInfoToDB(userFirstName: String, userSecondName: String, phoneNumber: String) {
