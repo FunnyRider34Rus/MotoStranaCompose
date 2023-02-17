@@ -13,15 +13,10 @@ class AuthViewModel : ViewModel(), EventHandler<AuthEvent> {
     override fun obtainEvent(event: AuthEvent) {
         when (event) {
             AuthEvent.CheckBoxClick -> checkBoxStateChange()
-            AuthEvent.AuthButtonClick -> signIn()
         }
     }
 
     private fun checkBoxStateChange() {
         _viewState.value = _viewState.value.copy(isCheck = !_viewState.value.isCheck)
-    }
-
-    private fun signIn() {
-        _viewState.value = _viewState.value.copy(isClick = !_viewState.value.isClick)
     }
 }

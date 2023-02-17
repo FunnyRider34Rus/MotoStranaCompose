@@ -53,6 +53,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("com.google.android.gms:play-services-auth:20.4.1")
 
     //Navigation
     val nav_version = "2.5.3"
@@ -62,8 +63,12 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:31.2.2"))
     implementation("com.google.firebase:firebase-auth-ktx")
 
+    //Google Fonts
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.3.3")
+
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
 
     //Tests
     testImplementation("junit:junit:4.13.2")
