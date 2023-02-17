@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">MotoStranaCompose</string>
+    <string name="app_name">MotoStrana</string>
+    <string name="auth_title">Лицензия и условия пользования</string>
+    <string name="auth_body">Данное программное обеспечение распрастраняется по принципу \"как есть\". Автор не несет ответственности за потерю данных, либо другие проблемы, которые могут быть связаны с использованием данного приложения.\nДанные, к которым получает доступ приложение, не сохраняются и не отправляются тртьим лицам, за исключением компании Google Inc., так как приложение использует сервисы данной компании.\nПравовообладателями на торговые знаки Google Maps, Google Play Service, Google Firebase является компания Google.</string>
+    <string name="auth_checkbox_text">Я прочитал лицензионное соглашение и согласен с условиями пользования</string>
+    <string name="auth_button">Войти</string>
 </resources>
