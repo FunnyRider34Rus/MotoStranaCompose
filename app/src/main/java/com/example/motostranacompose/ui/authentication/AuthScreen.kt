@@ -1,6 +1,7 @@
 package com.example.motostranacompose.ui.authentication
 
 import android.content.Intent
+import android.util.Log
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
@@ -27,11 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -41,7 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.motostranacompose.R
@@ -58,23 +55,26 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthScreen(navController: NavController, authViewModel: AuthViewModel) {
+fun AuthScreen(navController: NavController, authViewModel: AuthViewModel = hiltViewModel()) {
 
     val viewState = authViewModel.viewState.collectAsState(AuthViewState())
     val appBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val textScrollState = rememberScrollState()
-
-    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
-    val launcher = rememberFirebaseAuthLauncher(
-        onAuthComplete = { result ->
-            user = result.user
-        },
-        onAuthError = {
-            user = null
-        }
-    )
     val token = stringResource(R.string.default_web_client_id)
     val context = LocalContext.current
+    val launcher = rememberFirebaseAuthLauncher(
+        onAuthComplete = { _ ->
+
+        },
+        onAuthError = { e ->
+            e.localizedMessage?.let { message -> Log.d("Auth", message) }
+        }
+    )
+
+    if (authViewModel.isUserAuthorized()) {
+        TODO("Go to next screen")
+    }
+
     with(viewState.value) {
         Scaffold(
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -174,7 +174,7 @@ fun rememberFirebaseAuthLauncher(
 fun AuthPreview() {
     MotoStranaComposeTheme {
         val navController = rememberNavController()
-        val authViewModel: AuthViewModel = viewModel()
+        val authViewModel: AuthViewModel = hiltViewModel()
         AuthScreen(navController, authViewModel)
     }
 }

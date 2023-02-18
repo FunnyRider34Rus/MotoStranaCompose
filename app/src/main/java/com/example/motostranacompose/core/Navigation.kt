@@ -12,8 +12,8 @@ import com.example.motostranacompose.ui.authentication.AuthViewModel
 fun Navigation() {
     val navController = rememberNavController()
     val authViewModel: AuthViewModel = viewModel()
-    NavHost(navController = navController, startDestination = Screens.auth.route) {
-        composable(route = Screens.auth.route) {
+    NavHost(navController = navController, startDestination = Screen.auth.route) {
+        composable(route = Screen.auth.route) {
             AuthScreen(navController, authViewModel)
         }
     }
