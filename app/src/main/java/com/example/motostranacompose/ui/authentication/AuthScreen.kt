@@ -42,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.motostranacompose.R
+import com.example.motostranacompose.ui.navigation.Graph
 import com.example.motostranacompose.ui.theme.MotoStranaComposeTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -55,25 +56,29 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthScreen(navController: NavController, authViewModel: AuthViewModel = hiltViewModel()) {
+fun AuthScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel = hiltViewModel()
+) {
 
     val viewState = authViewModel.viewState.collectAsState(AuthViewState())
     val appBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val textScrollState = rememberScrollState()
     val token = stringResource(R.string.default_web_client_id)
     val context = LocalContext.current
+
+    if (viewState.value.isUserAuth) {
+        goToMainScreen(navController)
+    }
+
     val launcher = rememberFirebaseAuthLauncher(
         onAuthComplete = { _ ->
-
+            goToMainScreen(navController)
         },
         onAuthError = { e ->
             e.localizedMessage?.let { message -> Log.d("Auth", message) }
         }
     )
-
-    if (authViewModel.isUserAuthorized()) {
-        TODO("Go to next screen")
-    }
 
     with(viewState.value) {
         Scaffold(
@@ -126,6 +131,7 @@ fun AuthScreen(navController: NavController, authViewModel: AuthViewModel = hilt
                                         .build()
                                 val googleSignInClient = GoogleSignIn.getClient(context, gso)
                                 launcher.launch(googleSignInClient.signInIntent)
+                                authViewModel.obtainEvent(AuthEvent.AuthButtonClick)
                             },
                             modifier = Modifier
                                 .fillMaxWidth(),
@@ -145,6 +151,10 @@ fun AuthScreen(navController: NavController, authViewModel: AuthViewModel = hilt
             }
         )
     }
+}
+
+fun goToMainScreen(navController: NavController) {
+    navController.navigate(Graph.MAIN)
 }
 
 @Composable

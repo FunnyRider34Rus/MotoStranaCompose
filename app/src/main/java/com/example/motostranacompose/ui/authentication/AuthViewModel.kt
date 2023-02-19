@@ -14,9 +14,14 @@ class AuthViewModel @Inject constructor(private val accountService: AccountServi
     private val _viewState = MutableStateFlow(AuthViewState())
     val viewState: StateFlow<AuthViewState> = _viewState
 
+    init {
+        _viewState.value = _viewState.value.copy(isUserAuth = accountService.hasUser)
+    }
+
     override fun obtainEvent(event: AuthEvent) {
         when (event) {
             AuthEvent.CheckBoxClick -> checkBoxStateChange()
+            AuthEvent.AuthButtonClick -> isUserAuthorized()
         }
     }
 
@@ -24,7 +29,7 @@ class AuthViewModel @Inject constructor(private val accountService: AccountServi
         _viewState.value = _viewState.value.copy(isCheck = !_viewState.value.isCheck)
     }
 
-    fun isUserAuthorized() : Boolean {
-        return accountService.hasUser
+    private fun isUserAuthorized() {
+        _viewState.value = _viewState.value.copy(isUserAuth = !_viewState.value.isUserAuth)
     }
 }
