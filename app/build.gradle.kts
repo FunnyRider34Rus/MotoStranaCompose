@@ -49,17 +49,25 @@ android {
 dependencies {
 
     //Core
+    val lifecycle_version="2.5.1"
+    val runtime_version="1.3.3"
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.activity:activity-compose:1.6.1")
-    implementation("androidx.compose.runtime:runtime:1.3.3")
+    implementation("androidx.compose.runtime:runtime:$runtime_version")
+    implementation("androidx.compose.runtime:runtime-livedata:$runtime_version")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01")
     implementation(platform("androidx.compose:compose-bom:2022.10.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("com.google.android.gms:play-services-auth:20.4.1")
-    implementation("com.google.dagger:hilt-android:2.44.2")
-    kapt("com.google.dagger:hilt-compiler:2.44.2")
+
+    //Hilt
+    val hilt_version="2.45"
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    kapt("com.google.dagger:hilt-compiler:$hilt_version")
 
     //Navigation
     val nav_version = "2.5.3"
@@ -80,8 +88,10 @@ dependencies {
     implementation("androidx.compose.ui:ui-text-google-fonts:1.3.3")
 
     //Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
+    val coroutines_version="1.6.4"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version")
 
     //Tests
     testImplementation("junit:junit:4.13.2")

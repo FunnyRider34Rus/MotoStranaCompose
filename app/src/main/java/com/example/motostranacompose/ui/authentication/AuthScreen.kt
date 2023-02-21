@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,7 +28,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,10 +39,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.motostranacompose.R
-import com.example.motostranacompose.ui.navigation.Graph
 import com.example.motostranacompose.ui.theme.MotoStranaComposeTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -58,10 +58,10 @@ import kotlinx.coroutines.tasks.await
 @Composable
 fun AuthScreen(
     navController: NavController,
-    authViewModel: AuthViewModel = hiltViewModel()
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
 
-    val viewState = authViewModel.viewState.collectAsState(AuthViewState())
+    val viewState = viewModel.viewState.collectAsStateWithLifecycle(AuthViewState())
     val appBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val textScrollState = rememberScrollState()
     val token = stringResource(R.string.default_web_client_id)
@@ -82,7 +82,9 @@ fun AuthScreen(
 
     with(viewState.value) {
         Scaffold(
-            modifier = Modifier.padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
             topBar = {
                 CenterAlignedTopAppBar(
                     title = {
@@ -116,7 +118,7 @@ fun AuthScreen(
                         Row(modifier = Modifier.padding(vertical = 16.dp)) {
                             Checkbox(
                                 checked = isCheck,
-                                onCheckedChange = { authViewModel.obtainEvent(AuthEvent.CheckBoxClick) })
+                                onCheckedChange = { viewModel.obtainEvent(AuthEvent.CheckBoxClick) })
                             Text(
                                 text = stringResource(id = R.string.auth_checkbox_text),
                                 style = MaterialTheme.typography.bodySmall
@@ -131,7 +133,7 @@ fun AuthScreen(
                                         .build()
                                 val googleSignInClient = GoogleSignIn.getClient(context, gso)
                                 launcher.launch(googleSignInClient.signInIntent)
-                                authViewModel.obtainEvent(AuthEvent.AuthButtonClick)
+                                viewModel.obtainEvent(AuthEvent.AuthButtonClick)
                             },
                             modifier = Modifier
                                 .fillMaxWidth(),
@@ -154,7 +156,7 @@ fun AuthScreen(
 }
 
 fun goToMainScreen(navController: NavController) {
-    navController.navigate(Graph.MAIN)
+
 }
 
 @Composable
