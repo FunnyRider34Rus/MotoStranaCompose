@@ -16,6 +16,7 @@ Chat and find fellow travelers. Plan travel routes. Share posts. Keep records of
 
 - [Jetpack Compose](https://developer.android.com/jetpack/compose)
 - [Kotlin](https://kotlinlang.org) - %100 Kotlin
+- [Flow](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/)
 - [Gradle Kotlin DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html)
 - [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) for asynchronous operations
 - [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
@@ -26,7 +27,7 @@ Chat and find fellow travelers. Plan travel routes. Share posts. Keep records of
 ## License
 
 ```
-Copyright 2023 KsArT (https://github.com/KsArT-IT/).
+Copyright 2023 FunnyRider34Rus (https://github.com/FunnyRider34Rus).
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
