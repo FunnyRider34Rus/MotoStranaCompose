@@ -4,4 +4,5 @@
     <string name="auth_body">Данное программное обеспечение распрастраняется по принципу \"как есть\". Автор не несет ответственности за любые проблемы, которые могут возникнуть при использовании данного приложения.\nДанные, к которым получает доступ приложение, не отправляются третьим лицам, за исключением компании Google Inc., так как приложение использует сервисы данной компании.\nПравовообладателями на торговые знаки и марки Google Maps, Google Play Service, Google Firebase является компания Google.</string>
     <string name="auth_checkbox_text">Я прочитал лицензионное соглашение и согласен с условиями пользования</string>
     <string name="auth_button">Войти</string>
+    <string name="web_client_id">81028459059-5ap37sjk3sqr9qaejntq92hjt3pkuhfu.apps.googleusercontent.com</string>
 </resources>

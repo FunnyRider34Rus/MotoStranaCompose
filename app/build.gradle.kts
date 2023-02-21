@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.example.motostranacompose"
-    compileSdk = 33
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.example.motostranacompose"
-        minSdk = 22
-        targetSdk = 33
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
@@ -30,18 +30,18 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
     buildFeatures {
         viewBinding = true
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
 
     }
 }
@@ -51,12 +51,11 @@ dependencies {
     //Core
     val lifecycle_version="2.5.1"
     val runtime_version="1.3.3"
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.activity:activity-compose:1.6.1")
-    implementation("androidx.compose.runtime:runtime:$runtime_version")
-    implementation("androidx.compose.runtime:runtime-livedata:$runtime_version")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01")
+    //implementation("androidx.core:core-ktx:1.9.0")
+    //implementation("androidx.activity:activity-compose:1.6.1")
+    implementation(libs.composeRuntime)
+    implementation(libs.composeRuntimeLivedata)
+    implementation(libs.lifecycleCompose)
     implementation(platform("androidx.compose:compose-bom:2022.10.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
@@ -84,6 +83,9 @@ dependencies {
     implementation("com.google.firebase:firebase-appcheck-playintegrity")
     //implementation("com.google.firebase:firebase-crashlytics-ktx")
 
+    //Play Services Auth
+    implementation("com.google.android.gms:play-services-auth")
+    
     //Google Fonts
     implementation("androidx.compose.ui:ui-text-google-fonts:1.3.3")
 
@@ -97,7 +99,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
+    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation ("androidx.compose.ui:ui-test-manifest")
