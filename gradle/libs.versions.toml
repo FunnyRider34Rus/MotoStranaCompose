@@ -8,26 +8,51 @@ composeCompiler = "1.4.2"
 
 agp = "8.1.0-alpha06"
 kotlin = "1.8.10"
-lifecycle = "2.5.1"
-lifecycleCompose = "2.6.0-beta01"
+composeBOM = "2022.10.00"
 runtime = "1.3.3"
 hilt="2.45"
-hiltNavigation = "1.0.0"
+navigationHilt = "1.0.0"
 navigation = "2.5.3"
 coroutines = "1.6.4"
 google_fonts = "1.3.3"
 firebase_bom = "31.2.2"
 gms = "4.3.15"
-
+gmsAUTH = "20.4.1"
+junit = "4.13.2"
 
 [libraries]
-gradleKotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin"}
-gradleHilt = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt"}
-gradleGMS = { module = "com.google.gms:google-services", version.ref = "gms"}
+gradleKotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+gradleHilt = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
+gradleGMS = { module = "com.google.gms:google-services", version.ref = "gms" }
 
-composeRuntime = { module = "androidx.compose.runtime:runtime", version.ref = "runtime" }
-composeRuntimeLivedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtime" }
-lifecycleCompose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleCompose"}
+composeBOM = { module = "androidx.compose:compose-bom", version.ref = "composeBOM" }
+composeUI = { module = "androidx.compose.ui:ui", version = "" }
+composePreview = { module = "androidx.compose.ui:ui-tooling-preview", version = "" }
+composeM3 = { module = "androidx.compose.material3:material3", version = "" }
+
+firebaseBOM = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+firebaseAUTH = { module = "com.google.firebase:firebase-auth-ktx", version = "" }
+firebaseRealtimeDatabase = { module = "com.google.firebase:firebase-database-ktx", version = "" }
+firebaseFirestore = { module = "com.google.firebase:firebase-firestore-ktx", version = "" }
+firebaseStorage = { module = "com.google.firebase:firebase-storage-ktx", version = "" }
+firebaseCrashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx", version = "" }
+playservicesAUTH = { module = "com.google.android.gms:play-services-auth", version.ref = "gmsAUTH" }
+
+hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hiltKapt = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+
+navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+navigationHilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "navigationHilt"}
+
+googleFont = { module = "androidx.compose.ui:ui-text-google-fonts", version.ref = "google_fonts" }
+
+coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutinesPlayservices = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
+
+testJUnit = { module = "junit:junit", version.ref = "junit" }
+testJUnitUI = { module = "androidx.compose.ui:ui-test-junit4", version = "" }
+testUITooling = { module = "androidx.compose.ui:ui-tooling", version = "" }
 
 [plugins]
 gradleAppID = { id = "com.android.application", version.ref = "agp" }
