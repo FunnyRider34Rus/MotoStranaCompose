@@ -6,7 +6,7 @@ minSdk = "21"
 
 composeCompiler = "1.4.2"
 
-agp = "8.1.0-alpha06"
+agp = "7.4.1"
 kotlin = "1.8.10"
 composeBOM = "2022.10.00"
 runtime = "1.3.3"
@@ -19,6 +19,7 @@ firebase_bom = "31.2.2"
 gms = "4.3.15"
 gmsAUTH = "20.4.1"
 junit = "4.13.2"
+junitUI = "1.3.3"
 
 [libraries]
 gradleKotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -51,7 +52,7 @@ coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android
 coroutinesPlayservices = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
 
 testJUnit = { module = "junit:junit", version.ref = "junit" }
-testJUnitUI = { module = "androidx.compose.ui:ui-test-junit4", version = "" }
+testJUnitUI = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "junitUI" }
 testUITooling = { module = "androidx.compose.ui:ui-tooling", version = "" }
 
 [plugins]
