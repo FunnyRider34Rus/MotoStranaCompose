@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.motostranacompose.navigation.NavGraph
@@ -20,9 +21,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MotoStranaComposeTheme {
-                navController = rememberNavController()
-                NavGraph(navController = navController, startDestination = Screen.AuthScreen.route)
+                CheckAuthState()
             }
         }
+    }
+
+    @Composable
+    private fun CheckAuthState() {
+        navController = rememberNavController()
+        val startDestination = if(viewModel.isUserAuthenticated) {
+            Screen.DashboardListScreen.route
+        } else {
+            Screen.AuthScreen.route
+        }
+        NavGraph(navController = navController, startDestination = startDestination)
     }
 }

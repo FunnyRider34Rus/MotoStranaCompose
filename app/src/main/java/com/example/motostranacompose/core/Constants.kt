@@ -11,6 +11,7 @@ object Constants {
     const val ID = "id"
     const val DISPLAY_NAME = "displayName"
     const val PHOTO_URL = "photoUrl"
+    const val CREATED_AT = "createdAt"
     const val LAT = "lat"
     const val LON = "lon"
     const val STATUS = "OnlineStatus"
