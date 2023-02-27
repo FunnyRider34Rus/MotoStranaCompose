@@ -1,12 +1,12 @@
 package com.example.motostranacompose.data.repository
 
-import com.example.motostranacompose.core.Constants.CREATED_AT
-import com.example.motostranacompose.core.Constants.DISPLAY_NAME
-import com.example.motostranacompose.core.Constants.ID
-import com.example.motostranacompose.core.Constants.PHOTO_URL
+import com.example.motostranacompose.core.Constants.FIELD_CREATED_AT
+import com.example.motostranacompose.core.Constants.FIELD_DISPLAY_NAME
+import com.example.motostranacompose.core.Constants.FIELD_ID
+import com.example.motostranacompose.core.Constants.FIELD_PHOTO_URL
 import com.example.motostranacompose.core.Constants.SIGN_IN_REQUEST
 import com.example.motostranacompose.core.Constants.SIGN_UP_REQUEST
-import com.example.motostranacompose.core.Constants.USERS
+import com.example.motostranacompose.core.Constants.FIRESTORE_NODE_USERS
 import com.example.motostranacompose.data.model.Response.Failure
 import com.example.motostranacompose.data.model.Response.Success
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -75,7 +75,7 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun revokeAccess(): RevokeAccessResponse {
         return try {
             auth.currentUser?.apply {
-                firestore.collection(USERS).document(uid).delete().await()
+                firestore.collection(FIRESTORE_NODE_USERS).document(uid).delete().await()
                 signInClient.revokeAccess().await()
                 oneTapClient.signOut().await()
                 delete().await()
@@ -89,14 +89,14 @@ class AuthRepositoryImpl @Inject constructor(
     private suspend fun addUserToFirestore() {
         auth.currentUser?.apply {
             val user = toUser()
-            firestore.collection(USERS).document(uid).set(user).await()
+            firestore.collection(FIRESTORE_NODE_USERS).document(uid).set(user).await()
         }
     }
 }
 
 fun FirebaseUser.toUser() = mapOf(
-    ID to uid,
-    DISPLAY_NAME to displayName,
-    PHOTO_URL to photoUrl?.toString(),
-    CREATED_AT to FieldValue.serverTimestamp()
+    FIELD_ID to uid,
+    FIELD_DISPLAY_NAME to displayName,
+    FIELD_PHOTO_URL to photoUrl?.toString(),
+    FIELD_CREATED_AT to FieldValue.serverTimestamp()
 )
