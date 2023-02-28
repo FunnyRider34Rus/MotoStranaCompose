@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.example.motostranacompose"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.example.motostranacompose"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
+        minSdk = 22
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -34,14 +34,15 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = "11"
     }
+
     buildFeatures {
         viewBinding = true
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+        kotlinCompilerExtensionVersion = "1.4.2"
 
     }
 }
@@ -49,45 +50,55 @@ android {
 dependencies {
 
     //Core
-    implementation(platform(libs.composeBOM))
-    implementation(libs.composeUI)
-    implementation(libs.composePreview)
-    implementation(libs.composeM3)
+    implementation("androidx.core:core-ktx:1.9.0")
+    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material:material")
+    implementation("com.google.android.gms:play-services-auth:20.4.1")
 
     //Hilt
-    implementation(libs.hilt)
-    kapt(libs.hiltKapt)
+    val hilt_version="2.45"
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    kapt("com.google.dagger:hilt-compiler:$hilt_version")
 
     //Navigation
-    implementation(libs.navigation)
-    implementation(libs.navigationHilt)
+    val nav_version = "2.5.3"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     //Firebase
-    implementation(platform(libs.firebaseBOM))
-    implementation(libs.firebaseAUTH)
-    implementation(libs.firebaseRealtimeDatabase)
-    implementation(libs.firebaseFirestore)
-    implementation(libs.firebaseStorage)
-    //implementation(libs.firebaseCrashlytics)
+    implementation(platform("com.google.firebase:firebase-bom:31.2.2"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-database-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
+    //implementation("com.google.firebase:firebase-crashlytics-ktx")
 
-    //Play Services Auth
-    implementation(libs.playservicesAUTH)
-    
     //Google Fonts
-    implementation(libs.googleFont)
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.3.3")
 
-    //Google Extended Icons
-    implementation(libs.googleIconsExtended)
+    //val Google Icon
+    implementation("androidx.compose.material:material-icons-core:1.3.1")
+    implementation("androidx.compose.material:material-icons-extended:1.3.1")
 
     //Coroutines
-    implementation(libs.coroutinesCore)
-    implementation(libs.coroutinesAndroid)
-    implementation(libs.coroutinesPlayservices)
+    val coroutines_version="1.6.4"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version")
 
     //Tests
-    testImplementation(libs.testJUnit)
-    androidTestImplementation(libs.testJUnitUI)
-    debugImplementation(libs.testUITooling)
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation ("androidx.compose.ui:ui-test-manifest")
 }
 
 kapt {
