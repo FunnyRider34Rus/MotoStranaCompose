@@ -1,86 +1,59 @@
 package com.example.motostranacompose.ui.authentication
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import android.app.Activity
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.motostranacompose.R
+import com.example.motostranacompose.core.Constants.TAG
+import com.example.motostranacompose.core.components.ProgressBar
+import com.example.motostranacompose.ui.authentication.components.AuthScreen
+import com.example.motostranacompose.ui.authentication.components.OneTapSignIn
+import com.example.motostranacompose.ui.authentication.components.SignInWithGoogle
+import com.google.android.gms.auth.api.identity.BeginSignInResult
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider
 
 @Composable
-fun ScreenAuth(navController: NavController, authViewModel: AuthViewModel = hiltViewModel()) {
+fun ScreenAuth(navController: NavController, authViewModel: AuthViewModel = viewModel()) {
 
     val viewState = authViewModel.viewState.collectAsState(AuthViewState())
-    val textScrollState = rememberScrollState()
+    if (viewState.value.isLoading) ProgressBar()
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.auth_title)
-                    )
+    AuthScreen(
+        isChecked = viewState.value.isCheck,
+        onCheckedChange = { authViewModel.obtainEvent(AuthEvent.CheckBoxClick) },
+        onClick = { authViewModel.obtainEvent(AuthEvent.ButtonClick) }
+    )
+
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                try {
+                    val credentials =
+                        authViewModel.oneTapClient.getSignInCredentialFromIntent(result.data)
+                    val googleIdToken = credentials.googleIdToken
+                    val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
+                    authViewModel.signInWithGoogle(googleCredentials)
+                } catch (e: ApiException) {
+                    Log.e(TAG, e.message ?: e.toString())
                 }
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .padding(16.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.auth_body),
-                modifier = Modifier
-                    .verticalScroll(textScrollState)
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Row(
-                modifier = Modifier.padding(vertical = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = viewState.value.isCheck,
-                    onCheckedChange = { authViewModel.obtainEvent(AuthEvent.CheckBoxClick) }
-                )
-                Text(
-                    text = stringResource(id = R.string.auth_checkbox_text)
-                )
             }
-            Button(
-                onClick = {  },
-                modifier = Modifier
-                    .fillMaxWidth(),
-                enabled = viewState.value.isCheck,
-                contentPadding = ButtonDefaults.ContentPadding
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_google_logo),
-                    contentDescription = "SignIn with Google",
-                    tint = Color.Unspecified
-                )
-                Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                Text(text = stringResource(id = R.string.auth_button))
-            }
-            Spacer(modifier = Modifier.size(32.dp))
         }
-    }
-}
 
-@Preview(showBackground = true, device = "id:pixel_5")
-@Composable
-fun AuthPreview() {
-    ScreenAuth(navController = rememberNavController())
+    fun launch(signInResult: BeginSignInResult) {
+        val intent = IntentSenderRequest.Builder(signInResult.pendingIntent.intentSender).build()
+        launcher.launch(intent)
+    }
+
+    OneTapSignIn(
+        launch = {
+            launch(it)
+        }
+    )
+    SignInWithGoogle(navController = navController)
 }

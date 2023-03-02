@@ -77,6 +77,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-appcheck-playintegrity")
     //implementation("com.google.firebase:firebase-crashlytics-ktx")
+    //Play Services Auth
+    implementation("com.google.android.gms:play-services-auth:20.4.1")
 
     //Google Fonts
     implementation("androidx.compose.ui:ui-text-google-fonts:1.3.3")

@@ -1,6 +1,7 @@
 package com.example.motostranacompose.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,7 +17,7 @@ fun NavGraph(navController: NavHostController, startDestination: String) {
         route = Graph.NAVGRAPH.route
     ) {
         composable(route = Screen.AUTH.route) {
-            ScreenAuth(navController = navController)
+            ScreenAuth(navController = navController, authViewModel = hiltViewModel())
         }
         composable(route = Screen.MAIN.route) {
             ScreenMain()
