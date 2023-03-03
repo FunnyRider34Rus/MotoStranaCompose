@@ -30,8 +30,8 @@ fun ScreenDashboardList(
         state = lazyListState,
         flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState)
         ) {
-        items(viewState.value.content) { item ->
-            DashboardList(modifier = Modifier.fillParentMaxHeight(), content = item)
+        items(viewState.value.contents) { item ->
+            DashboardList(navController  = navController, modifier = Modifier.fillParentMaxHeight(), content = item)
         }
     }
 }

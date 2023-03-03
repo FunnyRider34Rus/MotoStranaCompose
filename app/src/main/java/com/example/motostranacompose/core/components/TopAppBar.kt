@@ -2,6 +2,7 @@ package com.example.motostranacompose.core.components
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
@@ -16,8 +17,11 @@ fun TopAppBar(modifier: Modifier, text: String) {
         title = {
             Text(
                 text = text,
-                modifier = Modifier.fillMaxSize().wrapContentHeight(),
-                textAlign = TextAlign.Center
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentHeight(),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.h6
             )
         },
         modifier = modifier,

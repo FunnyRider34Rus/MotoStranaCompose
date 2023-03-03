@@ -1,9 +1,11 @@
 package com.example.motostranacompose.ui.dashboard.list.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
@@ -17,16 +19,21 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.motostranacompose.core.components.TopAppBar
+import com.example.motostranacompose.core.timestampToDate
 import com.example.motostranacompose.data.model.DashboardContent
+import com.example.motostranacompose.navigation.Screen
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.transformation.blur.BlurTransformationPlugin
 
 @Composable
-fun DashboardList(modifier: Modifier, content: DashboardContent) {
+fun DashboardList(navController: NavController, modifier: Modifier, content: DashboardContent) {
+    val key = content.key
     Column(
         modifier = modifier
     ) {
@@ -37,7 +44,9 @@ fun DashboardList(modifier: Modifier, content: DashboardContent) {
         )
 
         ContentBody(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .clickable { navController.navigate(Screen.DASHDETAIL.route+"/$key") },
             content = content
         )
 
@@ -71,7 +80,16 @@ fun ContentBody(modifier: Modifier, content: DashboardContent) {
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(32.dp),
-            color = Color.White
+            color = Color.White,
+            style = MaterialTheme.typography.body1
+        )
+        Text(
+            text = timestampToDate(content.timestamp),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(ButtonDefaults.TextButtonContentPadding),
+            color = Color.White,
+            style = MaterialTheme.typography.caption
         )
     }
 }
@@ -114,5 +132,5 @@ fun Footer(modifier: Modifier) {
 @Preview
 @Composable
 fun DashboardListPreview() {
-    DashboardList(modifier = Modifier, content = DashboardContent())
+    DashboardList(navController = rememberNavController(), modifier = Modifier, content = DashboardContent())
 }

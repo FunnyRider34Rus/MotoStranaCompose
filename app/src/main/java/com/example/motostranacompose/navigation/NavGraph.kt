@@ -2,7 +2,9 @@ package com.example.motostranacompose.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavArgument
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.motostranacompose.ui.ScreenMain
@@ -16,14 +18,16 @@ fun NavGraph(navController: NavHostController, startDestination: String) {
         startDestination = startDestination,
         route = Graph.NAVGRAPH.route
     ) {
+        bottomNavGraph(navController = navController)
         composable(route = Screen.AUTH.route) {
             ScreenAuth(navController = navController, authViewModel = hiltViewModel())
         }
         composable(route = Screen.MAIN.route) {
-            ScreenMain()
+            ScreenMain(navController = navController)
         }
-        composable(route = Screen.DASHDETAIL.route) {
-            ScreenDashboardDetail(navController = navController)
+        composable(route = Screen.DASHDETAIL.route + "/{content}") { navEntry ->
+            val id = navEntry.arguments?.getString("content")
+            id?.let { id -> ScreenDashboardDetail(navController = navController, listViewModel = hiltViewModel(), id = id) }
         }
     }
 }

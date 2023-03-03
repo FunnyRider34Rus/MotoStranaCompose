@@ -7,7 +7,8 @@ data class DashboardListViewState(
     val commentStatus: CommentStatus? = null,
     val isLoading: Boolean = false,
     val error: String = "",
-    val content: List<DashboardContent> = emptyList()
+    val contents: List<DashboardContent> = emptyList(),
+    val content: DashboardContent? = null
 )
 
 enum class LikeStatus {

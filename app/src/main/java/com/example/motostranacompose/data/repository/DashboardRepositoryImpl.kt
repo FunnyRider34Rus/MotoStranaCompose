@@ -11,6 +11,7 @@ import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,8 +31,17 @@ class DashboardRepositoryImpl @Inject constructor(private val contentRef: Collec
         awaitClose { snapshotListener.remove() }
     }
 
-    override suspend fun getByKet(key: String?): Flow<Response<DashboardContent>> {
-        TODO("Not yet implemented")
+    override suspend fun getByKet(key: String?): Flow<Response<DashboardContent>> = callbackFlow {
+        val listener = contentRef.document("$key")
+            listener.get().addOnCompleteListener { task ->
+                val response = if (task.isSuccessful) {
+                    Success(task.result.toObject(DashboardContent::class.java))
+                } else {
+                    Failure(task.exception)
+                }
+                trySend(response)
+            }
+        awaitClose {  }
     }
 
     override suspend fun insert(data: DashboardContent): Response<Boolean> {
