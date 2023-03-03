@@ -57,6 +57,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material:material")
     implementation("com.google.android.gms:play-services-auth:20.4.1")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     //Hilt
     val hilt_version="2.45"
@@ -77,6 +78,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-appcheck-playintegrity")
     //implementation("com.google.firebase:firebase-crashlytics-ktx")
+
     //Play Services Auth
     implementation("com.google.android.gms:play-services-auth:20.4.1")
 
@@ -88,10 +90,18 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.3.1")
 
     //Coroutines
-    val coroutines_version="1.6.4"
+    val coroutines_version = "1.6.4"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version")
+
+    //Coil
+    val coil_version = "2.2.2"
+    implementation("io.coil-kt:coil-compose:$coil_version")
+    implementation("com.github.skydoves:landscapist-coil:2.1.5")
+
+    //Effects
+    implementation("com.github.skydoves:landscapist-transformation:2.1.5")
 
     //Tests
     testImplementation("junit:junit:4.13.2")

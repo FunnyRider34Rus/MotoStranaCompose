@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.motostranacompose.R
+import com.example.motostranacompose.core.components.TopAppBar
 
 @Composable
 fun AuthScreen(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, onClick: () -> Unit){
@@ -22,13 +23,7 @@ fun AuthScreen(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, onClick: 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.auth_title)
-                    )
-                }
-            )
+            TopAppBar(modifier = Modifier, text = stringResource(id = R.string.auth_title))
         }
     ) { paddingValues ->
         Column(
@@ -73,7 +68,7 @@ fun AuthScreen(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, onClick: 
     }
 }
 
-@Preview()
+@Preview
 @Composable
 fun AuthPreview() {
     AuthScreen(false,{ }, { })
