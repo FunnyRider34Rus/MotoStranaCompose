@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun TopAppBar(modifier: Modifier, text: String, navigationAction: (@Composable() (() -> Unit))?) {
+fun TopAppBar(modifier: Modifier, text: String, navigationAction: (@Composable (() -> Unit))?) {
     TopAppBar(
         title = {
                 Text(
