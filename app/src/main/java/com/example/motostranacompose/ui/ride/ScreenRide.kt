@@ -8,9 +8,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 
 @Composable
-fun ScreenRide(navController: NavController) {
+fun ScreenRide(navController: NavController, modifier: Modifier) {
         Text(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize(),
             textAlign = TextAlign.Center,
             text = "RideMode"

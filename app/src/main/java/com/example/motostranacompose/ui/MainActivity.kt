@@ -6,8 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import com.example.motostranacompose.navigation.NavGraph
 import com.example.motostranacompose.navigation.Screen
+import com.example.motostranacompose.ui.dashboard.list.ScreenContainer
 import com.example.motostranacompose.ui.theme.MotoStranaComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,12 +27,13 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun CheckAuthUser() {
+        //FirebaseAuth.getInstance().signOut()
         val startDestination = if (viewModel.isUserAuthenticated) {
-            Screen.MAIN.route
+            Screen.DASHLIST.route
         } else {
             Screen.AUTH.route
         }
-        NavGraph(
+        ScreenContainer(
             navController = rememberNavController(),
             startDestination = startDestination
         )

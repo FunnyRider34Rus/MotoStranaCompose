@@ -8,9 +8,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 
 @Composable
-fun ScreenProfile(navController: NavController) {
+fun ScreenProfile(navController: NavController, modifier: Modifier) {
         Text(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize(),
             textAlign = TextAlign.Center,
             text = "Profile"

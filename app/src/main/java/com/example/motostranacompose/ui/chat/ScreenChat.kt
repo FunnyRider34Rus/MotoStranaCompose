@@ -8,11 +8,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 
 @Composable
-fun ScreenChat(navController: NavController) {
-        Text(
-            modifier = Modifier
-                .fillMaxSize(),
-            textAlign = TextAlign.Center,
-            text = "Chat"
-        )
+fun ScreenChat(navController: NavController, modifier: Modifier) {
+    Text(
+        modifier = modifier
+            .fillMaxSize(),
+        textAlign = TextAlign.Center,
+        text = "Chat"
+    )
 }

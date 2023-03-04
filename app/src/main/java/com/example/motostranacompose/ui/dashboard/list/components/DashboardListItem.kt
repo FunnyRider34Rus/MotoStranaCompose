@@ -32,7 +32,7 @@ import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.transformation.blur.BlurTransformationPlugin
 
 @Composable
-fun DashboardList(navController: NavController, modifier: Modifier, content: DashboardContent) {
+fun DashboardListItem(navController: NavController, modifier: Modifier, content: DashboardContent) {
     val key = content.key
     Column(
         modifier = modifier
@@ -132,5 +132,5 @@ fun Footer(modifier: Modifier) {
 @Preview
 @Composable
 fun DashboardListPreview() {
-    DashboardList(navController = rememberNavController(), modifier = Modifier, content = DashboardContent())
+    DashboardListItem(navController = rememberNavController(), modifier = Modifier, content = DashboardContent())
 }

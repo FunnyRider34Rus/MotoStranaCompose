@@ -1,41 +1,50 @@
 package com.example.motostranacompose.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavArgument
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.motostranacompose.ui.ScreenMain
 import com.example.motostranacompose.ui.authentication.ScreenAuth
+import com.example.motostranacompose.ui.chat.ScreenChat
 import com.example.motostranacompose.ui.dashboard.detail.ScreenDashboardDetail
+import com.example.motostranacompose.ui.dashboard.list.ScreenDashboardList
+import com.example.motostranacompose.ui.profile.ScreenProfile
+import com.example.motostranacompose.ui.ride.ScreenRide
 
 @Composable
-fun NavGraph(navController: NavHostController, startDestination: String) {
+fun NavGraph(navController: NavHostController, modifier: Modifier, startDestination: String) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
         route = Graph.NAVGRAPH.route
     ) {
-        bottomNavGraph(navController = navController)
+        composable(route = Screen.DASHLIST.route) {
+            ScreenDashboardList(navController = navController, modifier = modifier,listViewModel = hiltViewModel())
+        }
+        composable(route = Screen.CHAT.route) {
+            ScreenChat(navController = navController, modifier = modifier)
+        }
+        composable(route = Screen.RIDE.route) {
+            ScreenRide(navController = navController, modifier = modifier)
+        }
+        composable(route = Screen.PROFILE.route) {
+            ScreenProfile(navController = navController, modifier = modifier)
+        }
         composable(route = Screen.AUTH.route) {
             ScreenAuth(navController = navController, authViewModel = hiltViewModel())
         }
-        composable(route = Screen.MAIN.route) {
-            ScreenMain(navController = navController)
-        }
         composable(route = Screen.DASHDETAIL.route + "/{content}") { navEntry ->
             val id = navEntry.arguments?.getString("content")
-            id?.let { id -> ScreenDashboardDetail(navController = navController, listViewModel = hiltViewModel(), id = id) }
+            id?.let { ScreenDashboardDetail(navController = navController, listViewModel = hiltViewModel(), id = it) }
         }
     }
 }
 
 sealed class Screen(val route: String) {
     object AUTH : Screen(route = "auth")
-    object MAIN : Screen(route = "main")
-    object DASHLIST : Screen(route = "dashboard_list")
+    object DASHLIST:Screen(route = "dashboard_list")
     object DASHDETAIL : Screen(route = "dashboard_detail")
     object CHAT : Screen(route = "chat")
     object RIDE : Screen(route = "ride")
@@ -44,5 +53,4 @@ sealed class Screen(val route: String) {
 
 sealed class Graph(val route: String) {
     object NAVGRAPH : Graph("root_nav_graph")
-    object BOTTOMNAVGRAPH : Graph("bottom_nav_graph")
 }

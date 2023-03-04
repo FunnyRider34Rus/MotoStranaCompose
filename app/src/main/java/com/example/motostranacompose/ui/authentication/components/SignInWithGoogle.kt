@@ -18,7 +18,7 @@ fun SignInWithGoogle(
         is Loading -> ProgressBar()
         is Success -> signInWithGoogleResponse.data?.let { signedIn ->
             LaunchedEffect(signedIn) {
-                if (signedIn) navController.navigate(Screen.MAIN.route)
+                if (signedIn) navController.navigate(Screen.DASHLIST.route)
             }
         }
         is Failure -> LaunchedEffect(Unit) {
