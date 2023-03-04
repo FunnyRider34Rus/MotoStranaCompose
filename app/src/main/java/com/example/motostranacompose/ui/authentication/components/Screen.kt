@@ -23,7 +23,7 @@ fun AuthScreen(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, onClick: 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(modifier = Modifier, text = stringResource(id = R.string.auth_title))
+            TopAppBar(modifier = Modifier, text = stringResource(id = R.string.auth_title), null)
         }
     ) { paddingValues ->
         Column(

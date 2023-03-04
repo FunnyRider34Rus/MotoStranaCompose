@@ -40,7 +40,8 @@ fun DashboardListItem(navController: NavController, modifier: Modifier, content:
 
         TopAppBar(
             modifier = Modifier.wrapContentHeight(Alignment.Top),
-            text = content.title.toString()
+            text = content.title.toString(),
+            null
         )
 
         ContentBody(
