@@ -16,14 +16,18 @@ import com.example.motostranacompose.R
 import com.example.motostranacompose.core.components.TopAppBar
 
 @Composable
-fun AuthScreen(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, onClick: () -> Unit){
+fun AuthScreen(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, onClick: () -> Unit) {
 
     val textScrollState = rememberScrollState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(modifier = Modifier, text = stringResource(id = R.string.auth_title), null)
+            TopAppBar(
+                modifier = Modifier,
+                text = stringResource(id = R.string.auth_title),
+                { },
+                { })
         }
     ) { paddingValues ->
         Column(
@@ -71,5 +75,5 @@ fun AuthScreen(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, onClick: 
 @Preview
 @Composable
 fun AuthPreview() {
-    AuthScreen(false,{ }, { })
+    AuthScreen(false, { }, { })
 }

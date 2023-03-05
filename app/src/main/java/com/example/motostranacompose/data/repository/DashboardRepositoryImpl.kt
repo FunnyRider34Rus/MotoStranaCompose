@@ -16,31 +16,34 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DashboardRepositoryImpl @Inject constructor(private val contentRef: CollectionReference) : DashboardContentRepository {
+class DashboardRepositoryImpl @Inject constructor(private val contentRef: CollectionReference) :
+    DashboardContentRepository {
     override suspend fun getAll(): Flow<Response<List<DashboardContent>>> = callbackFlow {
-        val snapshotListener = contentRef.orderBy(FIELD_DASHBOARD_TIMESTAMP, Query.Direction.DESCENDING).addSnapshotListener { value, error ->
-            val response = if (value != null) {
-                val content = value.toObjects(DashboardContent::class.java)
-                Success(content)
-            } else {
-                Failure(error)
-            }
-            trySend(response)
-        }
+        val snapshotListener =
+            contentRef.orderBy(FIELD_DASHBOARD_TIMESTAMP, Query.Direction.DESCENDING)
+                .addSnapshotListener { value, error ->
+                    val response = if (value != null) {
+                        val content = value.toObjects(DashboardContent::class.java)
+                        Success(content)
+                    } else {
+                        Failure(error)
+                    }
+                    trySend(response)
+                }
         awaitClose { snapshotListener.remove() }
     }
 
     override suspend fun getByKet(key: String?): Flow<Response<DashboardContent>> = callbackFlow {
         val listener = contentRef.document("$key")
-            listener.get().addOnCompleteListener { task ->
-                val response = if (task.isSuccessful) {
-                    Success(task.result.toObject(DashboardContent::class.java))
-                } else {
-                    Failure(task.exception)
-                }
-                trySend(response)
+        listener.get().addOnCompleteListener { task ->
+            val response = if (task.isSuccessful) {
+                Success(task.result.toObject(DashboardContent::class.java))
+            } else {
+                Failure(task.exception)
             }
-        awaitClose {  }
+            trySend(response)
+        }
+        awaitClose { }
     }
 
     override suspend fun insert(data: DashboardContent): Response<Boolean> {

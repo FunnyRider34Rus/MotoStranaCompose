@@ -28,7 +28,7 @@ class AuthViewModel @Inject constructor(
     val viewState: StateFlow<AuthViewState> = _viewState
 
     var oneTapSignInResponse by mutableStateOf<OneTapSignInResponse>(Success(null))
-    private set
+        private set
     var signInWithGoogleResponse by mutableStateOf<SignInWithGoogleResponse>(Success(false))
         private set
 
@@ -43,7 +43,7 @@ class AuthViewModel @Inject constructor(
     }
 
     override fun obtainEvent(event: AuthEvent) {
-        when(event) {
+        when (event) {
             AuthEvent.CheckBoxClick -> checkBoxStateChange()
             AuthEvent.ButtonClick -> oneTapSignIn()
         }

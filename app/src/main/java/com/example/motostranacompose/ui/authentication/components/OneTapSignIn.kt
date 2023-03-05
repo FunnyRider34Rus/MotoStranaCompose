@@ -13,7 +13,7 @@ fun OneTapSignIn(
     viewModel: AuthViewModel = hiltViewModel(),
     launch: (result: BeginSignInResult) -> Unit
 ) {
-    when(val oneTapSignInResponse = viewModel.oneTapSignInResponse) {
+    when (val oneTapSignInResponse = viewModel.oneTapSignInResponse) {
         is Loading -> ProgressBar()
         is Success -> oneTapSignInResponse.data?.let {
             LaunchedEffect(it) {

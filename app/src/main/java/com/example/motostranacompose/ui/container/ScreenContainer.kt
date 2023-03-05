@@ -1,4 +1,4 @@
-package com.example.motostranacompose.ui.dashboard.list
+package com.example.motostranacompose.ui.container
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -10,13 +10,20 @@ import com.example.motostranacompose.core.components.BottomBar
 import com.example.motostranacompose.navigation.NavGraph
 
 @Composable
-fun ScreenContainer(navController: NavHostController, startDestination: String) {
+fun ScreenContainer(
+    navController: NavHostController,
+    startDestination: String,
+) {
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
         scaffoldState = scaffoldState,
         bottomBar = { BottomBar(navController = navController) }
     ) { paddingValue ->
-        NavGraph(navController = navController, modifier = Modifier.padding(paddingValue), startDestination = startDestination)
+        NavGraph(
+            navController = navController,
+            modifier = Modifier.padding(paddingValue),
+            startDestination = startDestination
+        )
     }
 }

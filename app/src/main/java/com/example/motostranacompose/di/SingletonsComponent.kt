@@ -19,14 +19,16 @@ class SingletonsComponent {
     fun provideDashboardConetentRef() = Firebase.firestore.collection(FIRESTORE_NODE_DASHBOARD)
 
     @Provides
-    fun provideDashoardContentRepository(contentRef: CollectionReference): DashboardContentRepository = DashboardRepositoryImpl(contentRef)
+    fun provideDashoardContentRepository(contentRef: CollectionReference): DashboardContentRepository =
+        DashboardRepositoryImpl(contentRef)
 
     @Provides
-    fun provideDashboardUseCases(dashboardContentRepository: DashboardContentRepository) = DashboardUseCases(
-        getAll = GetDashboardContents(dashboardContentRepository),
-        getByKey = GetDashboardContentByKey(dashboardContentRepository),
-        insert = InsertDashboardContent(dashboardContentRepository),
-        update = UpdateDashboardContent(dashboardContentRepository),
-        delete = DeleteDashboardContent(dashboardContentRepository)
-    )
+    fun provideDashboardUseCases(dashboardContentRepository: DashboardContentRepository) =
+        DashboardUseCases(
+            getAll = GetDashboardContents(dashboardContentRepository),
+            getByKey = GetDashboardContentByKey(dashboardContentRepository),
+            insert = InsertDashboardContent(dashboardContentRepository),
+            update = UpdateDashboardContent(dashboardContentRepository),
+            delete = DeleteDashboardContent(dashboardContentRepository)
+        )
 }

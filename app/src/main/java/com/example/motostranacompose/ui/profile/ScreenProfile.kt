@@ -9,10 +9,10 @@ import androidx.navigation.NavController
 
 @Composable
 fun ScreenProfile(navController: NavController, modifier: Modifier) {
-        Text(
-            modifier = modifier
-                .fillMaxSize(),
-            textAlign = TextAlign.Center,
-            text = "Profile"
-        )
+    Text(
+        modifier = modifier
+            .fillMaxSize(),
+        textAlign = TextAlign.Center,
+        text = "Profile"
+    )
 }

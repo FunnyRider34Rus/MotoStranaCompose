@@ -9,10 +9,10 @@ import androidx.navigation.NavController
 
 @Composable
 fun ScreenRide(navController: NavController, modifier: Modifier) {
-        Text(
-            modifier = modifier
-                .fillMaxSize(),
-            textAlign = TextAlign.Center,
-            text = "RideMode"
-        )
+    Text(
+        modifier = modifier
+            .fillMaxSize(),
+        textAlign = TextAlign.Center,
+        text = "RideMode"
+    )
 }

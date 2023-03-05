@@ -21,7 +21,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, startDestinat
         route = Graph.NAVGRAPH.route
     ) {
         composable(route = Screen.DASHLIST.route) {
-            ScreenDashboardList(navController = navController, modifier = modifier,listViewModel = hiltViewModel())
+            ScreenDashboardList(navController = navController, modifier = modifier)
         }
         composable(route = Screen.CHAT.route) {
             ScreenChat(navController = navController, modifier = modifier)
@@ -37,14 +37,14 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, startDestinat
         }
         composable(route = Screen.DASHDETAIL.route + "/{content}") { navEntry ->
             val id = navEntry.arguments?.getString("content")
-            id?.let { ScreenDashboardDetail(navController = navController, listViewModel = hiltViewModel(), id = it) }
+            id?.let { ScreenDashboardDetail(navController = navController, id = it) }
         }
     }
 }
 
 sealed class Screen(val route: String) {
     object AUTH : Screen(route = "auth")
-    object DASHLIST:Screen(route = "dashboard_list")
+    object DASHLIST : Screen(route = "dashboard_list")
     object DASHDETAIL : Screen(route = "dashboard_detail")
     object CHAT : Screen(route = "chat")
     object RIDE : Screen(route = "ride")

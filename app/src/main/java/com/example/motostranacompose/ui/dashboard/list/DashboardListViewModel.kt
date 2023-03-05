@@ -68,6 +68,7 @@ class DashboardListViewModel @Inject constructor(private val useCases: Dashboard
             DashboardListEvent.LikeClick -> {}
             DashboardListEvent.CommentClick -> {}
             DashboardListEvent.ShareClick -> {}
+            DashboardListEvent.ButtonAddClick -> {}
         }
     }
 

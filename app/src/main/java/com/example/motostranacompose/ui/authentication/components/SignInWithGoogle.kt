@@ -14,7 +14,7 @@ fun SignInWithGoogle(
     viewModel: AuthViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    when(val signInWithGoogleResponse = viewModel.signInWithGoogleResponse) {
+    when (val signInWithGoogleResponse = viewModel.signInWithGoogleResponse) {
         is Loading -> ProgressBar()
         is Success -> signInWithGoogleResponse.data?.let { signedIn ->
             LaunchedEffect(signedIn) {

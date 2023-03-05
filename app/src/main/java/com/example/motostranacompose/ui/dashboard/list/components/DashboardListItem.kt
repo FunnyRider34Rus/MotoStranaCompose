@@ -3,10 +3,7 @@ package com.example.motostranacompose.ui.dashboard.list.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
@@ -16,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -41,18 +37,19 @@ fun DashboardListItem(navController: NavController, modifier: Modifier, content:
         TopAppBar(
             modifier = Modifier.wrapContentHeight(Alignment.Top),
             text = content.title.toString(),
-            null
+            { },
+            { }
         )
 
         ContentBody(
             modifier = Modifier
                 .weight(1f)
-                .clickable { navController.navigate(Screen.DASHDETAIL.route+"/$key") },
+                .clickable { navController.navigate(Screen.DASHDETAIL.route + "/$key") },
             content = content
         )
 
         Footer(
-            modifier = Modifier.wrapContentHeight(Alignment.Bottom)
+            modifier = Modifier.wrapContentHeight(Alignment.CenterVertically)
         )
     }
 }
@@ -67,14 +64,17 @@ fun ContentBody(modifier: Modifier, content: DashboardContent) {
             component = rememberImageComponent {
                 +BlurTransformationPlugin(radius = 16) // between 0 to Int.MAX_VALUE.
             },
-            imageOptions = ImageOptions(alignment = Alignment.Center, contentScale = ContentScale.FillHeight)
+            imageOptions = ImageOptions(
+                alignment = Alignment.Center,
+                contentScale = ContentScale.FillHeight
+            )
         )
         Image(
             painter = painter,
             contentDescription = content.title,
             modifier = Modifier.fillMaxSize(),
             alignment = Alignment.Center,
-            contentScale = ContentScale.None
+            contentScale = ContentScale.Fit
         )
         Text(
             text = content.header.toString(),
@@ -98,40 +98,47 @@ fun ContentBody(modifier: Modifier, content: DashboardContent) {
 @Composable
 fun Footer(modifier: Modifier) {
     Row(
-        modifier = modifier
-            .padding(ButtonDefaults.IconSpacing)
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = Icons.Outlined.FavoriteBorder,
-            contentDescription = null,
-            modifier = modifier.padding(ButtonDefaults.IconSpacing)
-        )
+        IconButton(
+            onClick = { /*TODO*/ },
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.FavoriteBorder,
+                contentDescription = null
+            )
+        }
         Text(
-            text = "0",
-            modifier = modifier.padding(vertical = ButtonDefaults.IconSpacing),
-            textAlign = TextAlign.Center
+            text = "0"
         )
-        Icon(
-            imageVector = Icons.Outlined.ChatBubbleOutline,
-            contentDescription = null,
-            modifier = modifier.padding(ButtonDefaults.IconSpacing)
-        )
+        IconButton(onClick = { /*TODO*/ }) {
+            Icon(
+                imageVector = Icons.Outlined.ChatBubbleOutline,
+                contentDescription = null
+            )
+        }
         Text(
-            text = "0",
-            modifier = modifier.padding(vertical = ButtonDefaults.IconSpacing),
-            textAlign = TextAlign.Center
+            text = "0"
         )
         Spacer(modifier = modifier.weight(1f))
-        Icon(
-            imageVector = Icons.Default.Share,
-            contentDescription = null,
-            modifier = modifier.padding(ButtonDefaults.IconSpacing)
-        )
+        IconButton(
+            onClick = { /*TODO*/ }
+        ) {
+            Icon(
+                imageVector = Icons.Default.Share,
+                contentDescription = null
+            )
+        }
     }
 }
 
 @Preview
 @Composable
 fun DashboardListPreview() {
-    DashboardListItem(navController = rememberNavController(), modifier = Modifier, content = DashboardContent())
+    DashboardListItem(
+        navController = rememberNavController(),
+        modifier = Modifier,
+        content = DashboardContent()
+    )
 }

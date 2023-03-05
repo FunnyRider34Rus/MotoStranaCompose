@@ -1,12 +1,14 @@
 package com.example.motostranacompose.ui.dashboard.detail
 
+import android.content.Context
 import android.view.ViewGroup
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.compose.foundation.clickable
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -33,14 +35,15 @@ fun ScreenDashboardDetail(
             modifier = Modifier,
             text = viewState.value.content?.title.toString(),
             navigationAction = {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(ButtonDefaults.ContentPadding)
-                        .clickable { navController.navigateUp() }
-                )
-            }
+                IconButton(onClick = { navController.navigateUp() }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = null
+
+                    )
+                }
+            },
+            {  }
         )
 
         AndroidView(factory = {
@@ -50,10 +53,30 @@ fun ScreenDashboardDetail(
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
                 webViewClient = WebViewClient()
-                loadData(viewState.value.content?.body.toString(), "text/html; charset=UTF-8", null)
+                settings.javaScriptEnabled = true
+                addJavascriptInterface(WebAppInterface(context), "Android")
+                loadData(
+                    viewState.value.content?.body.toString(),
+                    "text/html; charset=UTF-8",
+                    null
+                )
             }
         },
-            update = { it.loadData(viewState.value.content?.body.toString(), "text/html; charset=UTF-8", null)}
+            update = {
+                it.loadData(
+                    viewState.value.content?.body.toString(),
+                    "text/html; charset=UTF-8",
+                    null
+                )
+            }
         )
+    }
+}
+
+class WebAppInterface(private val mContext: Context) {
+    /** Show a toast from the web page  */
+    @JavascriptInterface
+    fun showToast(toast: String) {
+        Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show()
     }
 }
