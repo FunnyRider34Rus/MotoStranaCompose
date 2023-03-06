@@ -10,6 +10,7 @@ typealias SignOutResponse = Response<Boolean>
 typealias RevokeAccessResponse = Response<Boolean>
 
 interface AuthRepository {
+
     val isUserAuthenticatedInFirebase: Boolean
 
     suspend fun oneTapSignInWithGoogle(): OneTapSignInResponse

@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
@@ -22,6 +24,9 @@ import com.example.motostranacompose.core.components.TopAppBar
 import com.example.motostranacompose.core.timestampToDate
 import com.example.motostranacompose.data.model.DashboardContent
 import com.example.motostranacompose.navigation.Screen
+import com.example.motostranacompose.ui.dashboard.list.DashboardListEvent
+import com.example.motostranacompose.ui.dashboard.list.DashboardListViewModel
+import com.example.motostranacompose.ui.dashboard.list.LikeStatus
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 import com.skydoves.landscapist.components.rememberImageComponent
@@ -53,7 +58,8 @@ fun DashboardListItem(
         )
 
         Footer(
-            modifier = Modifier.wrapContentHeight(Alignment.CenterVertically)
+            modifier = Modifier.wrapContentHeight(Alignment.CenterVertically),
+            content = content
         )
     }
 }
@@ -101,7 +107,9 @@ fun ContentBody(modifier: Modifier, content: DashboardContent) {
 
 @Composable
 fun Footer(
-    modifier: Modifier
+    modifier: Modifier,
+    content: DashboardContent,
+    viewModel: DashboardListViewModel = hiltViewModel()
 ) {
     Row(
         modifier = modifier,
@@ -109,16 +117,21 @@ fun Footer(
     ) {
         IconButton(
             onClick = {
-                /*TODO*/
+                viewModel.obtainEvent(DashboardListEvent.LikeClick(content = content))
             },
         ) {
             Icon(
-                imageVector = Icons.Outlined.FavoriteBorder,
-                contentDescription = null
+                imageVector = when (viewModel.getLikeStatus(content.likes)) {
+                    LikeStatus.UNLIKE -> Icons.Filled.Favorite
+                    LikeStatus.NONE -> Icons.Outlined.FavoriteBorder
+                    LikeStatus.LIKE -> Icons.Filled.Favorite
+                },
+                contentDescription = null,
+                tint = if (viewModel.getLikeStatus(content.likes) == LikeStatus.LIKE) Color.Red else Color.Black
             )
         }
         Text(
-            text = "0"
+            text = if (content.likes.isNullOrEmpty()) "0" else content.likes.size.toString()
         )
         IconButton(onClick = { /*TODO*/ }) {
             Icon(

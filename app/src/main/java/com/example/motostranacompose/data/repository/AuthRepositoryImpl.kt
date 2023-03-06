@@ -37,6 +37,7 @@ class AuthRepositoryImpl @Inject constructor(
     private var signInClient: GoogleSignInClient,
     private val firestore: FirebaseFirestore
 ) : AuthRepository {
+
     override val isUserAuthenticatedInFirebase = auth.currentUser != null
 
     override suspend fun oneTapSignInWithGoogle(): OneTapSignInResponse {

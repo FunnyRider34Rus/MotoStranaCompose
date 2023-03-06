@@ -9,3 +9,17 @@ fun timestampToDate(timestamp: Timestamp?): String {
     val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
     return simpleDateFormat.format(long)
 }
+
+fun addOrRemoveIfContains(source: List<String>?, value: String): List<String>? {
+    var modified = source?.toMutableList()
+    if (source != null) {
+        if (source.contains(value)) {
+            modified?.remove(value)
+        } else {
+            modified?.add(value)
+        }
+    } else {
+        modified = mutableListOf(value)
+    }
+    return modified
+}

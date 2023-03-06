@@ -7,7 +7,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.motostranacompose.core.Constants.TAG
 import com.example.motostranacompose.core.components.ProgressBar
@@ -19,7 +19,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 
 @Composable
-fun ScreenAuth(navController: NavController, authViewModel: AuthViewModel = viewModel()) {
+fun ScreenAuth(navController: NavController, authViewModel: AuthViewModel = hiltViewModel()) {
 
     val viewState = authViewModel.viewState.collectAsState(AuthViewState())
     if (viewState.value.isLoading) ProgressBar()

@@ -1,10 +1,12 @@
 package com.example.motostranacompose.ui.dashboard.list
 
-sealed class DashboardListEvent {
-    object ContentClick : DashboardListEvent()
-    object LikeClick : DashboardListEvent()
-    object CommentClick : DashboardListEvent()
-    object ShareClick : DashboardListEvent()
+import com.example.motostranacompose.data.model.DashboardContent
 
-    object ButtonAddClick : DashboardListEvent()
+interface DashboardListEvent {
+    object ContentClick : DashboardListEvent
+    class LikeClick(val content: DashboardContent) : DashboardListEvent
+    object CommentClick : DashboardListEvent
+    object ShareClick : DashboardListEvent
+
+    object ButtonAddClick : DashboardListEvent
 }

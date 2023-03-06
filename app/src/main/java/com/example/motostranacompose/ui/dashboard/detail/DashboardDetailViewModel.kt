@@ -26,7 +26,9 @@ class DashboardDetailViewModel @Inject constructor(private val useCases: Dashboa
                     _viewState.value = _viewState.value.copy( isLoading = false, content = response.data)
                 }
                 is Response.Failure -> {
-
+                    _viewState.value = _viewState.value.copy(
+                        error = response.e?.message ?: "An unexpected error occurred"
+                    )
                 }
             }
         }

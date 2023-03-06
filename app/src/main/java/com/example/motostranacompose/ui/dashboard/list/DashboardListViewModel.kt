@@ -2,8 +2,8 @@ package com.example.motostranacompose.ui.dashboard.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.motostranacompose.core.EventHandler
 import com.example.motostranacompose.core.Response.*
+import com.example.motostranacompose.domain.repository.UserRepository
 import com.example.motostranacompose.domain.use_case.dashboard.DashboardUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DashboardListViewModel @Inject constructor(private val useCases: DashboardUseCases) :
-    ViewModel(), EventHandler<DashboardListEvent> {
+class DashboardListViewModel @Inject constructor(private val useCases: DashboardUseCases, private val userRepository: UserRepository) :
+    ViewModel(), DashboardListEvent {
 
     private val _viewState = MutableStateFlow(DashboardListViewState())
     val viewState: StateFlow<DashboardListViewState> = _viewState
@@ -42,16 +42,22 @@ class DashboardListViewModel @Inject constructor(private val useCases: Dashboard
         }
     }
 
-    override fun obtainEvent(event: DashboardListEvent) {
-        when (event) {
-            DashboardListEvent.ContentClick -> {}
-            DashboardListEvent.LikeClick -> {
-
-            }
-            DashboardListEvent.CommentClick -> {}
-            DashboardListEvent.ShareClick -> {}
-            DashboardListEvent.ButtonAddClick -> {}
-        }
+    fun getLikeStatus(list: List<String>?): LikeStatus {
+        var result: LikeStatus
+        result = if (list.isNullOrEmpty())  LikeStatus.NONE else LikeStatus.UNLIKE
+        if (list?.contains(userRepository.getCurrentUser().uid) == true) result = LikeStatus.LIKE
+        return result
     }
 
+    fun obtainEvent(event: DashboardListEvent) = viewModelScope.launch {
+        when (event) {
+            is DashboardListEvent.ContentClick -> {}
+            is DashboardListEvent.LikeClick -> {
+                useCases.likeClick.invoke(event.content)
+            }
+            is DashboardListEvent.CommentClick -> {}
+            is DashboardListEvent.ShareClick -> {}
+            is DashboardListEvent.ButtonAddClick -> {}
+        }
+    }
 }

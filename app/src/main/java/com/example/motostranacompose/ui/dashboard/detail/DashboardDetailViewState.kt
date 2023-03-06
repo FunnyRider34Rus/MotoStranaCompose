@@ -4,5 +4,6 @@ import com.example.motostranacompose.data.model.DashboardContent
 
 data class DashboardDetailViewState(
     val content: DashboardContent? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val error: String? = null
 )
