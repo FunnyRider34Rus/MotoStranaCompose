@@ -1,14 +1,9 @@
 package com.example.motostranacompose.core.components
 
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -32,9 +27,7 @@ fun BottomBar(navController: NavController) {
     val bottomBarDestination = bottomBarScreens.any { it.route == currentDestination?.route }
 
     if (bottomBarDestination) {
-        NavigationBar(
-            containerColor = Color.White
-        ) {
+        NavigationBar {
             bottomBarScreens.forEach { screen ->
                 AddItem(
                     screen = screen,
@@ -66,9 +59,6 @@ fun RowScope.AddItem(
             it.route == screen.route
         } == true,
         alwaysShowLabel = false,
-        colors = NavigationBarItemDefaults.colors(
-            indicatorColor = Color.White
-        ),
         onClick = {
             navController.navigate(screen.route) {
                 popUpTo(navController.graph.findStartDestination().id)

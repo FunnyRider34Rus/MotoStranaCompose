@@ -8,6 +8,7 @@ import com.example.motostranacompose.data.model.DashboardContent
 import com.example.motostranacompose.domain.repository.DashboardContentRepository
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -58,7 +59,14 @@ class DashboardRepositoryImpl @Inject constructor(private val contentRef: Collec
     }
 
     override suspend fun update(data: DashboardContent): Response<Boolean> {
-        TODO("Not yet implemented")
+        return try {
+            data.key?.let {
+                contentRef.document(it).set(data, SetOptions.merge()).await()
+            }
+            Success(true)
+        } catch (e: Exception) {
+            Failure(e)
+        }
     }
 
     override suspend fun delete(key: String?): Response<Boolean> {

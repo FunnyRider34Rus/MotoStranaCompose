@@ -3,11 +3,11 @@ package com.example.motostranacompose.ui.dashboard.list.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +28,11 @@ import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.transformation.blur.BlurTransformationPlugin
 
 @Composable
-fun DashboardListItem(navController: NavController, modifier: Modifier, content: DashboardContent) {
+fun DashboardListItem(
+    navController: NavController,
+    modifier: Modifier,
+    content: DashboardContent
+) {
     val key = content.key
     Column(
         modifier = modifier
@@ -82,7 +86,7 @@ fun ContentBody(modifier: Modifier, content: DashboardContent) {
                 .align(Alignment.BottomCenter)
                 .padding(32.dp),
             color = Color.White,
-            style = MaterialTheme.typography.body1
+            style = MaterialTheme.typography.bodyLarge
         )
         Text(
             text = timestampToDate(content.timestamp),
@@ -90,19 +94,23 @@ fun ContentBody(modifier: Modifier, content: DashboardContent) {
                 .align(Alignment.BottomEnd)
                 .padding(ButtonDefaults.TextButtonContentPadding),
             color = Color.White,
-            style = MaterialTheme.typography.caption
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }
 
 @Composable
-fun Footer(modifier: Modifier) {
+fun Footer(
+    modifier: Modifier
+) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                /*TODO*/
+            },
         ) {
             Icon(
                 imageVector = Icons.Outlined.FavoriteBorder,

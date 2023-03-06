@@ -3,7 +3,7 @@ package com.example.motostranacompose.ui.authentication.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.motostranacompose.R
 import com.example.motostranacompose.core.components.TopAppBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthScreen(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, onClick: () -> Unit) {
 
@@ -37,7 +38,8 @@ fun AuthScreen(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, onClick: 
         ) {
             Text(
                 text = stringResource(id = R.string.auth_body),
-                modifier = Modifier.verticalScroll(textScrollState)
+                modifier = Modifier.verticalScroll(textScrollState),
+                style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.weight(1f))
             Row(

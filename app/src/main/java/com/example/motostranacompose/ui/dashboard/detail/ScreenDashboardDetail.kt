@@ -7,10 +7,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -18,17 +18,15 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.motostranacompose.core.components.TopAppBar
-import com.example.motostranacompose.ui.dashboard.list.DashboardListViewModel
-import com.example.motostranacompose.ui.dashboard.list.DashboardListViewState
 
 @Composable
 fun ScreenDashboardDetail(
     navController: NavController,
-    listViewModel: DashboardListViewModel = hiltViewModel(),
-    id: String
+    id: String,
+    viewModel: DashboardDetailViewModel = hiltViewModel()
 ) {
-    listViewModel.getDashboardContentByKey(key = id)
-    val viewState = listViewModel.viewState.collectAsState(DashboardListViewState())
+    val viewState = viewModel.viewState.collectAsState(DashboardDetailViewState())
+    viewModel.getEvent(DashboardDetailEvent.getContentByKey(id))
 
     Column {
         TopAppBar(
@@ -39,7 +37,6 @@ fun ScreenDashboardDetail(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = null
-
                     )
                 }
             },

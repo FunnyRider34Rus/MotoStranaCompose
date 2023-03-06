@@ -30,28 +30,8 @@ class DashboardListViewModel @Inject constructor(private val useCases: Dashboard
                     _viewState.value = _viewState.value.copy(isLoading = true)
                 }
                 is Success -> {
-                    _viewState.value = _viewState.value.copy(isLoading = false)
                     _viewState.value =
-                        _viewState.value.copy(contents = response.data ?: emptyList())
-                }
-                is Failure -> {
-                    _viewState.value = _viewState.value.copy(
-                        error = response.e?.message ?: "An unexpected error occurred"
-                    )
-                }
-            }
-        }
-    }
-
-    fun getDashboardContentByKey(key: String) = viewModelScope.launch {
-        useCases.getByKey.invoke(key).collect { response ->
-            when (response) {
-                is Loading -> {
-                    _viewState.value = _viewState.value.copy(isLoading = true)
-                }
-                is Success -> {
-                    _viewState.value = _viewState.value.copy(isLoading = false)
-                    _viewState.value = _viewState.value.copy(content = response.data)
+                        _viewState.value.copy(isLoading = false, contents = response.data ?: emptyList())
                 }
                 is Failure -> {
                     _viewState.value = _viewState.value.copy(
@@ -65,7 +45,9 @@ class DashboardListViewModel @Inject constructor(private val useCases: Dashboard
     override fun obtainEvent(event: DashboardListEvent) {
         when (event) {
             DashboardListEvent.ContentClick -> {}
-            DashboardListEvent.LikeClick -> {}
+            DashboardListEvent.LikeClick -> {
+
+            }
             DashboardListEvent.CommentClick -> {}
             DashboardListEvent.ShareClick -> {}
             DashboardListEvent.ButtonAddClick -> {}
