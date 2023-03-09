@@ -24,6 +24,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.motostranacompose.core.components.TopAppBar
 import com.example.motostranacompose.core.timestampToDate
 import com.example.motostranacompose.data.model.DashboardContent
+import com.example.motostranacompose.data.model.DashboardType
 import com.example.motostranacompose.navigation.Screen
 import com.example.motostranacompose.ui.dashboard.list.DashboardListEvent
 import com.example.motostranacompose.ui.dashboard.list.DashboardListViewModel
@@ -96,6 +97,18 @@ fun ContentBody(modifier: Modifier, content: DashboardContent) {
             overflow = TextOverflow.Ellipsis,
             maxLines = 3,
             style = MaterialTheme.typography.bodyLarge
+        )
+        Text(
+            text = when (content.type) {
+                DashboardType.NEWS.toString() -> "#новость"
+                DashboardType.POST.toString() -> "#пост"
+                else -> ""
+            },
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(ButtonDefaults.TextButtonContentPadding),
+            color = Color.White,
+            style = MaterialTheme.typography.labelSmall
         )
         Text(
             text = timestampToDate(content.timestamp),
