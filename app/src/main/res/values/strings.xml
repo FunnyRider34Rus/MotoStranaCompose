@@ -9,4 +9,7 @@
     <string name="bottombar_lable_chat">Сообщения</string>
     <string name="bottombar_lable_ride">Драйв</string>
     <string name="bottombar_lable_profile">Профиль</string>
+    <string name="alertdialog_title">Ошибка</string>
+    <string name="button_exit">Выход</string>
+    <string name="text_internet_connection_error">Работа приложения без сети интернет не возможна. Пожалуйста проверьте соединение с сетью интернет</string>
 </resources>

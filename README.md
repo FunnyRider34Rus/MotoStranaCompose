@@ -15,7 +15,7 @@ Chat and find fellow travelers. Plan travel routes. Share posts. Keep records of
 ## Technologies
 
 - [Jetpack Compose](https://developer.android.com/jetpack/compose)
-- [Kotlin](https://kotlinlang.org) - %100 Kotlin
+- [Kotlin](https://kotlinlang.org) - 100%
 - [Flow](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/)
 - [Gradle Kotlin DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html)
 - [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) for asynchronous operations

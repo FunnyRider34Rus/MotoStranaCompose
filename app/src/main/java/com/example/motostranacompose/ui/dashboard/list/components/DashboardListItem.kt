@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -72,7 +73,7 @@ fun ContentBody(modifier: Modifier, content: DashboardContent) {
             imageModel = { content.image },
             modifier = Modifier.fillMaxSize(),
             component = rememberImageComponent {
-                +BlurTransformationPlugin(radius = 16) // between 0 to Int.MAX_VALUE.
+                +BlurTransformationPlugin(radius = 32)
             },
             imageOptions = ImageOptions(
                 alignment = Alignment.Center,
@@ -90,8 +91,10 @@ fun ContentBody(modifier: Modifier, content: DashboardContent) {
             text = content.header.toString(),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(32.dp),
+                .padding(horizontal = 16.dp, vertical = 32.dp),
             color = Color.White,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 3,
             style = MaterialTheme.typography.bodyLarge
         )
         Text(

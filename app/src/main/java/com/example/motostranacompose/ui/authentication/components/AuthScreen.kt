@@ -1,5 +1,8 @@
 package com.example.motostranacompose.ui.authentication.components
 
+import androidx.compose.foundation.clipScrollableContainer
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -19,6 +22,7 @@ import com.example.motostranacompose.core.components.TopAppBar
 @Composable
 fun AuthScreen(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, onClick: () -> Unit) {
 
+    val containerScrollState = rememberScrollState()
     val textScrollState = rememberScrollState()
 
     Scaffold(
@@ -35,10 +39,13 @@ fun AuthScreen(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, onClick: 
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(16.dp)
+                .scrollable(state = containerScrollState, Orientation.Vertical)
         ) {
             Text(
+                modifier = Modifier
+                .verticalScroll(textScrollState)
+                .clipScrollableContainer(Orientation.Vertical),
                 text = stringResource(id = R.string.auth_body),
-                modifier = Modifier.verticalScroll(textScrollState),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.weight(1f))
